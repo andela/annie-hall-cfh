@@ -16,7 +16,8 @@
     "start": "node node_modules/grunt-cli/bin/grunt",
     "test": "nyc --reporter=text --reporter=html node node_modules/grunt-cli/bin/grunt test",
     "postinstall": "node node_modules/grunt-cli/bin/grunt install",
-    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test"
+    "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test",
+    "test:run": "karma start karma.config.js"
   },
   "dependencies": {
     "async": "~0.2.9",
@@ -35,6 +36,7 @@
     "jade": "~0.35.0",
     "mean-logger": "~0.0.1",
     "mongodb": "^2.2.33",
+    "mongodb-migrate": "^2.0.2",
     "mongoose": "~3.6.20",
     "nyc": "^11.3.0",
     "passport": "~0.1.17",
@@ -50,14 +52,21 @@
     "view-helpers": "~0.1.3"
   },
   "devDependencies": {
-    "supertest": "~0.8.0",
-    "should": "~1.3.0",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-nodemon": "~0.1.1",
-    "grunt-concurrent": "~0.4.0",
-    "grunt-mocha-test": "~0.7.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
     "grunt": "~0.4.1",
-    "grunt-contrib-sass": "~0.5.0"
+    "grunt-concurrent": "~0.4.0",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-sass": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-mocha-test": "~0.7.0",
+    "grunt-nodemon": "~0.1.1",
+    "jasmine": "^2.8.0",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0",
+    "should": "~1.3.0",
+    "supertest": "~0.8.0"
   }
 }
