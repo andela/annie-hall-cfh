@@ -7,5 +7,6 @@ c4h_keys.txt
 package-lock.json
 coverage
 .nyc_output/
+migrations/
 .nodemonignore
 .coveralls.yml
