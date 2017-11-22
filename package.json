@@ -37,7 +37,7 @@
     "mean-logger": "~0.0.1",
     "mongodb": "^2.2.33",
     "mongodb-migrate": "^2.0.2",
-    "mongoose": "~3.6.20",
+    "mongoose": "^4.10.8",
     "nyc": "^11.3.0",
     "passport": "~0.1.17",
     "passport-facebook": "~2.0.0",
