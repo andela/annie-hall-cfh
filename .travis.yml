@@ -4,6 +4,7 @@ node_js:
 env:
   global:
     - export NODE_ENV=test
-
-after_script:
+script:
 - npm run coverage
+
+after_success: 'npm run coveralls'
