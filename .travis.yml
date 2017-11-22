@@ -4,7 +4,6 @@ node_js:
 env:
   global:
     - export NODE_ENV=test
-script:
-- npm test
-- npm install
+
+after_script:
 - npm run coverage
