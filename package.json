@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "node node_modules/grunt-cli/bin/grunt",
-    "test": "nyc --reporter=text --reporter=html node node_modules/grunt-cli/bin/grunt test",
+    "test": "nyc --reporter=text --reporter=html node node_modules/grunt-cli/bin/grunt test --timeout 5000",
     "postinstall": "node node_modules/grunt-cli/bin/grunt install",
     "coverage": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "test:run": "karma start karma.config.js"
