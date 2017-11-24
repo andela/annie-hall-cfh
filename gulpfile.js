@@ -54,7 +54,7 @@ gulp.task('angular', () => {
 
 gulp.task('bootstrap', () => {
     gulp.src('bower_components/bootstrap/**/*')
-        .pipe(gulp.dest('public/lib/bootstrap/dist'));
+        .pipe(gulp.dest('public/lib/bootstrap'));
 });
 
 gulp.task('jquery', () => {

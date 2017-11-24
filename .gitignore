@@ -7,3 +7,8 @@ c4h_keys.txt
 bower_components
 migrations/
 package-lock.json
+coverage
+.nyc_output/
+migrations/
+.nodemonignore
+.coveralls.yml
