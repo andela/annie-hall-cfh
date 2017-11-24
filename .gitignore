@@ -5,3 +5,6 @@ public/lib
 c4h_keys.txt
 .env
 .package-lock
+coverage
+.nyc_output/
+.coveralls.yml
