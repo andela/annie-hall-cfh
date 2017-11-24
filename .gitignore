@@ -7,3 +7,6 @@ c4h_keys.txt
 coverage
 .nyc_output/
 .coveralls.yml
+bower_components
+migrations/
+package-lock.json

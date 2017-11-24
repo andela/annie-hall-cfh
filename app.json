@@ -1,0 +1,20 @@
+{
+  "name": "annie-hall-cfh",
+  "scripts": {
+  },
+  "env": {
+    "MONGOHQ_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
