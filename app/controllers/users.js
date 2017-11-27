@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User');
 var avatars = require('./avatars').all();
 
-var secret = 'mysecret';
+var secret = process.env.JWT_SECRET;
 
 /**
  * Auth callback
