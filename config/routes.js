@@ -1,11 +1,11 @@
 var async = require('async'),
-    express = require('express'),
-    passport = require('passport'),
-    index = require('../app/controllers/index'),
-    questions = require('../app/controllers/questions'),
-    answers = require('../app/controllers/answers'),
-    avatars = require('../app/controllers/avatars'),
-    users = require('../app/controllers/users');
+  express = require('express'),
+  passport = require('passport'),
+  index = require('../app/controllers/index'),
+  questions = require('../app/controllers/questions'),
+  answers = require('../app/controllers/answers'),
+  avatars = require('../app/controllers/avatars'),
+  users = require('../app/controllers/users');
 
 var router = express.Router();
 
@@ -23,8 +23,8 @@ router.post('/users/avatars', users.avatars);
 router.post('/donations', users.addDonation);
 
 router.post('/users/session', passport.authenticate('local', {
-    failureRedirect: '/signin',
-    failureFlash: 'Invalid email or password.'
+  failureRedirect: '/signin',
+  failureFlash: 'Invalid email or password.'
 }), users.session);
 
 router.get('/users/me', users.me);
@@ -32,43 +32,43 @@ router.get('/users/:userId', users.show);
 
 //Setting the facebook oauth routes
 router.get('/auth/facebook', passport.authenticate('facebook', {
-    scope: ['email'],
-    failureRedirect: '/signin'
+  scope: ['email'],
+  failureRedirect: '/signin'
 }), users.signin);
 
 router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: '/signin'
+  failureRedirect: '/signin'
 }), users.authCallback);
 
 //Setting the github oauth routes
 router.get('/auth/github', passport.authenticate('github', {
-    failureRedirect: '/signin'
+  failureRedirect: '/signin'
 }), users.signin);
 
 router.get('/auth/github/callback', passport.authenticate('github', {
-    failureRedirect: '/signin'
+  failureRedirect: '/signin'
 }), users.authCallback);
 
 //Setting the twitter oauth routes
 router.get('/auth/twitter', passport.authenticate('twitter', {
-    failureRedirect: '/signin'
+  failureRedirect: '/signin'
 }), users.signin);
 
 router.get('/auth/twitter/callback', passport.authenticate('twitter', {
-    failureRedirect: '/signin'
+  failureRedirect: '/signin'
 }), users.authCallback);
 
 //Setting the google oauth routes
 router.get('/auth/google', passport.authenticate('google', {
-    failureRedirect: '/signin',
-    scope: [
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email'
-    ]
+  failureRedirect: '/signin',
+  scope: [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email'
+  ]
 }), users.signin);
 
 router.get('/auth/google/callback', passport.authenticate('google', {
-    failureRedirect: '/signin'
+  failureRedirect: '/signin'
 }), users.authCallback);
 
 //Finish with setting up the userId param
