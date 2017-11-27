@@ -33,7 +33,7 @@ gulp.task('watch', () => {
 });
 
 gulp.task('sass', () => {
-    gulp.src('public/css/common/scss')
+    gulp.src('public/css/common.scss')
         .pipe(sass())
         .pipe(gulp.dest('public/css/'));
 });
