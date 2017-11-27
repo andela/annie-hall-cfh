@@ -3,6 +3,7 @@ var async = require('async');
 module.exports = function(app, passport, auth) {
     //User Routes
     var users = require('../app/controllers/users');
+
     app.get('/signin', users.signin);
     app.get('/signup', users.signup);
     app.get('/chooseavatars', users.checkAvatar);
@@ -11,6 +12,7 @@ module.exports = function(app, passport, auth) {
     //Setting up the users api
     app.post('/users', users.create);
     app.post('/users/avatars', users.avatars);
+    app.post('/api/signin', users.userSignIn);
 
     // Donation Routes
     app.post('/donations', users.addDonation);

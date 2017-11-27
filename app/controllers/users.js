@@ -1,9 +1,12 @@
 /**
  * Module dependencies.
  */
+var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose'),
   User = mongoose.model('User');
 var avatars = require('./avatars').all();
+
+var secret = 'mysecret';
 
 /**
  * Auth callback
@@ -39,7 +42,9 @@ exports.signup = function(req, res) {
  */
 exports.signout = function(req, res) {
   req.logout();
-  res.redirect('/');
+  return res.json({
+    message: 'Logged Out'
+  });
 };
 
 /**
@@ -53,7 +58,7 @@ exports.session = function(req, res) {
  * Check avatar - Confirm if the user who logged in via passport
  * already has an avatar. If they don't have one, redirect them
  * to our Choose an Avatar page.
- */
+ */ 
 exports.checkAvatar = function(req, res) {
   if (req.user && req.user._id) {
     User.findOne({
@@ -80,31 +85,88 @@ exports.create = function(req, res) {
   if (req.body.name && req.body.password && req.body.email) {
     User.findOne({
       email: req.body.email
-    }).exec(function(err,existingUser) {
+    }).exec(function(err, existingUser) {
       if (!existingUser) {
         var user = new User(req.body);
         // Switch the user's avatar index to an actual avatar url
         user.avatar = avatars[user.avatar];
         user.provider = 'local';
-        user.save(function(err) {
+        user.save(function(err, newUser) {
           if (err) {
-            return res.render('/#!/signup?error=unknown', {
-              errors: err.errors,
-              user: user
+            res.status(500).json({
+              message: 'Internal Server error'
             });
           }
           req.logIn(user, function(err) {
             if (err) return next(err);
-            return res.redirect('/#!/');
+            var createdUser = {
+              id: newUser._id,
+              name: newUser.name,
+              email: newUser.email
+            };
+            var token = jwt.sign({
+              createdUser
+            }, secret, { expiresIn: '1h' });
+            return res.status(201).json({
+              token,
+              message: 'Successfully signed up',
+              newUser
+            });
           });
         });
       } else {
-        return res.redirect('/#!/signup?error=existinguser');
+        return res.status(401).json({
+          message: 'User already exist'
+        });
       }
     });
   } else {
-    return res.redirect('/#!/signup?error=incomplete');
+    return res.status(400).json({
+      message: 'Field must not be empty'
+    });
   }
+};
+
+/*
+ * [signin a user]
+ * @method jwtSignIn
+ * @param  {[type]} req [the user infomation sent from the frontend]
+ * @param  {[type]} res [the result of the registration]
+ * @return {[type]} Object
+ */
+exports.userSignIn = (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).json({ message: 'Enter all required field' });
+  }
+  User.findOne({
+    email: req.body.email
+  }).exec((error, existingUser) => {
+    if (error) {
+      return res.status(500).json({
+        message: 'Something went wrong'
+      });
+    }
+    if (!existingUser) {
+      return res.status(404).json({
+        message: 'User not found'
+      });
+    }
+    if (!existingUser.authenticate(req.body.password)) {
+      return res.status(400).json({
+        message: 'Invalid Login details'
+      });
+    }
+    req.logIn(existingUser, () => {
+      const newUser = {
+        name: existingUser.name,
+        email: existingUser.email
+      };
+      const token = jwt.sign({
+        newUser
+      }, secret, { expiresIn: '1h' });
+      return res.status(200).json({ message: 'Login Successful', token });
+    });
+  });
 };
 
 /**

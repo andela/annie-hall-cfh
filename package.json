@@ -33,6 +33,7 @@
     "forever": "latest",
     "gulp-cli": "^1.4.0",
     "jade": "~0.35.0",
+    "jsonwebtoken": "^8.1.0",
     "mean-logger": "~0.0.1",
     "mongodb": "^2.2.33",
     "mongodb-migrate": "^2.0.2",
