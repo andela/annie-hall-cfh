@@ -22,14 +22,14 @@ angular.module('mean.system')
         password: $scope.password
       };
       $http.post('/users', userData)
-      .then((response) => {
-        $scope.alert = `${response.data.message} You will be redirected after few minutes`;
-        window.localStorage.setItem('token', response.data.token);
+        .then((response) => {
+          $scope.alert = `${response.data.message} You will be redirected after few minutes`;
+          window.localStorage.setItem('token', response.data.token);
           $location.path('/#!/');
           location.reload();
-      }, (response) => {
-        $scope.alert = response.data.message;
-      });
+        }, (response) => {
+          $scope.alert = response.data.message;
+        });
     }
 
     $scope.signIn = function() {
@@ -38,25 +38,25 @@ angular.module('mean.system')
         password: $scope.password
       };
       $http.post('/api/signin', userData)
-      .then((response) => {
+        .then((response) => {
           window.localStorage.setItem('token', response.data.token);
           $location.path('/#!/');
           location.reload();
-      }, (err) => {
-        alert(err.data.message);
-      });
+        }, (err) => {
+          alert(err.data.message);
+        });
     };
     
     $scope.logOut = () => {
       window.localStorage.removeItem('token');
       $http.get('/signout')
-      .then((response) => {
-        $scope.alert = response.data.message;
-        if (response.data.message === 'Logged Out') {
-          $location.path('/#!/');
-          location.reload();
-        }
-      });
+        .then((response) => {
+          $scope.alert = response.data.message;
+          if (response.data.message === 'Logged Out') {
+            $location.path('/#!/');
+            location.reload();
+          }
+        });
     };
     
     
@@ -66,4 +66,4 @@ angular.module('mean.system')
         $scope.avatars = data;
       });
 
-}]);
+  }]);

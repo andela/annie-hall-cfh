@@ -2,8 +2,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    async = require('async'),
-    _ = require('underscore');
+  async = require('async'),
+  _ = require('underscore');
 
 /**
  * Redirect users to /#!/app (forcing Angular to reload the page)
@@ -17,7 +17,7 @@ exports.play = function(req, res) {
 };
 
 exports.render = function(req, res) {
-    res.render('index', {
-        user: req.user ? JSON.stringify(req.user) : "null"
-    });
+  res.render('index', {
+    user: req.user ? JSON.stringify(req.user) : "null"
+  });
 };

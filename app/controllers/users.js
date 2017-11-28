@@ -64,13 +64,13 @@ exports.checkAvatar = function(req, res) {
     User.findOne({
       _id: req.user._id
     })
-    .exec(function(err, user) {
-      if (user.avatar !== undefined) {
-        res.redirect('/#!/');
-      } else {
-        res.redirect('/#!/choose-avatar');
-      }
-    });
+      .exec(function(err, user) {
+        if (user.avatar !== undefined) {
+          res.redirect('/#!/');
+        } else {
+          res.redirect('/#!/choose-avatar');
+        }
+      });
   } else {
     // If user doesn't even exist, redirect to /
     res.redirect('/');
@@ -179,10 +179,10 @@ exports.avatars = function(req, res) {
     User.findOne({
       _id: req.user._id
     })
-    .exec(function(err, user) {
-      user.avatar = avatars[req.body.avatar];
-      user.save();
-    });
+      .exec(function(err, user) {
+        user.avatar = avatars[req.body.avatar];
+        user.save();
+      });
   }
   return res.redirect('/#!/app');
 };
@@ -194,21 +194,21 @@ exports.addDonation = function(req, res) {
       User.findOne({
         _id: req.user._id
       })
-      .exec(function(err, user) {
+        .exec(function(err, user) {
         // Confirm that this object hasn't already been entered
-        var duplicate = false;
-        for (var i = 0; i < user.donations.length; i++ ) {
-          if (user.donations[i].crowdrise_donation_id === req.body.crowdrise_donation_id) {
-            duplicate = true;
+          var duplicate = false;
+          for (var i = 0; i < user.donations.length; i++ ) {
+            if (user.donations[i].crowdrise_donation_id === req.body.crowdrise_donation_id) {
+              duplicate = true;
+            }
           }
-        }
-        if (!duplicate) {
-          console.log('Validated donation');
-          user.donations.push(req.body);
-          user.premium = 1;
-          user.save();
-        }
-      });
+          if (!duplicate) {
+            console.log('Validated donation');
+            user.donations.push(req.body);
+            user.premium = 1;
+            user.save();
+          }
+        });
     }
   }
   res.send();
