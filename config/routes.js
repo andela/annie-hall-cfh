@@ -18,6 +18,7 @@ router.get('/signout', users.signout);
 //Setting up the users api
 router.post('/users', users.create);
 router.post('/users/avatars', users.avatars);
+router.post('/api/signin', users.userSignIn);
 
 // Donation Routes
 router.post('/donations', users.addDonation);
