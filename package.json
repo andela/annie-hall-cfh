@@ -14,13 +14,13 @@
     },
     "scripts": {
         "bower": "gulp install",
-        "start": "yarn run bower && gulp",
+        "start": "gulp",
         "start:dev": "gulp",
         "test": "node node_modules/gulp/bin/gulp test",
         "coverage": "nyc report --reporter=text-lcov | coveralls",
         "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
         "test:run": "karma start karma.config.js",
-        "prestart": "npm run bower"
+        "prestart": "yarn run bower"
     },
     "dependencies": {
         "async": "^2.6.0",
