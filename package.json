@@ -19,7 +19,7 @@
         "coverage": "nyc report --reporter=text-lcov | coveralls",
         "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
         "test:run": "karma start karma.config.js",
-        "prestart": "yarn run bower"
+        "prestart": "npm run bower"
     },
     "dependencies": {
         "async": "^2.6.0",
