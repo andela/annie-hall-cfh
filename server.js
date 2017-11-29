@@ -53,7 +53,7 @@ require('./config/express')(app, passport, mongoose);
 
 //Start the app by listening on <port>
 var port = config.port;
-var server = app.listen(port);
+var server = app.listen(process.env.PORT || port);
 var ioObj = io.listen(server, { log: false });
 //game logic handled here
 require('./config/socket/socket')(ioObj);
