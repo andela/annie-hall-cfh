@@ -13,12 +13,13 @@
         "npm": "5.5.1"
     },
     "scripts": {
-        "bower": "node node_modules/gulp/bin/gulp install",
-        "start": "node node_modules/gulp/bin/gulp",
-        "test": "node node_modules/gulp/bin/gulp test",
-        "coverage": "nyc report --reporter=text-lcov | coveralls",
-        "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
-        "test:run": "karma start karma.config.js"
+      "postinstall": "node node_modules/gulp/bin/gulp install",
+      "heroku-postbuild": "node node_modules/gulp/bin/gulp build",
+      "start": "node node_modules/gulp/bin/gulp",
+      "test": "node node_modules/gulp/bin/gulp test",
+      "coverage": "nyc report --reporter=text-lcov | coveralls",
+      "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
+      "test:run": "karma start karma.config.js"
     },
     "dependencies": {
         "async": "^2.6.0",
