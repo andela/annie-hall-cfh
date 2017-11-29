@@ -88,6 +88,10 @@ gulp.task('install', ['bower']);
 
 gulp.task('test', ['mochaTest']);
 
+gulp.task('build', ['sass', 'angular', 'bootstrap',
+  'jquery', 'underscore', 'angularUtils', 'angular-bootstrap'
+]);
+
 gulp.task('default', ['nodemon', 'watch', 'sass', 'angular', 'bootstrap',
   'jquery', 'underscore', 'angularUtils', 'angular-bootstrap'
 ]);
