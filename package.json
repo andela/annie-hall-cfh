@@ -67,18 +67,18 @@
         "socket.io-client": "^2.0.4",
         "underscore": "^1.8.3",
         "vhost": "^3.0.2",
-        "view-helpers": "^0.1.5"
-    },
-    "devDependencies": {
-        "browser-sync": "^2.18.13",
-        "eslint-config-airbnb-base": "^12.1.0",
-        "eslint-plugin-import": "^2.8.0",
         "gulp": "^3.9.1",
         "gulp-bower": "^0.0.13",
         "gulp-eslint": "^4.0.0",
         "gulp-mocha": "^4.3.1",
         "gulp-nodemon": "^2.2.1",
         "gulp-sass": "^3.1.0",
+        "view-helpers": "^0.1.5"
+    },
+    "devDependencies": {
+        "browser-sync": "^2.18.13",
+        "eslint-config-airbnb-base": "^12.1.0",
+        "eslint-plugin-import": "^2.8.0",
         "jasmine": "^2.8.0",
         "jasmine-core": "^2.8.0",
         "karma": "^1.7.1",
