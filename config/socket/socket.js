@@ -70,7 +70,7 @@ module.exports = function(io) {
     });
 
     socket.on('disconnect', function() {
-      // console.log('Rooms on Disconnect ', io.sockets.manager.rooms);
+      
       exitGame(socket);
     });
   });
@@ -210,7 +210,7 @@ module.exports = function(io) {
 
     var exitGame = function(socket) {
         console.log(socket.id, 'has disconnected');
-        if (allGames[socket.gameID]) { // Make sure game exists
+        if (allGames[socket.gameID]) {
             var game = allGames[socket.gameID];
             console.log(socket.id, 'has left game', game.gameID);
             delete allPlayers[socket.id];
