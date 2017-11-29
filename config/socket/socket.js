@@ -70,7 +70,6 @@ module.exports = function (io) {
     });
 
     socket.on('disconnect', () => {
-      // console.log('Rooms on Disconnect ', io.sockets.manager.rooms);
       exitGame(socket);
     });
   });
