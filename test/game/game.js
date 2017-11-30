@@ -8,11 +8,11 @@ var options ={
   'force new connection': true
 };
 
-var cfhPlayer1 = {'name':'Tom'};
-var cfhPlayer2 = {'name':'Sally'};
-var cfhPlayer3 = {'name':'Dana'};
+var cfhPlayer1 = { 'name':'Tom' };
+var cfhPlayer2 = { 'name':'Sally' };
+var cfhPlayer3 = { 'name':'Dana' };
 
-describe("Game Server",function(){
+describe("Game Server", function(){
 
   it('Should accept requests to joinGame', function(done) {
     var client1 = io.connect(socketURL, options);
@@ -21,8 +21,8 @@ describe("Game Server",function(){
       done();
     };
     client1.on('connect', function(data){
-      client1.emit('joinGame',{userID:'unauthenticated',room: '', createPrivate: false});
-      setTimeout(disconnect,200);
+      client1.emit('joinGame', { userID:'unauthenticated', room: '', createPrivate: false });
+      setTimeout(disconnect, 200);
     });
   });
 
@@ -33,11 +33,11 @@ describe("Game Server",function(){
       done();
     };
     client1.on('connect', function(data){
-      client1.emit('joinGame',{userID:'unauthenticated',room: '', createPrivate: false});
+      client1.emit('joinGame', { userID:'unauthenticated', room: '', createPrivate: false });
       client1.on('gameUpdate', function(data) {
         data.gameID.should.match(/\d+/);
       });
-      setTimeout(disconnect,200);
+      setTimeout(disconnect, 200);
     });
   });
 
@@ -50,15 +50,15 @@ describe("Game Server",function(){
       done();
     };
     client1.on('connect', function(data){
-      client1.emit('joinGame',{userID:'unauthenticated',room: '', createPrivate: false});
+      client1.emit('joinGame', { userID:'unauthenticated', room: '', createPrivate: false });
       client2 = io.connect(socketURL, options);
       client2.on('connect', function(data) {
-        client2.emit('joinGame',{userID:'unauthenticated',room: '', createPrivate: false});
+        client2.emit('joinGame', { userID:'unauthenticated', room: '', createPrivate: false });
         client1.on('notification', function(data) {
           data.notification.should.match(/ has joined the game\!/);
         });
       });
-      setTimeout(disconnect,200);
+      setTimeout(disconnect, 200);
     });
   });
 
@@ -82,17 +82,17 @@ describe("Game Server",function(){
       client3.on('gameUpdate', function(data) {
         data.state.should.equal("waiting for players to pick");
       });
-      setTimeout(disconnect,200);
+      setTimeout(disconnect, 200);
     };
     client1.on('connect', function(data){
-      client1.emit('joinGame',{userID:'unauthenticated',room: '', createPrivate: false});
+      client1.emit('joinGame', { userID:'unauthenticated', room: '', createPrivate: false });
       client2 = io.connect(socketURL, options);
       client2.on('connect', function(data) {
-        client2.emit('joinGame',{userID:'unauthenticated',room: '', createPrivate: false});
+        client2.emit('joinGame', { userID:'unauthenticated', room: '', createPrivate: false });
         client3 = io.connect(socketURL, options);
         client3.on('connect', function(data) {
-          client3.emit('joinGame',{userID:'unauthenticated',room: '', createPrivate: false});
-          setTimeout(expectStartGame,100);
+          client3.emit('joinGame', { userID:'unauthenticated', room: '', createPrivate: false });
+          setTimeout(expectStartGame, 100);
         });
       });
     });
@@ -130,10 +130,10 @@ describe("Game Server",function(){
       client6.on('gameUpdate', function(data) {
         data.state.should.equal("waiting for players to pick");
       });
-      setTimeout(disconnect,200);
+      setTimeout(disconnect, 200);
     };
     client1.on('connect', function(data){
-      client1.emit('joinGame',{userID:'unauthenticated',room: '', createPrivate: true});
+      client1.emit('joinGame', { userID:'unauthenticated', room: '', createPrivate: true });
       var connectOthers = true;
       client1.on('gameUpdate', function(data) {
         var gameID = data.gameID;
@@ -141,20 +141,20 @@ describe("Game Server",function(){
           client2 = io.connect(socketURL, options);
           connectOthers = false;
           client2.on('connect', function(data) {
-            client2.emit('joinGame',{userID:'unauthenticated',room: gameID, createPrivate: false});
+            client2.emit('joinGame', { userID:'unauthenticated', room: gameID, createPrivate: false });
             client3 = io.connect(socketURL, options);
             client3.on('connect', function(data) {
-              client3.emit('joinGame',{userID:'unauthenticated',room: gameID, createPrivate: false});
+              client3.emit('joinGame', { userID:'unauthenticated', room: gameID, createPrivate: false });
               client4 = io.connect(socketURL, options);
               client4.on('connect', function(data) {
-                client4.emit('joinGame',{userID:'unauthenticated',room: gameID, createPrivate: false});
+                client4.emit('joinGame', { userID:'unauthenticated', room: gameID, createPrivate: false });
                 client5 = io.connect(socketURL, options);
                 client5.on('connect', function(data) {
-                  client5.emit('joinGame',{userID:'unauthenticated',room: gameID, createPrivate: false});
+                  client5.emit('joinGame', { userID:'unauthenticated', room: gameID, createPrivate: false });
                   client6 = io.connect(socketURL, options);
                   client6.on('connect', function(data) {
-                    client6.emit('joinGame',{userID:'unauthenticated',room: gameID, createPrivate: false});
-                    setTimeout(expectStartGame,100);
+                    client6.emit('joinGame', { userID:'unauthenticated', room: gameID, createPrivate: false });
+                    setTimeout(expectStartGame, 100);
                   });
                 });
               });
