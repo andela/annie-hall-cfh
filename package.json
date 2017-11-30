@@ -10,7 +10,7 @@
     },
     "engines": {
         "node": "8.9.0",
-        "npm": "5.5.1"
+        "yarn": "1.3.2"
     },
     "scripts": {
       "postinstall": "node node_modules/gulp/bin/gulp install",
@@ -26,10 +26,11 @@
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.18.2",
         "bower": "^1.8.2",
+        "browser-sync": "^2.18.13",
         "compression": "^1.7.1",
         "connect": "^3.6.5",
         "connect-flash": "^0.1.1",
-        "connect-mongo": "^2.0.0",
+        "connect-mongo": "1.3.0",
         "connect-timeout": "^1.9.0",
         "console-stamp": "^0.2.6",
         "cookie-parser": "^1.4.3",
@@ -41,7 +42,13 @@
         "express": "^4.16.2",
         "express-session": "^1.15.6",
         "forever": "^0.15.3",
+        "gulp": "^3.9.1",
+        "gulp-bower": "^0.0.13",
         "gulp-cli": "^1.4.0",
+        "gulp-eslint": "^4.0.0",
+        "gulp-mocha": "^4.3.1",
+        "gulp-nodemon": "^2.2.1",
+        "gulp-sass": "^3.1.0",
         "jade": "^1.11.0",
         "jsonwebtoken": "^8.1.0",
         "mean-logger": "^0.0.1",
