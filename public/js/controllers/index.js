@@ -30,7 +30,7 @@ angular.module('mean.system')
         }, (response) => {
           $scope.alert = response.data.message;
         });
-    }
+    };
 
     $scope.signIn = function() {
       var userData = {
@@ -43,7 +43,7 @@ angular.module('mean.system')
           $location.path('/#!/');
           location.reload();
         }, (err) => {
-          alert(err.data.message);
+          
         });
     };
     
@@ -59,11 +59,10 @@ angular.module('mean.system')
         });
     };
     
-    
+
     $scope.avatars = [];
     AvatarService.getAvatars()
-      .then(function(data) {
+      .then((data) => {
         $scope.avatars = data;
       });
-
   }]);
