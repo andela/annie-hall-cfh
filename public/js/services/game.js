@@ -138,7 +138,11 @@ angular.module('mean.system')
         game.state = data.state;
       }
 
-      if (data.state === 'waiting for players to pick') {
+      if (data.state === 'waiting for czar to draw a card' && game.czar !== game.playerIndex) {
+        addToNotificationQueue('Waiting for czar to draw a black card!');
+      }
+
+      if (data.state === 'waiting for czar to draw a card' || data.state === 'waiting for players to pick') {
         game.czar = data.czar;
         game.curQuestion = data.curQuestion;
         // Extending the underscore within the question
@@ -146,11 +150,14 @@ angular.module('mean.system')
 
         // Set notifications only when entering state
         if (newState) {
+          if (data.state === 'waiting for czar to draw a card' && game.czar !== game.playerIndex) {
+            addToNotificationQueue('Waiting for czar to draw a black card!');
+          }
           if (game.czar === game.playerIndex) {
             addToNotificationQueue('You\'re the Card Czar! Please wait!');
-          } else if (game.curQuestion.numAnswers === 1) {
+          } else if (game.curQuestion.numAnswers === 1 && game.czar === game.playerIndex) {
             addToNotificationQueue('Select an answer!');
-          } else {
+          } else if (game.curQuestion.numAnswers === 2 && game.czar === game.playerIndex) {
             addToNotificationQueue('Select TWO answers!');
           }
         }
@@ -185,7 +192,7 @@ angular.module('mean.system')
       socket.emit(mode,{userID: userID, room: room, createPrivate: createPrivate});
     };
 
-    game.startGame = function() {
+    game.startGame = () => {
       socket.emit('startGame');
     };
 
@@ -201,6 +208,10 @@ angular.module('mean.system')
 
     game.pickWinning = function(card) {
       socket.emit('pickWinning',{card: card.id});
+    };
+
+    game.drawCard = () => {
+      socket.emit('drawCard');
     };
 
     decrementTime();

@@ -120,8 +120,18 @@ angular.module('mean.system')
       return game.winningCard !== -1;
     };
 
-    $scope.startGame = function() {
+    $scope.startGame = () => {
       game.startGame();
+    };
+
+    $scope.drawCard = () => {
+      const card = $(`#${event.target.id}`);
+      card.addClass('animated flipOutY');
+      setTimeout(() => {
+        game.drawCard();
+        card.removeClass('animated flipOutY');
+        $('#czarModal').modal('hide');
+      }, 500);
     };
 
     $scope.abandonGame = function() {
@@ -146,6 +156,20 @@ angular.module('mean.system')
     $scope.$watch('game.state', function() {
       if (game.state === 'waiting for czar to decide' && $scope.showTable === false) {
         $scope.showTable = true;
+      }
+
+      if ($scope.isCzar() && game.state === 'waiting for czar to draw a card' && game.table.length === 0) {
+        $('#czarModal').modal({
+          dismissible: false
+        });
+        $('#czarModal').modal('open');
+      }
+
+      if ($scope.isCzar() && game.state === 'waiting for czar to draw a card' && game.table.length !== 0) {
+        $('#czarModal').modal({
+          dismissible: false
+        });
+        $('#czarModal').modal('open');
       }
     });
 

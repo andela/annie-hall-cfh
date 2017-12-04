@@ -6,7 +6,7 @@
 
     <span ng-show="winnerPicked()"></span>
 
-    <div ng-style="{'cursor':'pointer'}" class="card smallest" id='answers' ng-click="pickCard(card)" ng-hide="showTable || isCzar()"
+    <div ng-style="{'cursor':'pointer'}" class="card smallest" id='answers' ng-click="pickCard(card)" ng-hide="showTable || isCzar() || game.state==='waiting for czar to draw a card'"
     ng-repeat="card in game.players[game.playerIndex].hand" ng-animate="{enter:'animated fadeInUp', leave: 'animated fadeInOut'}">
         <span ng-bind-html-unsafe="card.text"></span>
         <span id='selection-number' ng-show="showFirst(card)"> 1 </span>
@@ -14,7 +14,7 @@
     </div>
 
     <span ng-repeat="answer in game.table">
-        <div class="card smallest" ng-style="pointerCursorStyle()" id='table' ng-click="pickWinning(answer)" ng-show="showTable || isCzar()"
+        <div class="card smallest" ng-style="pointerCursorStyle()" id='table' ng-click="pickWinning(answer)" ng-show="(showTable || isCzar()) && game.state!=='waiting for czar to draw a card'"
         ng-repeat="card in answer.card" ng-animate="{enter:'animated bounceInLeft'}" style="background-color:{{winningColor($parent.$index)}}">
             <span ng-bind-html-unsafe="card.text"></span>
             <span id='selection-number' ng-show="firstAnswer($index)"> 1 </span>
@@ -24,6 +24,28 @@
 
   </div>
 </div>
+
+<!-- MODAL -->
+<div>
+    <div id="czarModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <center>
+            <h4 id="Text">You are the Czar, Please draw a black card</h4>
+            <div ng-click="drawCard()" ng-style="{'cursor':'pointer'}" style='margin: auto;'>
+              <center>
+                <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card1' />
+                <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card2' />
+                <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card3' />
+                <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card4' />
+              </center>
+            </div>
+          </center>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <div id="info-container" ng-show="game.state === 'awaiting players'">
   <div id="inner-info">

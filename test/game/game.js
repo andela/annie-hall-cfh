@@ -62,7 +62,7 @@ describe("Game Server", function(){
     });
   });
 
-  it('Should start game when startGame event is sent with 3 players', function(done){
+  it('Should change game state to waiting for czar to draw card when 3 players are in the game', function(done){
     var client1, client2, client3;
     client1 = io.connect(socketURL, options);
     var disconnect = function() {
@@ -74,13 +74,13 @@ describe("Game Server", function(){
     var expectStartGame = function() {
       client1.emit('startGame');
       client1.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       client2.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       client3.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       setTimeout(disconnect, 200);
     };
@@ -98,7 +98,51 @@ describe("Game Server", function(){
     });
   });
 
-  it('Should automatically start game when 6 players are in a game', function(done){
+  it('Should change game state to waiting for players to pick card', (done) => {
+    let client2, client3;
+    const client1 = io.connect(socketURL, options);
+    const disconnect = () => {
+      client1.disconnect();
+      client2.disconnect();
+      client3.disconnect();
+      done();
+    };
+
+    const expectDrawCard = () => {
+      client1.emit('drawCard');
+      client1.on('gameUpdate', (gameData) => {
+        gameData.state.should.equal('waiting for players to pick');
+      });
+      setTimeout(disconnect, 200);
+    };
+    client1.on('connect', () => {
+      client1.emit('joinGame', {
+        userID: 'unauthenticated',
+        room: '',
+        createPrivate: false
+      });
+      client2 = io.connect(socketURL, options);
+      client2.on('connect', () => {
+        client2.emit('joinGame', {
+          userID: 'unauthenticated',
+          room: '',
+          createPrivate: false
+        });
+        client3 = io.connect(socketURL, options);
+        client3.on('connect', () => {
+          client3.emit('joinGame', {
+            userID: 'unauthenticated',
+            room: '',
+            createPrivate: false
+          });
+          setTimeout(expectDrawCard, 100);
+        });
+      });
+    });
+  });
+
+
+  it('Should change game state to waiting for czar to draw card when 6 players are in the game', (done) => {
     var client1, client2, client3, client4, client5, client6;
     client1 = io.connect(socketURL, options);
     var disconnect = function() {
@@ -113,22 +157,22 @@ describe("Game Server", function(){
     var expectStartGame = function() {
       client1.emit('startGame');
       client1.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       client2.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       client3.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       client4.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       client5.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       client6.on('gameUpdate', function(data) {
-        data.state.should.equal("waiting for players to pick");
+        data.state.should.equal("waiting for czar to draw a card");
       });
       setTimeout(disconnect, 200);
     };
