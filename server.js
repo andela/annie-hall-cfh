@@ -1,12 +1,14 @@
 /**
  * Module dependencies.
  */
-var express = require('express'),
-    fs = require('fs'),
-    passport = require('passport'),
-    logger = require('mean-logger'),
-    io = require('socket.io');
-require('dotenv').config();
+import express from 'express';
+import fs from 'fs';
+import passport from 'passport';
+import logger from 'mean-logger';
+import io from 'socket.io';
+import dotenv from 'dotenv';
+
+dotenv.config();
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
@@ -15,27 +17,27 @@ require('dotenv').config();
 //Load configurations
 //if test env, load example file
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
-    config = require('./config/config'),
-    auth = require('./config/middlewares/authorization'),
-    mongoose = require('mongoose');
+  config = require('./config/config'),
+  auth = require('./config/middlewares/authorization'),
+  mongoose = require('mongoose');
 
 //Bootstrap db connection
-var db = mongoose.connect(config.db, {useMongoClient: true});
+var db = mongoose.connect(config.db, { useMongoClient: true });
 
 //Bootstrap models
 var models_path = __dirname + '/app/models';
 var walk = function(path) {
-    fs.readdirSync(path).forEach(function(file) {
-        var newPath = path + '/' + file;
-        var stat = fs.statSync(newPath);
-        if (stat.isFile()) {
-            if (/(.*)\.(js|coffee)/.test(file)) {
-                require(newPath);
-            }
-        } else if (stat.isDirectory()) {
-            walk(newPath);
-        }
-    });
+  fs.readdirSync(path).forEach(function(file) {
+    var newPath = path + '/' + file;
+    var stat = fs.statSync(newPath);
+    if (stat.isFile()) {
+      if (/(.*)\.(js|coffee)/.test(file)) {
+        require(newPath);
+      }
+    } else if (stat.isDirectory()) {
+      walk(newPath);
+    }
+  });
 };
 walk(models_path);
 
@@ -45,7 +47,7 @@ require('./config/passport')(passport);
 var app = express();
 
 app.use(function(req, res, next) {
-    next();
+  next();
 });
 
 //express settings
