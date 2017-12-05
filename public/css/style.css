@@ -380,6 +380,15 @@
     margin-bottom: -13px;
  }
 
+ #alertMessage {
+  text-align: center;
+  color: red;
+  font-family: arial;
+  font-size: 12px;
+  padding-top: 20px;
+  margin-bottom: -13px;
+}
+
  #sign-up-btn-landing {
    display: inline-block;
    border-radius: 8px;

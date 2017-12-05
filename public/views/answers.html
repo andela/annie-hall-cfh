@@ -59,6 +59,71 @@
     </ol>
   </div>
 </div>
+
+<div id="checkModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #252525; color: white">
+        <h4 class="modal-title">Information</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <p>A Minimum of three(3) players are required to start the game.</p>
+          </div>
+          <div class="col-md-3 col-md-offset-4">
+          </div>
+          <div class="col-md-4">
+            <button 
+              type="button" 
+              class="btn btn-block" 
+              data-dismiss="modal"
+              style="background-color: #252525; color: white">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+<div id="startModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Game Confirmation</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <p>Are you sure you want to start the game?</p>
+          </div>
+          <div class="col-md-3 col-md-offset-3">
+            <button 
+              ng-click="startGame()" 
+              data-dismiss="modal" 
+              type="button" 
+              class="btn btn-block btn-cfh-green"
+            >
+              Yes, Start!
+            </button>
+          </div>
+          <div class="col-md-3">
+            <button 
+              type="button" 
+              class="btn btn-block btn-danger" 
+              data-dismiss="modal"
+            >
+              No, Return!
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="game-end-container" ng-show="game.state === 'game ended' || game.state ==='game dissolved'">
   <div id="inner-info-exit">
     <div class="game-end-answer-text" ng-show="game.state ==='game dissolved' && game.gameWinner === -1">

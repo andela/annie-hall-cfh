@@ -82,7 +82,7 @@ Game.prototype.payload = function () {
 };
 
 Game.prototype.sendNotification = function (msg) {
-  this.io.sockets.in(this.gameID).emit('notification', {notification: msg});
+  this.io.sockets.in(this.gameID).emit('notification', { notification: msg });
 };
 
 // Currently called on each joinGame event from socket.js
@@ -250,9 +250,18 @@ Game.prototype.stateResults = function (self) {
 };
 
 Game.prototype.stateEndGame = function (winner) {
+  console.log('-----------------> we have a winner CHUKS');
   this.state = "game ended";
   this.gameWinner = winner;
+  const gamePlayers = this.players.map(player => player.username);
   this.sendUpdate();
+  const saveGameData = {
+    gamePlayers,
+    gameRound: this.round,
+    gameID: this.gameID,
+    gameWinner: this.players[winner].username
+  };
+  this.io.sockets.in(this.gameID).emit('saveGame', saveGameData);
 };
 
 Game.prototype.stateDissolveGame = function () {

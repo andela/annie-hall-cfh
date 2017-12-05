@@ -5,17 +5,19 @@ var async = require('async'),
   questions = require('../app/controllers/questions'),
   answers = require('../app/controllers/answers'),
   avatars = require('../app/controllers/avatars'),
-  users = require('../app/controllers/users');
+  users = require('../app/controllers/users'),
+  auth = require('../config/middlewares/authorization').secureLogin,
+  saveGame = require('../app/controllers/game').createGameData;
 
 var router = express.Router();
 
-//User Routes
+// User Routes
 router.get('/signin', users.signin);
 router.get('/signup', users.signup);
 router.get('/chooseavatars', users.checkAvatar);
 router.get('/signout', users.signout);
 
-//Setting up the users api
+// Setting up the users api
 router.post('/users', users.create);
 router.post('/users/avatars', users.avatars);
 router.post('/api/signin', users.userSignIn);
@@ -31,7 +33,7 @@ router.post('/users/session', passport.authenticate('local', {
 router.get('/users/me', users.me);
 router.get('/users/:userId', users.show);
 
-//Setting the facebook oauth routes
+// Setting the facebook oauth routes
 router.get('/auth/facebook', passport.authenticate('facebook', {
   scope: ['email'],
   failureRedirect: '/signin'
@@ -41,7 +43,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   failureRedirect: '/signin'
 }), users.authCallback);
 
-//Setting the github oauth routes
+// Setting the github oauth routes
 router.get('/auth/github', passport.authenticate('github', {
   failureRedirect: '/signin'
 }), users.signin);
@@ -50,7 +52,7 @@ router.get('/auth/github/callback', passport.authenticate('github', {
   failureRedirect: '/signin'
 }), users.authCallback);
 
-//Setting the twitter oauth routes
+// Setting the twitter oauth routes
 router.get('/auth/twitter', passport.authenticate('twitter', {
   failureRedirect: '/signin'
 }), users.signin);
@@ -59,7 +61,7 @@ router.get('/auth/twitter/callback', passport.authenticate('twitter', {
   failureRedirect: '/signin'
 }), users.authCallback);
 
-//Setting the google oauth routes
+// Setting the google oauth routes
 router.get('/auth/google', passport.authenticate('google', {
   failureRedirect: '/signin',
   scope: [
@@ -72,7 +74,7 @@ router.get('/auth/google/callback', passport.authenticate('google', {
   failureRedirect: '/signin'
 }), users.authCallback);
 
-//Finish with setting up the userId param
+// Finish with setting up the userId param
 router.param('userId', users.user);
 
 // Answer Routes
@@ -93,5 +95,9 @@ router.get('/avatars', avatars.allJSON);
 // Home route
 router.get('/play', index.play);
 router.get('/', index.render);
+
+
+// Game Routes
+router.post('/api/v1/games/:id/start', auth, saveGame);
 
 module.exports = router;

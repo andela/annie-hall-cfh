@@ -23,12 +23,11 @@ angular.module('mean.system')
       };
       $http.post('/users', userData)
         .then((response) => {
-          $scope.alert = `${response.data.message} You will be redirected after few minutes`;
           window.localStorage.setItem('token', response.data.token);
           $location.path('/#!/');
           location.reload();
-        }, (response) => {
-          $scope.alert = response.data.message;
+        }, (err) => {
+          $scope.alert = err.data.message;
         });
     };
 
@@ -43,7 +42,7 @@ angular.module('mean.system')
           $location.path('/#!/');
           location.reload();
         }, (err) => {
-          
+          $scope.alert = err.data.message;
         });
     };
     
