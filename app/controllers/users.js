@@ -209,6 +209,7 @@ exports.userSignIn = (req, res) => {
     }
     req.logIn(existingUser, () => {
       const newUser = {
+        id: existingUser._id,
         name: existingUser.name,
         email: existingUser.email
       };

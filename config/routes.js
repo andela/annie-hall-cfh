@@ -5,9 +5,15 @@ let async = require('async'),
   questions = require('../app/controllers/questions'),
   answers = require('../app/controllers/answers'),
   avatars = require('../app/controllers/avatars'),
-  users = require('../app/controllers/users');
+  users = require('../app/controllers/users'),
+  auth = require('../config/middlewares/authorization').secureLogin,
+  saveGame = require('../app/controllers/game').createGameData;
 
 const router = express.Router();
+
+// Search Route
+router.get('/api/search/users/:userParam', users.searchUser);
+router.post('/api/users/invite', users.inviteUser);
 
 // User Routes
 router.get('/signin', users.signin);
@@ -15,9 +21,6 @@ router.get('/signup', users.signup);
 router.get('/chooseavatars', users.checkAvatar);
 router.get('/signout', users.signout);
 
-// Search Route
-router.get('/api/search/users/:userParam', users.searchUser);
-router.post('/api/users/invite', users.inviteUser);
 // Setting up the users api
 router.post('/users', users.create);
 router.post('/users/avatars', users.avatars);
@@ -96,5 +99,9 @@ router.get('/avatars', avatars.allJSON);
 // Home route
 router.get('/play', index.play);
 router.get('/', index.render);
+
+
+// Game Routes
+router.post('/api/v1/games/:id/start', auth, saveGame);
 
 module.exports = router;

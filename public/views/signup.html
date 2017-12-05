@@ -37,11 +37,11 @@
         <a href="/auth/twitter"><img class="login-item" src="/img/icons/twitter.png"></a>
         <a href="/auth/google"><img class="login-item" src="/img/icons/google.png"></a>
       </div>
-      <p id="create">Or create a username/password and select an avatar:</p>
+      <p id="create">Or fill in your details below and select an avatar:</p>
 
       <div class="sign-body">
         <div ng-controller="IndexController" class="more-sign">
-          <span>{{alert}}</span>
+          <span id="alertMessage">{{alert}}</span>
           <form class="signup form-horizontal" ng-submit="signUp()" method="post">
             <div class="control-group">
               <label for="name" class="control-label"></label>

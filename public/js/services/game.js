@@ -1,72 +1,71 @@
 angular.module('mean.system')
-    .factory('game', ['socket', '$timeout', function(socket, $timeout) {
+  .factory('game', ['socket', '$timeout', '$http', function (socket, $timeout, $http) {
+    let game = {
+      id: null, // This player's socket ID, so we know who this player is
+      gameID: null,
+      players: [],
+      playerIndex: 0,
+      winningCard: -1,
+      winningCardPlayer: -1,
+      gameWinner: -1,
+      table: [],
+      czar: null,
+      playerMinLimit: 3,
+      playerMaxLimit: 6,
+      pointLimit: null,
+      state: null,
+      round: 0,
+      time: 0,
+      curQuestion: null,
+      notification: null,
+      timeLimits: {},
+      joinOverride: false
+    };
 
-        var game = {
-            id: null, // This player's socket ID, so we know who this player is
-            gameID: null,
-            players: [],
-            playerIndex: 0,
-            winningCard: -1,
-            winningCardPlayer: -1,
-            gameWinner: -1,
-            table: [],
-            czar: null,
-            playerMinLimit: 3,
-            playerMaxLimit: 12,
-            pointLimit: null,
-            state: null,
-            round: 0,
-            time: 0,
-            curQuestion: null,
-            notification: null,
-            timeLimits: {},
-            joinOverride: false
-        };
+    let notificationQueue = [];
+    let timeout = false;
+    let self = this;
+    let joinOverrideTimeout = 0;
 
-        var notificationQueue = [];
-        var timeout = false;
-        var self = this;
-        var joinOverrideTimeout = 0;
+    let addToNotificationQueue = function (msg) {
+      notificationQueue.push(msg);
+      if (!timeout) { // Start a cycle if there isn't one
+        setNotification();
+      }
+    };
+    var setNotification = function () {
+      if (notificationQueue.length === 0) { // If notificationQueue is empty, stop
+        clearInterval(timeout);
+        timeout = false;
+        game.notification = '';
+      } else {
+        game.notification = notificationQueue.shift(); // Show a notification and check again in a bit
+        timeout = $timeout(setNotification, 1300);
+      }
+    };
 
-        var addToNotificationQueue = function(msg) {
-            notificationQueue.push(msg);
-            if (!timeout) { // Start a cycle if there isn't one
-                setNotification();
-            }
-        };
-        var setNotification = function() {
-            if (notificationQueue.length === 0) { // If notificationQueue is empty, stop
-                clearInterval(timeout);
-                timeout = false;
-                game.notification = '';
-            } else {
-                game.notification = notificationQueue.shift(); // Show a notification and check again in a bit
-                timeout = $timeout(setNotification, 1300);
-            }
-        };
+    let timeSetViaUpdate = false;
+    var decrementTime = function () {
+      if (game.time > 0 && !timeSetViaUpdate) {
+        game.time--;
+      } else {
+        timeSetViaUpdate = false;
+      }
+      $timeout(decrementTime, 950);
+    };
 
-        var timeSetViaUpdate = false;
-        var decrementTime = function() {
-            if (game.time > 0 && !timeSetViaUpdate) {
-                game.time--;
-            } else {
-                timeSetViaUpdate = false;
-            }
-            $timeout(decrementTime, 950);
-        };
-
-        socket.on('id', function(data) {
+    socket.on('id', (data) => {
             game.id = data.id;
         });
 
-        socket.on('prepareGame', function(data) {
+    socket.on('prepareGame', (data) => {
             game.playerMinLimit = data.playerMinLimit;
             game.playerMaxLimit = data.playerMaxLimit;
             game.pointLimit = data.pointLimit;
             game.timeLimits = data.timeLimits;
         });
 
-        socket.on('gameUpdate', function(data) {
+    socket.on('gameUpdate', (data) => {
 
             // Update gameID field only if it changed.
             // That way, we don't trigger the $scope.$watch too often
@@ -119,12 +118,15 @@ angular.module('mean.system')
                         if (added[i] === data.table[j].player) {
                             game.table.push(data.table[j], 1);
                         }
-                    }
-                }
-                for (i = 0; i < removed.length; i++) {
-                    for (var k = 0; k < game.table.length; k++) {
-                        if (removed[i] === game.table[k].player) {
-                            game.table.splice(k, 1);
+                    };
+                    var setNotification = function() {
+                        if (notificationQueue.length === 0) { // If notificationQueue is empty, stop
+                            clearInterval(timeout);
+                            timeout = false;
+                            game.notification = '';
+                        } else {
+                            game.notification = notificationQueue.shift(); // Show a notification and check again in a bit
+                            timeout = $timeout(setNotification, 1300);
                         }
                     }
                 }
@@ -138,7 +140,11 @@ angular.module('mean.system')
                 game.state = data.state;
             }
 
-            if (data.state === 'waiting for players to pick') {
+            if (data.state === 'waiting for czar to draw a card' && game.czar !== game.playerIndex) {
+                addToNotificationQueue('Waiting for czar to draw a black card!');
+            }
+
+            if (data.state === 'waiting for czar to draw a card' || data.state === 'waiting for players to pick') {
                 game.czar = data.czar;
                 game.curQuestion = data.curQuestion;
                 // Extending the underscore within the question
@@ -146,11 +152,14 @@ angular.module('mean.system')
 
                 // Set notifications only when entering state
                 if (newState) {
+                    if (data.state === 'waiting for czar to draw a card' && game.czar !== game.playerIndex) {
+                        addToNotificationQueue('Waiting for czar to draw a black card!');
+                    }
                     if (game.czar === game.playerIndex) {
                         addToNotificationQueue('You\'re the Card Czar! Please wait!');
-                    } else if (game.curQuestion.numAnswers === 1) {
+                    } else if (game.curQuestion.numAnswers === 1 && game.czar === game.playerIndex) {
                         addToNotificationQueue('Select an answer!');
-                    } else {
+                    } else if (game.curQuestion.numAnswers === 2 && game.czar === game.playerIndex) {
                         addToNotificationQueue('Select TWO answers!');
                     }
                 }
@@ -173,37 +182,59 @@ angular.module('mean.system')
             }
         });
 
-        socket.on('notification', function(data) {
+    socket.on('notification', (data) => {
             addToNotificationQueue(data.notification);
         });
 
-        game.joinGame = function(mode, room, createPrivate) {
-            mode = mode || 'joinGame';
-            room = room || '';
-            createPrivate = createPrivate || false;
-            var userID = !!window.user ? user._id : 'unauthenticated';
-            socket.emit(mode, { userID: userID, room: room, createPrivate: createPrivate });
-        };
+    // Notify backend to save game logs When the game ended
+    socket.on('saveGame', (data) => {
+      if (game.state === 'game ended' && window.localStorage.token) {
+        $http.post(`/api/v1/games/${game.gameID}/start`, data, {
+          headers: {
+            'x-token': window.localStorage.token
+          }
+        })
+          .then((response) => {
+            console.log('-------------->', response);
+          });
+      }
+    });
 
-        game.startGame = function() {
-            socket.emit('startGame');
-        };
+    game.joinGame = function (mode, room, createPrivate) {
+      mode = mode || 'joinGame';
+      room = room || '';
+      createPrivate = createPrivate || false;
+      let userID = window.user ? user._id : 'unauthenticated';
+      socket.emit(mode, {
+        userID,
+        room,
+        createPrivate
+      });
+    };
 
-        game.leaveGame = function() {
-            game.players = [];
-            game.time = 0;
-            socket.emit('leaveGame');
-        };
+    game.startGame = () => {
+      socket.emit('startGame');
+    };
 
-        game.pickCards = function(cards) {
-            socket.emit('pickCards', { cards: cards });
-        };
+    game.leaveGame = function () {
+      game.players = [];
+      game.time = 0;
+      socket.emit('leaveGame');
+    };
 
-        game.pickWinning = function(card) {
-            socket.emit('pickWinning', { card: card.id });
-        };
+    game.pickCards = function (cards) {
+      socket.emit('pickCards', { cards });
+    };
 
-        decrementTime();
+    game.pickWinning = function (card) {
+      socket.emit('pickWinning', { card: card.id });
+    };
 
-        return game;
-    }]);
+    game.drawCard = () => {
+      socket.emit('drawCard');
+    };
+
+    decrementTime();
+
+    return game;
+  }]);

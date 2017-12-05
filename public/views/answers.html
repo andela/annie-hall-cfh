@@ -6,14 +6,14 @@
 
         <span ng-show="winnerPicked()"></span>
 
-        <div ng-style="{'cursor':'pointer'}" class="card smallest" id='answers' ng-click="pickCard(card)" ng-hide="showTable || isCzar()" ng-repeat="card in game.players[game.playerIndex].hand" ng-animate="{enter:'animated fadeInUp', leave: 'animated fadeInOut'}">
+        <div ng-style="{'cursor':'pointer'}" class="card smallest" id='answers' ng-click="pickCard(card)" ng-hide="showTable || isCzar() || game.state==='waiting for czar to draw a card'" ng-repeat="card in game.players[game.playerIndex].hand" ng-animate="{enter:'animated fadeInUp', leave: 'animated fadeInOut'}">
             <span ng-bind-html-unsafe="card.text"></span>
             <span id='selection-number' ng-show="showFirst(card)"> 1 </span>
             <span id='selection-number' ng-show="showSecond(card)"> 2 </span>
         </div>
 
         <span ng-repeat="answer in game.table">
-        <div class="card smallest" ng-style="pointerCursorStyle()" id='table' ng-click="pickWinning(answer)" ng-show="showTable || isCzar()"
+        <div class="card smallest" ng-style="pointerCursorStyle()" id='table' ng-click="pickWinning(answer)" ng-show="(showTable || isCzar()) && game.state!=='waiting for czar to draw a card'"
         ng-repeat="card in answer.card" ng-animate="{enter:'animated bounceInLeft'}" style="background-color:{{winningColor($parent.$index)}}">
             <span ng-bind-html-unsafe="card.text"></span>
         <span id='selection-number' ng-show="firstAnswer($index)"> 1 </span>
@@ -56,6 +56,27 @@
 </div>
 </div>
 
+<!-- MODAL -->
+<div>
+    <div id="czarModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <center>
+                    <h4 id="Text">You are the Czar, Please draw a black card</h4>
+                    <div ng-click="drawCard()" ng-style="{'cursor':'pointer'}" style='margin: auto;'>
+                        <center>
+                            <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card1' />
+                            <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card2' />
+                            <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card3' />
+                            <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card4' />
+                        </center>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="info-container" ng-show="game.state === 'awaiting players'">
 
     <div id="inner-info">
@@ -70,6 +91,58 @@
         </ol>
     </div>
 </div>
+
+<div id="checkModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #252525; color: white">
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>A Minimum of three(3) players are required to start the game.</p>
+                    </div>
+                    <div class="col-md-3 col-md-offset-4">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-block" data-dismiss="modal" style="background-color: #252525; color: white">
+              Close
+            </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="startModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Game Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>Are you sure you want to start the game?</p>
+                    </div>
+                    <div class="col-md-3 col-md-offset-3">
+                        <button ng-click="startGame()" data-dismiss="modal" type="button" class="btn btn-block btn-cfh-green">
+              Yes, Start!
+            </button>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-block btn-danger" data-dismiss="modal">
+              No, Return!
+            </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="game-end-container" ng-show="game.state === 'game ended' || game.state ==='game dissolved'">
     <div id="inner-info-exit">
         <div class="game-end-answer-text" ng-show="game.state ==='game dissolved' && game.gameWinner === -1">

@@ -14,12 +14,13 @@
             <div id="loading-container">
                 <div id="loading-gif"><img ng-src="../img/loader.gif" /></div>
             </div>
-            <div id="start-game-container" ng-click="startGame()" ng-show="(game.playerIndex === 0 || game.joinOverride) && game.players.length >= game.playerMinLimit">
+            <div id="start-game-container" ng-click="checkPlayerLimit()" ng-show="(game.playerIndex === 0 || game.joinOverride)">
                 <div id='start-game-button'>
-                    Start Game</br>with {{game.players.length}} players
+                    Start Game<br>with {{game.players.length}} players
                 </div>
             </div>
         </div>
+
         <!-- Game Over Stuff -->
         <div id="game-end-info">
             <div id="people-left-game-top" ng-show="game.state ==='game dissolved' && game.gameWinner === -1">
@@ -36,4 +37,3 @@
             </div>
         </div>
     </div>
-</div>
