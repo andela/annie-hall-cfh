@@ -26,6 +26,10 @@
      margin-top: 10px;
  }
  
+ #search-results {
+     display: none;
+ }
+ 
  #twitter-facebook {
      display: block;
  }
