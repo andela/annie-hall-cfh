@@ -45,6 +45,7 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "forever": "^0.15.3",
+    "global": "^4.3.2",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
     "gulp-bower": "^0.0.13",
