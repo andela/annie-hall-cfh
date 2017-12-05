@@ -1,5 +1,5 @@
 angular.module('mean.system')
-  .controller('GameController', ['$scope', 'game', '$timeout', '$location', 'MakeAWishFactsService', '$dialog', function ($scope, game, $timeout, $location, MakeAWishFactsService, $dialog) {
+  .controller('GameController', ['$scope', 'game', '$timeout', '$location', 'MakeAWishFactsService', '$dialog', '$http', function ($scope, game, $timeout, $location, MakeAWishFactsService, $dialog, $http) {
     $scope.hasPickedCards = false;
     $scope.winningCardPicked = false;
     $scope.showTable = false;
@@ -9,6 +9,31 @@ angular.module('mean.system')
     let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
 
+    // const query = $scope.searchQuery;
+
+    $scope.searchUser = function (searchQuery) {
+      $http({
+        method: 'GET',
+        url: `/api/search/users/${searchQuery}`
+      })
+        .then((response) => {
+          const result = response.data.User;
+          $scope.searchResults = result;
+        });
+    };
+    $scope.sendInvites = function (email) {
+      console.log('sending email...');
+      $http({
+        method: 'POST',
+        url: 'api/users/invite',
+        data: {
+          email,
+          link: document.URL
+        }
+      }).then((response) => {
+        console.log(response);
+      });
+    };
     $scope.pickCard = function (card) {
       if (!$scope.hasPickedCards) {
         if ($scope.pickedCards.indexOf(card.id) < 0) {

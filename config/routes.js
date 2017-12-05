@@ -16,8 +16,8 @@ router.get('/chooseavatars', users.checkAvatar);
 router.get('/signout', users.signout);
 
 // Search Route
-router.post('/api/search/user', users.searchUser);
-
+router.get('/api/search/users/:userParam', users.searchUser);
+router.post('/api/users/invite', users.inviteUser);
 // Setting up the users api
 router.post('/users', users.create);
 router.post('/users/avatars', users.avatars);

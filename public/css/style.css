@@ -22,6 +22,10 @@
      top: 5px;
  }
  
+ #search-result {
+     margin-top: 10px;
+ }
+ 
  #twitter-facebook {
      display: block;
  }
