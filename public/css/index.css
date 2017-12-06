@@ -8,11 +8,10 @@ body {
     margin: auto !important;
 }
 #home-section {
-    background: url('/img/card.jpg') no-repeat;
+    background: url('/img/cards/card.jpg') no-repeat;
     min-height: 700px;
     background-size: cover;
     background-attachment: fixed;
-    /* opacity: 0.6; */
 }
 #overlay {
     background-color:rgba(0,0, 0, 0.7);
