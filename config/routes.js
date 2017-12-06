@@ -1,4 +1,4 @@
-var async = require('async'),
+let async = require('async'),
   express = require('express'),
   passport = require('passport'),
   index = require('../app/controllers/index'),
@@ -9,7 +9,11 @@ var async = require('async'),
   auth = require('../config/middlewares/authorization').secureLogin,
   saveGame = require('../app/controllers/game').createGameData;
 
-var router = express.Router();
+const router = express.Router();
+
+// Search Route
+router.get('/api/search/users/:userParam', users.searchUser);
+router.post('/api/users/invite', users.inviteUser);
 
 // User Routes
 router.get('/signin', users.signin);

@@ -1,14 +1,48 @@
 angular.module('mean.system')
-  .controller('GameController', ['$scope', 'game', '$timeout', '$location', 'MakeAWishFactsService', '$dialog', function ($scope, game, $timeout, $location, MakeAWishFactsService, $dialog) {
+  .controller('GameController', ['$scope', 'game', '$timeout', '$location', 'MakeAWishFactsService', '$dialog', '$http', function ($scope, game, $timeout, $location, MakeAWishFactsService, $dialog, $http) {
     $scope.hasPickedCards = false;
     $scope.winningCardPicked = false;
     $scope.showTable = false;
     $scope.modalShown = false;
     $scope.game = game;
+    $scope.counter = 0;
     $scope.pickedCards = [];
-    var makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
+    let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
     $scope.test = 0;
+    $scope.hideModal = function () {
+      $('#searchInput').modal('hide');
+    };
+
+    $scope.searchUser = function (searchQuery) {
+      if (searchQuery.trim().length) {
+        $http({
+          method: 'GET',
+          url: `/api/search/users/${searchQuery}`
+        })
+          .then((response) => {
+            const result = response.data.User;
+            $scope.searchResults = result;
+          });
+      }
+    };
+    $scope.sendInvites = function (email) {
+      if ($scope.counter === 11) {
+        $scope.hideModal();
+        return;
+      }
+      $http({
+        method: 'POST',
+        url: '/api/users/invite',
+        data: {
+          email,
+          link: document.URL
+        }
+      }).then((response) => {
+        $scope.counter += 1;
+        console.log('counter is', $scope.counter);
+      });
+    };
 
     $scope.pickCard = function (card) {
       if (!$scope.hasPickedCards) {
@@ -18,8 +52,8 @@ angular.module('mean.system')
             $scope.sendPickedCards();
             $scope.hasPickedCards = true;
           } else if (game.curQuestion.numAnswers === 2 &&
-            $scope.pickedCards.length === 2) {
-            //delay and send
+                        $scope.pickedCards.length === 2) {
+            // delay and send
             $scope.hasPickedCards = true;
             $timeout($scope.sendPickedCards, 300);
           }
@@ -31,10 +65,9 @@ angular.module('mean.system')
 
     $scope.pointerCursorStyle = function () {
       if ($scope.isCzar() && $scope.game.state === 'waiting for czar to decide') {
-        return { 'cursor': 'pointer' };
-      } else {
-        return {};
+        return { cursor: 'pointer' };
       }
+      return {};
     };
 
     $scope.sendPickedCards = function () {
@@ -45,33 +78,29 @@ angular.module('mean.system')
     $scope.cardIsFirstSelected = function (card) {
       if (game.curQuestion.numAnswers > 1) {
         return card === $scope.pickedCards[0];
-      } else {
-        return false;
       }
+      return false;
     };
 
     $scope.cardIsSecondSelected = function (card) {
       if (game.curQuestion.numAnswers > 1) {
         return card === $scope.pickedCards[1];
-      } else {
-        return false;
       }
+      return false;
     };
 
     $scope.firstAnswer = function ($index) {
       if ($index % 2 === 0 && game.curQuestion.numAnswers > 1) {
         return true;
-      } else {
-        return false;
       }
+      return false;
     };
 
     $scope.secondAnswer = function ($index) {
       if ($index % 2 === 1 && game.curQuestion.numAnswers > 1) {
         return true;
-      } else {
-        return false;
       }
+      return false;
     };
 
     $scope.showFirst = function (card) {
@@ -105,9 +134,8 @@ angular.module('mean.system')
     $scope.winningColor = function ($index) {
       if (game.winningCardPlayer !== -1 && $index === game.winningCard) {
         return $scope.colors[game.players[game.winningCardPlayer].color];
-      } else {
-        return '#f9f9f9';
       }
+      return '#f9f9f9';
     };
 
     $scope.pickWinning = function (winningSet) {
@@ -155,7 +183,7 @@ angular.module('mean.system')
 
     // Catches changes to round to update when no players pick card
     // (because game.state remains the same)
-    $scope.$watch('game.round', function () {
+    $scope.$watch('game.round', () => {
       $scope.hasPickedCards = false;
       $scope.showTable = false;
       $scope.winningCardPicked = false;
@@ -167,7 +195,7 @@ angular.module('mean.system')
     });
 
     // In case player doesn't pick a card in time, show the table
-    $scope.$watch('game.state', function () {
+    $scope.$watch('game.state', () => {
       if (game.state === 'waiting for czar to decide' && $scope.showTable === false) {
         $scope.showTable = true;
       }
@@ -189,7 +217,7 @@ angular.module('mean.system')
       }
     });
 
-    $scope.$watch('game.gameID', function () {
+    $scope.$watch('game.gameID', () => {
       if (game.gameID && game.state === 'awaiting players') {
         if (!$scope.isCustomGame() && $location.search().game) {
           // If the player didn't successfully enter the request room,
@@ -200,12 +228,19 @@ angular.module('mean.system')
           // where the link is meant to be shared.
           $location.search({ game: game.gameID });
           if (!$scope.modalShown) {
-            setTimeout(function () {
-              var link = document.URL;
-              var txt = 'Give the following link to your friends so they can join your game: ';
-              $('#lobby-how-to-play').text(txt);
-              $('#oh-el').css({ 'text-align': 'center', 'font-size': '22px', 'background': 'white', 'color': 'black' }).text(link);
-            }, 200);
+            setTimeout(() => {
+              $('#info-container').css({
+                background: 'none'
+              });
+              $('#lobby-how-to-play').hide();
+              $('#invite-friend').css({
+                'text-align': 'center',
+                'margin-top': '10px'
+              });
+              $('#invite-friend').append("<button id='send-invite-button' data-toggle='modal' data-target='#searchInput'>Add players</button>");
+              $('#send-invite-button').addClass('btn btn-danger');
+              $('#oh-el').hide();
+            }, 0);
             $scope.modalShown = true;
           }
         }
@@ -220,5 +255,4 @@ angular.module('mean.system')
     } else {
       game.joinGame();
     }
-
   }]);

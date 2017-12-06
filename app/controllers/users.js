@@ -1,24 +1,26 @@
 /**
  * Module dependencies.
  */
-var jwt = require('jsonwebtoken');
-var mongoose = require('mongoose'),
-  User = mongoose.model('User');
-var avatars = require('./avatars').all();
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const mongoose = require('mongoose');
 
-var secret = process.env.JWT_SECRET;
+const User = mongoose.model('User');
+const avatars = require('./avatars').all();
+
+const secret = process.env.JWT_SECRET;
 
 /**
  * Auth callback
  */
-exports.authCallback = function(req, res, next) {
+exports.authCallback = function (req, res, next) {
   res.redirect('/chooseavatars');
 };
 
 /**
  * Show login form
  */
-exports.signin = function(req, res) {
+exports.signin = function (req, res) {
   if (!req.user) {
     res.redirect('/#!/signin?error=invalid');
   } else {
@@ -29,7 +31,7 @@ exports.signin = function(req, res) {
 /**
  * Show sign up form
  */
-exports.signup = function(req, res) {
+exports.signup = function (req, res) {
   if (!req.user) {
     res.redirect('/#!/signup');
   } else {
@@ -40,7 +42,7 @@ exports.signup = function(req, res) {
 /**
  * Logout
  */
-exports.signout = function(req, res) {
+exports.signout = function (req, res) {
   req.logout();
   return res.json({
     message: 'Logged Out'
@@ -50,21 +52,71 @@ exports.signout = function(req, res) {
 /**
  * Session
  */
-exports.session = function(req, res) {
+exports.session = function (req, res) {
   res.redirect('/');
 };
+exports.inviteUser = function (req, res) {
+  const userEmail = req.body.email;
+  const link = req.body.link;
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    secure: false,
+    port: 25,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+  const mailBody = {
+    from: '"Cards for Humanity" <cardsForHumanity@cfh.com>',
+    to: userEmail,
+    subject: 'Game Invite!',
+    text: `You've been invited to join a gaming session on Cards for Humanity. Join by clicking this link ${link}`,
+    html: `<b><h3>You've been invited to join a gaming session on Cards for Humanity. Join by clicking this link </h3><a>${link}</a></b>`
+  };
 
-/** 
+  transporter.sendMail(mailBody, (error) => {
+    if (error) {
+      res.status(400).json({
+        message: 'An error occured while trying to send your mail',
+        error
+      });
+    } else {
+      res.status(200).json({
+        message: 'Message sent successfully'
+      });
+    }
+  });
+};
+
+exports.searchUser = function (req, res) {
+  const query = req.params.userParam;
+  User.find({
+    $or: [
+      { email: { $regex: `.*${query}.*` } }, { name: { $regex: `.*${query}.*` } }
+    ]
+  }, 'email name').exec((err, user) => {
+    if (err) {
+      return res.status(500).json({ Message: 'Internal server error' });
+    }
+    return res.status(200).json({ Message: 'Success', User: user });
+  });
+};
+
+/**
  * Check avatar - Confirm if the user who logged in via passport
  * already has an avatar. If they don't have one, redirect them
  * to our Choose an Avatar page.
- */ 
-exports.checkAvatar = function(req, res) {
+ */
+exports.checkAvatar = function (req, res) {
   if (req.user && req.user._id) {
     User.findOne({
       _id: req.user._id
     })
-      .exec(function(err, user) {
+      .exec((err, user) => {
         if (user.avatar !== undefined) {
           res.redirect('/#!/');
         } else {
@@ -75,36 +127,35 @@ exports.checkAvatar = function(req, res) {
     // If user doesn't even exist, redirect to /
     res.redirect('/');
   }
-
 };
 
 /**
  * Create user
  */
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   if (req.body.name && req.body.password && req.body.email) {
     User.findOne({
       email: req.body.email
-    }).exec(function(err, existingUser) {
+    }).exec((err, existingUser) => {
       if (!existingUser) {
-        var user = new User(req.body);
+        const user = new User(req.body);
         // Switch the user's avatar index to an actual avatar url
         user.avatar = avatars[user.avatar];
         user.provider = 'local';
-        user.save(function(err, newUser) {
+        user.save((err, newUser) => {
           if (err) {
             res.status(500).json({
               message: 'Internal Server error'
             });
           }
-          req.logIn(user, function(err) {
+          req.logIn(user, (err) => {
             if (err) return next(err);
-            var createdUser = {
+            const createdUser = {
               id: newUser._id,
               name: newUser.name,
               email: newUser.email
             };
-            var token = jwt.sign({
+            const token = jwt.sign({
               createdUser
             }, secret, { expiresIn: '1h' });
             return res.status(201).json({
@@ -173,14 +224,14 @@ exports.userSignIn = (req, res) => {
 /**
  * Assign avatar to user
  */
-exports.avatars = function(req, res) {
+exports.avatars = function (req, res) {
   // Update the current user's profile to include the avatar choice they've made
   if (req.user && req.user._id && req.body.avatar !== undefined &&
-    /\d/.test(req.body.avatar) && avatars[req.body.avatar]) {
+        /\d/.test(req.body.avatar) && avatars[req.body.avatar]) {
     User.findOne({
       _id: req.user._id
     })
-      .exec(function(err, user) {
+      .exec((err, user) => {
         user.avatar = avatars[req.body.avatar];
         user.save();
       });
@@ -188,17 +239,17 @@ exports.avatars = function(req, res) {
   return res.redirect('/#!/app');
 };
 
-exports.addDonation = function(req, res) {
+exports.addDonation = function (req, res) {
   if (req.body && req.user && req.user._id) {
     // Verify that the object contains crowdrise data
     if (req.body.amount && req.body.crowdrise_donation_id && req.body.donor_name) {
       User.findOne({
         _id: req.user._id
       })
-        .exec(function(err, user) {
-        // Confirm that this object hasn't already been entered
-          var duplicate = false;
-          for (var i = 0; i < user.donations.length; i++ ) {
+        .exec((err, user) => {
+          // Confirm that this object hasn't already been entered
+          let duplicate = false;
+          for (let i = 0; i < user.donations.length; i++) {
             if (user.donations[i].crowdrise_donation_id === req.body.crowdrise_donation_id) {
               duplicate = true;
             }
@@ -219,33 +270,33 @@ exports.addDonation = function(req, res) {
 /**
  *  Show profile
  */
-exports.show = function(req, res) {
-  var user = req.profile;
+exports.show = function (req, res) {
+  const user = req.profile;
 
   res.render('users/show', {
     title: user.name,
-    user: user
+    user
   });
 };
 
 /**
  * Send User
  */
-exports.me = function(req, res) {
+exports.me = function (req, res) {
   res.jsonp(req.user || null);
 };
 
 /**
  * Find user by id
  */
-exports.user = function(req, res, next, id) {
+exports.user = function (req, res, next, id) {
   User
     .findOne({
       _id: id
     })
-    .exec(function(err, user) {
+    .exec((err, user) => {
       if (err) return next(err);
-      if (!user) return next(new Error('Failed to load User ' + id));
+      if (!user) return next(new Error(`Failed to load User ${id}`));
       req.profile = user;
       next();
     });
