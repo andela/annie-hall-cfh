@@ -380,6 +380,14 @@
     margin-bottom: -13px;
  }
 
+ #search-result {
+    margin-top: 10px;
+}
+
+#search-results {
+    display: none;
+}
+
  #alertMessage {
   text-align: center;
   color: red;

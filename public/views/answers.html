@@ -26,6 +26,37 @@
 </div>
 
 <!-- MODAL -->
+<div class="modal fade" id="searchInput" tabindex="-1" role="dialog" aria-labelledby="searchInput" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model='searchQuery' placeholder="Search by username or email" />
+                    <span class="input-group-btn">
+                          <button class="btn btn-warning" ng-click='searchUser(searchQuery)' type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </span>
+                </div>
+                <!-- <div id="search-results">
+                    {{searchResults}}
+                </div> -->
+                <div ng-repeat="user in searchResults" id="search-result">
+                    <div class="row" id="search-result-info">
+                        <div class="col-xs-3">
+                            <h5>{{user.name}}</h5>
+                        </div>
+                        <div class="col-xs-3">
+                            <button class="btn btn-warning" ng-click="sendInvites(user.email)">invite</button>
+                        </div>
+                        <!-- <div class="col-xs-3">
+                            <button class="btn btn-danger" ng-click="increment()">Hide Modal</button> -->
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+
 <div>
     <div id="czarModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
       aria-hidden="true">

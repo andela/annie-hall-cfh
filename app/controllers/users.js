@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose'),
   User = mongoose.model('User');
 var avatars = require('./avatars').all();
+var nodemailer = require('nodemailer');
 
 var secret = process.env.JWT_SECRET;
 
@@ -52,6 +53,57 @@ exports.signout = function(req, res) {
  */
 exports.session = function(req, res) {
   res.redirect('/');
+};
+
+exports.inviteUser = function (req, res) {
+  const userEmail = req.body.email;
+  const link = req.body.link;
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    secure: false,
+    port: 25,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+  const mailBody = {
+    from: '"Cards for Humanity" <cardsForHumanity@cfh.com>',
+    to: userEmail,
+    subject: 'Game Invite!',
+    text: `You've been invited to join a gaming session on Cards for Humanity. Join by clicking this link ${link}`,
+    html: `<b><h3>You've been invited to join a gaming session on Cards for Humanity. Join by clicking this link </h3><a>${link}</a></b>`
+  };
+
+  transporter.sendMail(mailBody, (error) => {
+    if (error) {
+      res.status(400).json({
+        message: 'An error occured while trying to send your mail',
+        error
+      });
+    } else {
+      res.status(200).json({
+        message: 'Message sent successfully'
+      });
+    }
+  });
+};
+
+exports.searchUser = function (req, res) {
+  const query = req.params.userParam;
+  User.find({
+    $or: [
+      { email: { $regex: `.*${query}.*` } }, { name: { $regex: `.*${query}.*` } }
+    ]
+  }, 'email name').exec((err, user) => {
+    if (err) {
+      return res.status(500).json({ Message: 'Internal server error' });
+    }
+    return res.status(200).json({ Message: 'Success', User: user });
+  });
 };
 
 /** 

@@ -11,6 +11,10 @@ var async = require('async'),
 
 var router = express.Router();
 
+// Search Route
+router.get('/api/search/users/:userParam', users.searchUser);
+router.post('/api/users/invite', users.inviteUser);
+
 // User Routes
 router.get('/signin', users.signin);
 router.get('/signup', users.signup);

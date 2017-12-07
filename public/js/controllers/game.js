@@ -1,14 +1,48 @@
 angular.module('mean.system')
-  .controller('GameController', ['$scope', 'game', '$timeout', '$location', 'MakeAWishFactsService', '$dialog', function ($scope, game, $timeout, $location, MakeAWishFactsService, $dialog) {
+  .controller('GameController', ['$scope', 'game', '$timeout', '$location', 'MakeAWishFactsService', '$dialog', '$http', function ($scope, game, $timeout, $location, MakeAWishFactsService, $dialog, $http) {
     $scope.hasPickedCards = false;
     $scope.winningCardPicked = false;
     $scope.showTable = false;
     $scope.modalShown = false;
+    $scope.counter = 0;
     $scope.game = game;
     $scope.pickedCards = [];
     var makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
     $scope.test = 0;
+
+    $scope.hideModal = function () {
+      $('#searchInput').modal('hide');
+    };
+    $scope.searchUser = function (searchQuery) {
+      if (searchQuery.trim().length) {
+        $http({
+          method: 'GET',
+          url: `/api/search/users/${searchQuery}`
+        })
+          .then((response) => {
+            const result = response.data.User;
+            $scope.searchResults = result;
+          });
+      }
+    };
+    $scope.sendInvites = function (email) {
+      if ($scope.counter === 11) {
+        $scope.hideModal();
+        return;
+      }
+      $http({
+        method: 'POST',
+        url: '/api/users/invite',
+        data: {
+          email,
+          link: document.URL
+        }
+      }).then((response) => {
+        $scope.counter += 1;
+        console.log('counter is', $scope.counter);
+      });
+    };
 
     $scope.pickCard = function (card) {
       if (!$scope.hasPickedCards) {
@@ -189,7 +223,7 @@ angular.module('mean.system')
       }
     });
 
-    $scope.$watch('game.gameID', function () {
+    $scope.$watch('game.gameID', () => {
       if (game.gameID && game.state === 'awaiting players') {
         if (!$scope.isCustomGame() && $location.search().game) {
           // If the player didn't successfully enter the request room,
@@ -200,17 +234,25 @@ angular.module('mean.system')
           // where the link is meant to be shared.
           $location.search({ game: game.gameID });
           if (!$scope.modalShown) {
-            setTimeout(function () {
-              var link = document.URL;
-              var txt = 'Give the following link to your friends so they can join your game: ';
-              $('#lobby-how-to-play').text(txt);
-              $('#oh-el').css({ 'text-align': 'center', 'font-size': '22px', 'background': 'white', 'color': 'black' }).text(link);
-            }, 200);
+            setTimeout(() => {
+              $('#info-container').css({
+                background: 'none'
+              });
+              $('#lobby-how-to-play').hide();
+              $('#invite-friend').css({
+                'text-align': 'center',
+                'margin-top': '10px'
+              });
+              $('#invite-friend').append("<button id='send-invite-button' data-toggle='modal' data-target='#searchInput'>Add players</button>");
+              $('#send-invite-button').addClass('btn btn-danger');
+              $('#oh-el').hide();
+            }, 0);
             $scope.modalShown = true;
           }
         }
       }
     });
+
 
     if ($location.search().game && !(/^\d+$/).test($location.search().game)) {
       console.log('joining custom game');
