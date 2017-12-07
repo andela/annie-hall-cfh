@@ -13,3 +13,5 @@ migrations/
 .nodemonignore
 .coveralls.yml
 yarn-error.log
+dist/
+
