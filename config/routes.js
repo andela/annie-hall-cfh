@@ -59,7 +59,8 @@ router.get('/auth/github/callback', passport.authenticate('github', {
 
 // Setting the twitter oauth routes
 router.get('/auth/twitter', passport.authenticate('twitter', {
-  failureRedirect: '/signin'
+  failureRedirect: '/signin',
+  successRedirect: '/auth/twitter/callback'
 }), users.signin);
 
 router.get('/auth/twitter/callback', passport.authenticate('twitter', {
