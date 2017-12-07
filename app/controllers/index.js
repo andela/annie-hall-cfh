@@ -1,3 +1,4 @@
+
 /**
  * Module dependencies.
  */
@@ -20,4 +21,11 @@ exports.render = function(req, res) {
   res.render('index', {
     user: req.user ? JSON.stringify(req.user) : "null"
   });
+};
+
+exports.setRegion = (req, res) => {
+  console.log('--------------> Localstorage!!!');
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  var localStorage = new LocalStorage('./scratch');
+  localStorage.setItem('player_region', req.body.player_region);
 };

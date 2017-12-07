@@ -104,4 +104,8 @@ router.get('/', index.render);
 // Game Routes
 router.post('/api/v1/games/:id/start', auth, saveGame);
 
+
+// Intro route
+router.post('/setregion', index.setRegion);
+
 module.exports = router;

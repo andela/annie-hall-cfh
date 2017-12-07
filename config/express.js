@@ -13,7 +13,8 @@ var express = require('express'),
   flash = require('connect-flash'),
   helpers = require('view-helpers'),
   config = require('./config'),
-  apiRoutes = require('./routes');
+  apiRoutes = require('./routes'),
+  LocalStorage = require('node-localstorage').LocalStorage;
 
 module.exports = function(app, passport, mongoose) {
   app.set('showStackError', true);
@@ -66,10 +67,15 @@ module.exports = function(app, passport, mongoose) {
   //connect flash for flash messages
   app.use(flash());
 
-  //dynamic helpers
+   // Initialize localstorage
+   if (typeof localStorage === "undefined" || localStorage === null) {
+     var localStorage = new LocalStorage('./scratch');
+  }
+
+  // dynamic helpers
   app.use(helpers(config.app.name));
 
-  //use passport session
+  // use passport session
   app.use(passport.initialize());
   app.use(passport.session());
 

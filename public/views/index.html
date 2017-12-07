@@ -78,7 +78,7 @@ $(document).ready(function() {
       <div id="sign-up">
         <span ng-show="showOptions">
         <a href="#!/signup"><div id="sign-up-btn-landing">Sign Up</div></a>
-          <div id="sign-up-text"><a href="/play">
+          <div id="sign-up-text" ng-controller="IndexController"><a class="btn btn-dark" ng-click="showLocationGuest()" role="button">
             <span id="first-word">or Play</span>
             <span id="second-word">as</span>
             <span id="third-word">Guest</span></a>
@@ -99,8 +99,8 @@ $(document).ready(function() {
               </a>
           </span>
         </span>
-        <span ng-hide="showOptions">
-          <a href="/play"><div id="sign-up-btn-landing">Play Game with Strangers</div></a>
+        <span ng-hide="showOptions" ng-controller="IndexController">
+          <a ng-click="showLocation()"><div id="sign-up-btn-landing">Play Game with Strangers</div></a>
           <a href="/play?custom"><div id="sign-up-btn-landing">Play Game with Friends</div></a>
               <span id='twitter-facebook'>
                 <span id="tweet-container-index">
@@ -158,7 +158,7 @@ $(document).ready(function() {
       <div id="sign-up">
         <span ng-show="showOptions">
           <a href="#!/signup"><div id="sign-up-btn-landing">Sign Up</div></a>
-          <div id="sign-up-text"><a href="/play">
+          <div id="sign-up-text" ng-controller="IndexController"><a class="btn btn-dark" ng-click="showLocationGuest()" role="button">
             <span id="first-word">or Play</span>
             <span id="second-word">as</span>
             <span id="third-word">Guest</span></a>
@@ -255,3 +255,62 @@ $(document).ready(function() {
 </section>
 <!-- Footer End -->
 </div>
+
+<!--  Select Region -->
+<div class="modal" id="select-location" tabindex="-1" role="document" ng-controller="IndexController"> 
+  <div class="modal-dialog panel"> 
+      <div class="modal-content"> 
+          <div class="modal-header popUpHeader"> 
+            <h3 class="modal-title">Select Region</h3> 
+          </div> 
+          <div class="modal-body">
+            <div class="headerText usernameHeader"><span>Select Region</span></div>
+            <div  class="modalHeight">
+             <select ng-model="region" class="form-control">
+               <option value="NG">Nigeria</option>
+               <option value="UK">United Kingdom</option>
+             </select>
+            </div>
+            </div> 
+            <center><div>
+              <button class="btn btn-default" ng-click="playWithStrangers()" >
+                PLAY WITH STRANGERS
+              </button>
+               <button class="btn btn-warning" ng-click="playWithFriends()" >
+                PLAY WITH FRIENDS
+              </button>
+              <button data-dismiss="modal" class="btn btn-danger">Cancel</button>
+            </div></center>
+          <div class="modal-footer">Cards for Humanity</div> 
+      </div> 
+  </div> 
+</div> 
+
+<!-- Guest  Select Region -->
+<div class="modal" id="select-location-guest" tabindex="-1" role="dialog" ng-controller="IndexController"> 
+  <div class="modal-dialog panel"> 
+      <div class="modal-content"> 
+          <div class="modal-header popUpHeader"> 
+            <h3 class="modal-title">Select Region</h3> 
+          </div> 
+          <div class="modal-body">
+            <div class="headerText usernameHeader"><span>Select Region</span></div>
+            <div  class="modalHeight">
+             <select ng-model="region" class="form-control">
+               <option value="NG">Nigeria</option>
+               <option value="UK">United Kingdom</option>
+             </select>
+            </div>
+            </div> 
+            <center>
+              <div>
+              <button class="btn btn-warning" ng-click="playWithStrangers()" >
+                PLAY GAME
+              </button>
+              <button data-dismiss="modal" class="modalBtn">Cancel</button>
+            </div>
+              </center>
+          <div class="modal-footer">Cards for Humanity</div> 
+      </div> 
+  </div> 
+</div> 

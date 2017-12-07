@@ -7,6 +7,49 @@ angular.module('mean.system')
       $location.path('/app');
     };
 
+    $scope.showLocation = function () {
+      const myModal = $('#select-location');
+      myModal.modal('show');
+    };
+
+    $scope.showLocationGuest = function () {
+      const myModal = $('#select-location-guest');
+      myModal.modal('show');
+    };
+
+    $scope.playWithStrangers = function () {
+      console.log('-------------> Playing with strangers');
+      if ($scope.region === undefined) {
+        alert('Please Select your Region');
+        return;
+      }
+      $scope.data = { player_region: $scope.region };
+      $http.post('/setregion', $scope.data)
+        .success(function (data) {
+          console.log(data);
+        });
+      const myModal = $('#select-location');
+      myModal.modal('hide');
+      $window.location.href = '/play';
+    };
+
+    $scope.playWithFriends = function () {
+      if ($scope.region === undefined) {
+        alert('Please Select your Region');
+        return;
+      }
+
+      $scope.data = { player_region: $scope.region };
+      $http.post('/setregion', $scope.data)
+        .success(function (data) {
+          console.log(data);
+        });
+      const myModal = $('#select-location');
+      myModal.modal('hide');
+      localStorage.setItem('player_region', $scope.region);
+      $window.location.href = '/play?custom';
+    };
+
     $scope.showError = function() {
       if ($location.search().error) {
         return $location.search().error;
