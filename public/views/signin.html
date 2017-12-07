@@ -1,23 +1,45 @@
-<div id="main-body" ng-controller="IndexController">
+<div
+  id="main-body"
+  ng-controller="IndexController">
   <!-- Fixed Logo & Menu Bar Start -->
   <nav class="navbar navbar-expand-sm navbar-light navbar-inverse bg-light fixed-top ">
-    <a class="navbar-brand" href="/" style="cursor:pointer">
+    <a
+      class="navbar-brand"
+      href="/"
+      style="cursor:pointer">
       <span id="cards">Cards</span> For Humanity</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-      aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div
+      class="collapse navbar-collapse"
+      id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a href="#!/signup" class="nav-link nov mr-3 text-dark" style="border-radius: 10px;">Sign Up</a>
+          <a
+            href="#!/signup"
+            class="nav-link nov mr-3 text-dark"
+            style="border-radius: 10px;">Sign Up</a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link  mr-3 text-dark" style="border-radius: 10px;">Sign In</a>
+          <a
+            href="#"
+            class="nav-link  mr-3 text-dark"
+            style="border-radius: 10px;">Sign In</a>
         </li>
         <li class="nav-item">
-          <a href="http://www.crowdrise.com/cfhio/fundraiser/cards4humanity" class="nav-link mr-3 text-dark" style="border-radius: 10px;">Donate</a>
+          <a
+            href="http://www.crowdrise.com/cfhio/fundraiser/cards4humanity"
+            class="nav-link mr-3 text-dark"
+            style="border-radius: 10px;">Donate</a>
         </li>
 
       </ul>
@@ -27,57 +49,104 @@
 
   <!-- Landing Start -->
   <div>
-    <div class="container-fluid" style="margin:0 auto; height: 100vh">
-      <div class="row" style="padding-top: 8em">
+    <div
+      class="container-fluid"
+      style="margin:0 auto; height: 100vh">
+      <div
+        class="row"
+        style="padding-top: 8em">
         <div class="card col-md-6 mx-auto ">
-          <div class="card-title" style="padding-top: 1em">
+          <div
+            class="card-title"
+            style="padding-top: 1em">
             <h4 class="text-center"> Sign In </h4>
             <div class="card-body">
-              <div class="sign-error" ng-show="showError() === 'invalid'">
+              <div
+                class="sign-error"
+                ng-show="showError() === 'invalid'">
                 Please check your username/password and try again.
               </div>
-              <form class="text-center" style="padding-top: 1em" ng-submit="signIn()" method="post">
+              <form
+                class="text-center"
+                style="padding-top: 1em"
+                ng-submit="signIn()"
+                method="post">
                 <div style="padding-right: 4em;">
                   <div class="form-group">
-                    <label class=" text-right col-md-3" for="email">User:</label>
-                    <input class="col-md-5 input-text" type="email" class="form-control" 
-                      ng-model="email" placeholder="Email" required novalidate>
+                    <label
+                      class=" text-right col-md-3"
+                      for="email">User:</label>
+                    <input
+                      class="col-md-5 input-text"
+                      type="email"
+                      class="form-control"
+                      ng-model="email"
+                      placeholder="Email"
+                      required novalidate>
                   </div>
                   <div class="form-group">
-                    <label class="text-right col-md-3" for="pwd">Password:</label>
-                    <input class="col-md-5 input-text" type="password" class="form-control"
-                      ng-model="password" required novalidate>
+                    <label
+                      class="text-right col-md-3"
+                      for="pwd">Password:</label>
+                    <input
+                      class="col-md-5 input-text"
+                      type="password"
+                      class="form-control"
+                      ng-model="password"
+                      required novalidate>
                   </div>
                 </div>
-                <div class="text-center" style="padding-top: 1em">
-                  <button type="submit" class="btn btn-dark" style="width:8em; cursor:pointer">Sign In</button>
+                <div
+                  class="text-center"
+                  style="padding-top: 1em">
+                  <button
+                    type="submit"
+                    class="btn btn-dark"
+                    style="width:8em; cursor:pointer">Sign In</button>
                 </div>
               </form>
 
-              <div class="row" style="padding-top: 3em">
+              <div
+                class="row"
+                style="padding-top: 3em">
                 <hr class="col-md-4 text-right">
-                <p class="col-md-1"> OR </p>
+                <p class="col-md-2 text-center"> OR </p>
                 <hr class="col-md-4 text-left">
               </div>
 
-              <div class="text-center" style="padding-top: 1em">
+              <div
+                class="text-center"
+                style="padding-top: 1em">
                 <p> Sign in with:
                   <a href="/auth/facebook">
-                    <i class="fa fa-facebook icons fa-2x" aria-hidden="true"></i>
+                    <i
+                      class="fa fa-facebook icons fa-2x"
+                      aria-hidden="true"></i>
                   </a>
                   <a href="/auth/github">
-                    <i class="fa fa-github icons fa-2x" style="padding-left: 5px" aria-hidden="true"> </i>
+                    <i
+                      class="fa fa-github icons fa-2x"
+                      style="padding-left: 5px"
+                      aria-hidden="true"> </i>
                   </a>
                   <a href="/auth/google">
-                    <i class="fa fa-google icons fa-2x" style="padding-left: 5px" aria-hidden="true"></i>
+                    <i
+                      class="fa fa-google icons fa-2x"
+                      style="padding-left: 5px"
+                      aria-hidden="true"></i>
                   </a>
                   <a href="/auth/twitter">
-                    <i class="fa fa-twitter icons fa-2x" style="padding-left: 5px" aria-hidden="true"></i>
+                    <i
+                      class="fa fa-twitter icons fa-2x"
+                      style="padding-left: 5px"
+                      aria-hidden="true"></i>
                   </a>
                 </p>
               </div>
 
-              <p class="text-center" style="font-size:13px; padding-top: 1em"> Play as guest?
+              <p
+                class="text-center"
+                style="font-size:13px; padding-top: 1em"> Play as guest?
                 <a href="#"> New Game </a>
               </p>
             </div>
