@@ -15,7 +15,7 @@
     "github": {
         "clientID": "APP_ID",
         "clientSecret": "APP_SECRET",
-        "callbackURL": "http://cardsforhumanity.com:3000/auth/github/callback"
+        "callbackURL": "http://localhost:3000/auth/github/callback"
     },
     "google": {
         "clientID": "APP_ID",
