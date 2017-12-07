@@ -40,6 +40,7 @@ router.get('/users/:userId', users.show);
 // Setting the facebook oauth routes
 router.get('/auth/facebook', passport.authenticate('facebook', {
   scope: ['email'],
+  successRedirect: '/auth/facebook/callback',
   failureRedirect: '/signin'
 }), users.signin);
 
