@@ -25,7 +25,6 @@ angular.module('mean.system')
         })
           .then((response) => {
             const result = response.data.User;
-            console.log('result is', result);
             $scope.searchResults = result;
           });
       }
