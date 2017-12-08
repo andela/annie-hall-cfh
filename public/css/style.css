@@ -27,7 +27,11 @@
  }
  
  #search-results {
-     display: none;
+     text-align: center;
+ }
+ 
+ #end-invites {
+     text-align: center;
  }
  
  #twitter-facebook {

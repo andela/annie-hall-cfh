@@ -24,6 +24,17 @@
 
 </div>
 </div>
+
+<div class="modal fade" id="end-invites" tabindex="-1" role="dialog" aria-labelledby="end-invites" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>You can only invite a maximum of Eleven(11) players.</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="searchInput" tabindex="-1" role="dialog" aria-labelledby="searchInput" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -34,26 +45,45 @@
                           <button class="btn btn-warning" ng-click='searchUser(searchQuery)' type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
                         </span>
                 </div>
-                <div id="search-results">
-                    {{searchResults}}
+                <div ng-if="searchResults.length">
+                    <!-- <div id="search-results">
+                        {{searchResults}}
+                    </div> -->
+                    <div ng-repeat="user in searchResults" id="search-result">
+                        <div class="row" id="search-result-info">
+                            <div class="col-xs-3">
+                                <h5>{{user.name}}</h5>
+                            </div>
+                            <div class="col-xs-3">
+                                <button class="btn btn-warning" ng-click="sendInvites(user.email)">invite</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <div ng-if="searchResults.length < 1">
+                    <div id="search-results">
+                        <h5>No match(es) found</h5>
+                    </div>
+
+                </div>
+                <!-- <div id="search-results">
+                    {{searchResults || 'empty stuff'}}
                 </div>
                 <div ng-repeat="user in searchResults" id="search-result">
                     <div class="row" id="search-result-info">
                         <div class="col-xs-3">
-                            <h5>{{user.name}}</h5>
+                            <h5>{{user.name || 'empty stuff'}}</h5>
                         </div>
                         <div class="col-xs-3">
                             <button class="btn btn-warning" ng-click="sendInvites(user.email)">invite</button>
                         </div>
-                        <!-- <div class="col-xs-3">
-                            <button class="btn btn-danger" ng-click="increment()">Hide Modal</button> -->
                     </div>
                 </div>
-                <hr />
+                <hr /> -->
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- MODAL -->

@@ -10,10 +10,13 @@ angular.module('mean.system')
     let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
     $scope.test = 0;
+
     $scope.hideModal = function () {
       $('#searchInput').modal('hide');
     };
-
+    $scope.endInvites = function () {
+      $('#end-invites').modal('show');
+    };
     $scope.searchUser = function (searchQuery) {
       if (searchQuery.trim().length) {
         $http({
@@ -22,6 +25,7 @@ angular.module('mean.system')
         })
           .then((response) => {
             const result = response.data.User;
+            console.log('result is', result);
             $scope.searchResults = result;
           });
       }
@@ -29,6 +33,7 @@ angular.module('mean.system')
     $scope.sendInvites = function (email) {
       if ($scope.counter === 11) {
         $scope.hideModal();
+        $scope.endInvites();
         return;
       }
       $http({
