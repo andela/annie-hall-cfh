@@ -7,7 +7,9 @@ var async = require('async'),
   avatars = require('../app/controllers/avatars'),
   users = require('../app/controllers/users'),
   auth = require('../config/middlewares/authorization').secureLogin,
-  saveGame = require('../app/controllers/game').createGameData;
+  saveGame = require('../app/controllers/game').createGameData,
+  leaderboard = require('../app/controllers/game').getLeaderboard,
+  gameLog = require('../app/controllers/game').getGameLog;
 
 var router = express.Router();
 
@@ -25,9 +27,6 @@ router.get('/signout', users.signout);
 router.post('/users', users.create);
 router.post('/users/avatars', users.avatars);
 router.post('/api/signin', users.userSignIn);
-
-// Donation Routes
-router.post('/donations', users.addDonation);
 
 router.post('/users/session', passport.authenticate('local', {
   failureRedirect: '/signin',
@@ -100,8 +99,12 @@ router.get('/avatars', avatars.allJSON);
 router.get('/play', index.play);
 router.get('/', index.render);
 
-
 // Game Routes
 router.post('/api/v1/games/:id/start', auth, saveGame);
+router.get('/api/games/history/:token', auth, gameLog);
+router.get('/api/games/leaderboard', leaderboard);
+
+// Intro route
+router.post('/setregion', index.setRegion);
 
 module.exports = router;

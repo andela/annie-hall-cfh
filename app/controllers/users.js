@@ -151,18 +151,18 @@ exports.create = function(req, res) {
           }
           req.logIn(user, function(err) {
             if (err) return next(err);
-            var createdUser = {
+            var currUser = {
               id: newUser._id,
               name: newUser.name,
               email: newUser.email
             };
             var token = jwt.sign({
-              createdUser
+              currUser
             }, secret, { expiresIn: '1h' });
             return res.status(201).json({
               token,
               message: 'Successfully signed up',
-              newUser
+              currUser
             });
           });
         });
@@ -209,14 +209,14 @@ exports.userSignIn = (req, res) => {
       });
     }
     req.logIn(existingUser, () => {
-      const newUser = {
+      const currUser = {
         id: existingUser._id,
         name: existingUser.name,
         email: existingUser.email
       };
       const token = jwt.sign({
-        newUser
-      }, secret, { expiresIn: '1h' });
+        currUser
+      }, secret, { expiresIn: '24h' });
       return res.status(200).json({ message: 'Login Successful', token });
     });
   });
@@ -238,34 +238,6 @@ exports.avatars = function(req, res) {
       });
   }
   return res.redirect('/#!/app');
-};
-
-exports.addDonation = function(req, res) {
-  if (req.body && req.user && req.user._id) {
-    // Verify that the object contains crowdrise data
-    if (req.body.amount && req.body.crowdrise_donation_id && req.body.donor_name) {
-      User.findOne({
-        _id: req.user._id
-      })
-        .exec(function(err, user) {
-        // Confirm that this object hasn't already been entered
-          var duplicate = false;
-          for (var i = 0; i < user.donations.length; i++ ) {
-            if (user.donations[i].crowdrise_donation_id === req.body.crowdrise_donation_id) {
-              duplicate = true;
-            }
-          }
-          if (!duplicate) {
-            // TODO Remove this console.log
-            console.log('Validated donation');
-            user.donations.push(req.body);
-            user.premium = 1;
-            user.save();
-          }
-        });
-    }
-  }
-  res.send();
 };
 
 /**
@@ -302,3 +274,29 @@ exports.user = function(req, res, next, id) {
       next();
     });
 };
+
+/**
+ * @returns {void} description
+ * get donation
+ * @export
+ * @param {any} req
+ * @param {any} res
+ */
+export function getDonation(req, res) {
+  if (req.decoded) {
+    const userId = req.decoded.createdUser.id;
+    User.findById({
+      _id: userId
+    })
+      .exec((err, userDonations) => {
+        if (err) {
+          return res.status(500).send({
+            message: 'Donation not succesfully retrieved'
+          });
+        }
+        return res.status(200).json(userDonations);
+      });
+  } else {
+    return res.status(401).send({ message: 'Unauthenticated user' });
+  }
+}

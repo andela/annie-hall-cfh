@@ -21,17 +21,17 @@ gulp.task('babel-compile', () => {
     .pipe(gulp.dest('./dist')); // write them
 });
 
-gulp.task('nodemon', ['babel-compile'], () => {
+gulp.task('nodemon', () => {
   nodemon({
     script: './dist/server.js', // run ES5 code
-    ext: 'js html jade json ',
+    ext: 'js html jade json scss css',
     ignore: ['README.md', 'node_modules/**', '.DS_Store'],
-    watch: ['app', 'config', 'server.js'], // watch ES2015 code
+    watch: ['app', 'config', 'public', 'server.js'], // watch ES2015 code
     env: {
       PORT: 3000,
       NODE_ENV: 'development'
     },
-    tasks: ['babel-compile'] // compile synchronously onChange
+    tasks: ['recompile'] // compile synchronously onChange
   });
 });
 
@@ -55,11 +55,11 @@ gulp.task('sass', () => {
 //  provide linting for files
 gulp.task('lint', () => {
   gulp.src(['gulpfile.babel.js',
-      'public/js/**/*.js',
-      'test/**/*.js',
-      'app/**/*.js',
-      'config/**/*.js'
-    ])
+    'public/js/**/*.js',
+    'test/**/*.js',
+    'app/**/*.js',
+    'config/**/*.js'
+  ])
     .pipe(eslint());
 });
 
@@ -133,5 +133,7 @@ gulp.task('test', () => {
 gulp.task('install', ['bower']);
 
 gulp.task('build', ['sass', 'babel-compile', 'transfer-to-dist', 'transfer-bower']);
+
+gulp.task('recompile', ['sass', 'babel-compile', 'transfer-to-dist']);
 
 gulp.task('default', ['nodemon', 'watch']);

@@ -263,4 +263,4 @@ angular.module('mean.system')
       game.joinGame();
     }
 
-  }]);
+}]);

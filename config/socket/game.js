@@ -2,6 +2,9 @@ var async = require('async');
 var _ = require('underscore');
 var questions = require(__dirname + '/../../app/controllers/questions.js');
 var answers = require(__dirname + '/../../app/controllers/answers.js');
+const LocalStorage = require('node-localstorage').LocalStorage;
+
+const localStorage = new LocalStorage('./scratch');
 var guestNames = [
   "Disco Potato",
   "Silver Blister",
@@ -141,8 +144,22 @@ Game.prototype.drawCard = function () {
         // TODO remove this console statement
         console.log(err);
       }
-      self.questions = results[0];
-      self.answers = results[1];
+      if (localStorage.getItem('player_region')) {
+        if (localStorage.getItem('player_region') !== '') {
+          const newQuestion = results[0].filter(result => (result.region === localStorage.getItem('player_region')));
+          const newAnswers = results[1].filter(result => (result.region === localStorage.getItem('player_region')));
+          self.questions = newQuestion;
+          self.answers = newAnswers;
+        } else {
+          self.questions = results[0];
+          self.answers = results[1];
+        }
+      } else {
+        self.questions = results[0];
+        self.answers = results[1];
+      }
+      // self.questions = results[0];
+      // self.answers = results[1];
     }
   );
   setTimeout(() => {
@@ -297,7 +314,8 @@ Game.prototype.shuffleCards = function (cards) {
 };
 
 Game.prototype.dealAnswers = function (maxAnswers) {
-  maxAnswers = maxAnswers || 10;
+  // maxAnswers = maxAnswers || 10;
+  maxAnswers = 5;
   var storeAnswers = function (err, data) {
     this.answers = data;
   };
@@ -455,7 +473,6 @@ Game.prototype.pickWinning = function (thisCard, thisPlayer, autopicked) {
 };
 
 Game.prototype.killGame = function () {
-  console.log('Killing game', this.gameID);
   clearTimeout(this.resultsTimeout);
   clearTimeout(this.choosingTimeout);
   clearTimeout(this.judgingTimeout);

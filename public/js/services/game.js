@@ -192,7 +192,6 @@ angular.module('mean.system')
             'x-token': window.localStorage.token
         } })
           .then((response) => {
-            console.log('-------------->', response);
           });
       }
     });

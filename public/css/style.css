@@ -463,6 +463,20 @@
    max-width: 48%;
  }
 
+ .panel-heading{
+  background-color: #F8F8F8;
+  line-height: 30px;
+  font-size: 18px;
+  color: black;
+  width: 590px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.table-responsive{
+  width: 590px;
+}
+
  .input-info {
    max-width: 100%;
  }
@@ -1017,7 +1031,7 @@
 }
 
 #donations {
-   margin-top: 160px;
+   margin-top: 100px;
 }
 
 /*MORE MEDIA QUERIESS WHOOOOOAAAA*/
