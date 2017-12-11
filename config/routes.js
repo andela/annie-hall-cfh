@@ -1,13 +1,16 @@
-let async = require('async'),
-  express = require('express'),
-  passport = require('passport'),
-  index = require('../app/controllers/index'),
-  questions = require('../app/controllers/questions'),
-  answers = require('../app/controllers/answers'),
-  avatars = require('../app/controllers/avatars'),
-  users = require('../app/controllers/users'),
-  auth = require('../config/middlewares/authorization').secureLogin,
-  saveGame = require('../app/controllers/game').createGameData;
+import express from 'express';
+import passport from 'passport';
+
+import index from '../app/controllers/index';
+import questions from '../app/controllers/questions';
+import answers from '../app/controllers/answers';
+import avatars from '../app/controllers/avatars';
+import users from '../app/controllers/users';
+import authorization from '../config/middlewares/authorization';
+import game from '../app/controllers/game';
+
+const auth = authorization.secureLogin;
+const saveGame = game.createGameData;
 
 const router = express.Router();
 
@@ -23,7 +26,7 @@ router.get('/signout', users.signout);
 
 // Setting up the users api
 router.post('/users', users.create);
-router.post('/users/avatars', users.avatars);
+router.post('/users/avatars', users.getAvatars);
 router.post('/api/signin', users.userSignIn);
 
 // Donation Routes
@@ -107,3 +110,4 @@ router.get('/', index.render);
 router.post('/api/v1/games/:id/start', auth, saveGame);
 
 module.exports = router;
+// export default router;
