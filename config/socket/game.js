@@ -147,9 +147,8 @@ Game.prototype.drawCard = function () {
       if (localStorage.getItem('player_region')) {
         if (localStorage.getItem('player_region') !== '') {
           const newQuestion = results[0].filter(result => (result.region === localStorage.getItem('player_region')));
-          const newAnswers = results[1].filter(result => (result.region === localStorage.getItem('player_region')));
           self.questions = newQuestion;
-          self.answers = newAnswers;
+          self.answers = results[1];
         } else {
           self.questions = results[0];
           self.answers = results[1];
@@ -314,8 +313,8 @@ Game.prototype.shuffleCards = function (cards) {
 };
 
 Game.prototype.dealAnswers = function (maxAnswers) {
-  // maxAnswers = maxAnswers || 10;
-  maxAnswers = 5;
+  maxAnswers = maxAnswers || 10;
+  // maxAnswers = 5;
   var storeAnswers = function (err, data) {
     this.answers = data;
   };
