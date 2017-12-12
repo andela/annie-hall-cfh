@@ -1,16 +1,25 @@
-<div id="player-container" ng-repeat="player in game.players" style="background-color:{{colors[player.color]}}">
-  <div id ="above-czar-container">
-    <div id="avatar_">
-      <span ng-show="isPremium($index)">
-        <img ng-src="img/king.png" id="king">
-      </span>
-      <img ng-src="{{player.avatar}}"/>
-    </div>
-    <div id="player-container-inner">
-      <div id="player-name"><h4>{{player.username | upperFirstLetter}}</h4></div>
-      <div id="player-score"><h2>{{player.points}}/{{game.pointLimit}}</h2></div>
-      <div ng-show="isPlayer($index)" id="player-star">
-        <img src="../img/11.png"/>
+<div id="player-container"
+  class="player-box"
+  ng-repeat="player in game.players"
+  style="background-color:{{colors[player.color]}}">
+  <div id="above-czar-container">
+    <div class="row">
+      <div id="avatar_" class="col-md-2">
+        <span ng-show="isPremium($index)">
+          <img ng-src="img/king.png" id="king">
+        </span>
+        <img ng-src="{{player.avatar}}" class="avatar-img" />
+      </div>
+      <div id="player-container-inner" style="margin-left: 10px; margin-bottom: 0em">
+        <div id="player-name" class="col-md-2">
+          <p style="font-size: 15px">{{player.username | upperFirstLetter}}</p>
+        </div>
+      </div>
+      <div id="player-score" class="col-md-2 text-left">
+        <p style="font-size: 17px">{{player.points}}/{{game.pointLimit}}</p>
+      </div>
+      <div ng-show="isPlayer($index)" id="player-star" class="col-md-1 text-left">
+        <img src="../img/11.png" />
       </div>
     </div>
   </div>
@@ -18,4 +27,3 @@
     <span id='the-czar'>CZAR</span>
   </div>
 </div>
-

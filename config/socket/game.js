@@ -159,13 +159,13 @@ Game.prototype.drawCard = function () {
       }
       // self.questions = results[0];
       // self.answers = results[1];
+      setTimeout(() => {
+        this.shuffleCards(this.questions);
+        this.shuffleCards(this.answers);
+        this.stateChoosing(this);
+      }, 100);
     }
   );
-  setTimeout(() => {
-    this.shuffleCards(this.questions);
-    this.shuffleCards(this.answers);
-    this.stateChoosing(this);
-  }, 100);
 };
 
 Game.prototype.sendUpdate = function () {
@@ -197,7 +197,7 @@ Game.prototype.stateChoosing = function (self) {
   }
   self.round += 1;
   self.dealAnswers();
-  
+
   // Rotate card czar
   if (self.czarState) {
     if (self.czar >= self.players.length - 1) {
@@ -286,13 +286,13 @@ Game.prototype.stateDissolveGame = function () {
 };
 
 Game.prototype.getQuestions = function (cb) {
-  questions.allQuestionsForGame(function (data){
+  questions.allQuestionsForGame(function (data) {
     cb(null, data);
   });
 };
 
 Game.prototype.getAnswers = function (cb) {
-  answers.allAnswersForGame(function (data){
+  answers.allAnswersForGame(function (data) {
     cb(null, data);
   });
 };
@@ -302,7 +302,7 @@ Game.prototype.shuffleCards = function (cards) {
   var temp;
   var randNum;
 
-  while(shuffleIndex) {
+  while (shuffleIndex) {
     randNum = Math.floor(Math.random() * shuffleIndex--);
     temp = cards[randNum];
     cards[randNum] = cards[shuffleIndex];
@@ -355,7 +355,7 @@ Game.prototype.pickCards = function (thisCardArray, thisPlayer) {
       if (!previouslySubmitted) {
         // Find the indices of the cards in the player's hand (given the card ids)
         var tableCard = [];
-        for (var i = 0; i < thisCardArray.length; i++ ) {
+        for (var i = 0; i < thisCardArray.length; i++) {
           var cardIndex = null;
           for (var j = 0; j < this.players[playerIndex].hand.length; j++) {
             if (this.players[playerIndex].hand[j].id === thisCardArray[i]) {

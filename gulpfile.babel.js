@@ -55,17 +55,17 @@ gulp.task('sass', () => {
 //  provide linting for files
 gulp.task('lint', () => {
   gulp.src(['gulpfile.babel.js',
-    'public/js/**/*.js',
-    'test/**/*.js',
-    'app/**/*.js',
-    'config/**/*.js'
-  ])
+      'public/js/**/*.js',
+      'test/**/*.js',
+      'app/**/*.js',
+      'config/**/*.js'
+    ])
     .pipe(eslint());
 });
 
 // Transfer other folders and files(excluding js folder) in public to dest/public
-gulp.task('transfer-public', () => {
-  gulp.src(['public/**/*', '!public/js/**'])
+gulp.task('transfer-public-scratch', () => {
+  gulp.src(['public/**/*', 'scratch/*', '!public/js/**'])
     .pipe(gulp.dest('./dist/public'));
 });
 
@@ -119,7 +119,7 @@ gulp.task('transfer-config-json', () => {
 
 gulp.task('transfer-bower', ['angular', 'bootstrap', 'jquery', 'underscore', 'angularUtils', 'angular-bootstrap']);
 
-gulp.task('transfer-to-dist', ['transfer-public', 'transfer-app-jade', 'transfer-config-json']);
+gulp.task('transfer-to-dist', ['transfer-public-scratch', 'transfer-app-jade', 'transfer-config-json']);
 
 gulp.task('test', () => {
   gulp.src('./dist/test/**/*.js')
