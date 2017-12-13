@@ -55,7 +55,7 @@ const users = {
       to: userEmail,
       subject: 'Game Invite!',
       text: `You've been invited to join a gaming session on Cards for Humanity. Join by clicking this link ${link}`,
-      html: `<div style = "width: 40%; margin: 0 auto; padding: 3%;" >
+      html: `<div style = "width: 70%; height: 6margin: 0 auto; padding: 3%;" >
                     <div style = "background-color: black; color: #FFF; padding: 1%; text-align: center;" >
                       <h4 class = "modal-title"> Card For Humanity - Annie-Hall </h4> 
                     </div> 

@@ -29,7 +29,7 @@ angular.module('mean.system')
           });
       }
     };
-    $scope.sendInvites = (email) => {
+    $scope.sendInvites = (email, $index) => {
       if ($scope.counter === 11) {
         $scope.hideModal();
         $scope.endInvites();
@@ -44,6 +44,7 @@ angular.module('mean.system')
         }
       }).then((response) => {
         $scope.counter += 1;
+        console.log('current index is', $index);
         console.log('counter is', $scope.counter);
       });
     };

@@ -1,18 +1,18 @@
-var should = require('should');
-var io = require('socket.io-client');
+let should = require('should');
+let io = require('socket.io-client');
 
-var socketURL = 'http://localhost:3001';
+let socketURL = 'http://localhost:3001';
 
-var options ={
+let options = {
   transports: ['websocket'],
   'force new connection': true
 };
 
-var cfhPlayer1 = { 'name':'Tom' };
-var cfhPlayer2 = { 'name':'Sally' };
-var cfhPlayer3 = { 'name':'Dana' };
+let cfhPlayer1 = { name: 'Tom' };
+let cfhPlayer2 = { name: 'Sally' };
+let cfhPlayer3 = { name: 'Dana' };
 
-describe("Game Server", function(){
+describe('Game Server', () => {
 
   it('Should accept requests to joinGame', function(done) {
     var client1 = io.connect(socketURL, options);
