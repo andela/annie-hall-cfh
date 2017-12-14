@@ -98,6 +98,7 @@ router.get('/avatars', avatars.allJSON);
 // Home route
 router.get('/play', index.play);
 router.get('/', index.render);
+router.get('/gametour', index.gameTour);
 
 // Game Routes
 router.post('/api/v1/games/:id/start', auth, saveGame);
