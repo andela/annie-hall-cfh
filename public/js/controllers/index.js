@@ -29,24 +29,33 @@ angular.module('mean.system')
           location.reload();
         }, (response) => {
           $scope.alert = response.data.message;
+        }, (err) => {
+          $location.search(`error=${err.data.error}`);
         });
     };
 
     $scope.signIn = function() {
-      var userData = {
-        email: $scope.email,
-        password: $scope.password
-      };
-      $http.post('/api/signin', userData)
-        .then((response) => {
-          window.localStorage.setItem('token', response.data.token);
-          $location.path('/#!/');
-          location.reload();
-        }, (err) => {
-          
-        });
+      if (
+        $scope.email &&
+        $scope.password
+      ) {
+        var userData = {
+          email: $scope.email,
+          password: $scope.password
+        };
+        $http.post('/api/signin', userData)
+          .then((response) => {
+            window.localStorage.setItem('token', response.data.token);
+            $location.path('/#!/');
+            location.reload();
+          }, (err) => {
+            $location.search(`error=${err.data.error}`);
+          });
+      } else {
+        $location.search('error=invalid');
+      }
     };
-    
+
     $scope.logOut = () => {
       window.localStorage.removeItem('token');
       $http.get('/signout')
@@ -58,7 +67,7 @@ angular.module('mean.system')
           }
         });
     };
-    
+
 
     $scope.avatars = [];
     AvatarService.getAvatars()

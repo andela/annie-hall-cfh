@@ -59,6 +59,14 @@
             style="padding-top: 1em">
             <h4 class="text-center"> Sign Up </h4>
             <div class="card-body">
+                <div class="sign-error alert alert-danger alert alert-danger" ng-show="showError() === 'invalid'">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <p class="text-red text-center">Please check your username/email/password and try again.</p>
+                 </div>
+                 <div class="sign-error alert alert-danger alert alert-danger" ng-show="showError() === 'undefined'">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <p class="text-red text-center">Please check your username/email/password and try again.</p>
+                </div>
               <form
                 class="signup text-center "
                 style="padding-top: 1em"
@@ -99,18 +107,20 @@
                 <div class="text-centre">
                   <p> Select your avatar: </p>
                   <div
-                    class="form-check form-check-inline col-md-7"
-                    ng-controller="IndexController">
+                    class="form-check form-check-inline col-md-7 text-left"
+                    ng-controller="IndexController"
+                    style="padding-left: 3em">
                     <label
                       class="form-check-label ng-scope"
                       for="{{$index}}"
-                      ng-repeat="avatar in avatars">
+                      ng-repeat="avatar in avatars"
+                      style="padding-bottom: 10px">
                       <input
                         class="form-check-input"
                         type="radio"
                         name="avatar"
                         value="{{$index}}"
-                        style="padding-bottom: 1em">
+                        style="padding-bottom: 10px">
                       <img
                         ng-src="{{avatar}}"
                         class="pic">
