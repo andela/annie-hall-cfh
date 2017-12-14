@@ -51,10 +51,10 @@
   <div>
     <div
       class="container-fluid"
-      style="margin:0 auto; height: 100vh">
+      >
       <div
         class="row"
-        style="padding-top: 8em">
+        style="padding-top: 8em; padding-bottom: 8em">
         <div class="card col-md-6 mx-auto ">
           <div
             class="card-title"
@@ -71,28 +71,21 @@
                 style="padding-top: 1em"
                 ng-submit="signIn()"
                 method="post">
-                <div style="padding-right: 4em;">
+                <div class="mx-auto col-md-5">
                   <div class="form-group">
-                    <label
-                      class=" text-right col-md-3"
-                      for="email">User:</label>
                     <input
-                      class="col-md-5 input-text"
                       type="email"
-                      class="form-control"
+                      class="form-control input-text"
                       ng-model="email"
                       placeholder="Email"
                       required novalidate>
                   </div>
                   <div class="form-group">
-                    <label
-                      class="text-right col-md-3"
-                      for="pwd">Password:</label>
                     <input
-                      class="col-md-5 input-text"
                       type="password"
-                      class="form-control"
+                      class="form-control input-text"
                       ng-model="password"
+                      placeholder="Email"
                       required novalidate>
                   </div>
                 </div>

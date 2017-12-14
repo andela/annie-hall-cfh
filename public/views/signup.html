@@ -99,18 +99,20 @@
                 <div class="text-centre">
                   <p> Select your avatar: </p>
                   <div
-                    class="form-check form-check-inline col-md-7"
-                    ng-controller="IndexController">
+                    class="form-check form-check-inline col-md-7 text-left"
+                    ng-controller="IndexController"
+                    style="padding-left: 3em">
                     <label
                       class="form-check-label ng-scope"
                       for="{{$index}}"
-                      ng-repeat="avatar in avatars">
+                      ng-repeat="avatar in avatars"
+                      style="padding-bottom: 10px">
                       <input
                         class="form-check-input"
                         type="radio"
                         name="avatar"
                         value="{{$index}}"
-                        style="padding-bottom: 1em">
+                        style="padding-bottom: 10px">
                       <img
                         ng-src="{{avatar}}"
                         class="pic">
