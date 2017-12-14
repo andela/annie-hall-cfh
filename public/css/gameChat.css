@@ -4,12 +4,8 @@
 }
 
 #chat-footer {
-  padding: .75rem .5rem;
-}
-
-#chat-footer button {
-  background-color: #212529;
-  color: white;
+  padding: 1.2rem .5rem;
+  background: #212529;
 }
 
 input.chat-input:focus {
@@ -29,7 +25,7 @@ input.chat-input:focus {
   z-index: 1000;
 }
 
-.chat-wrapper > div > .card {
+.chat-wrapper>div>.card {
   border-radius: 5px 5px 0 0;
   width: 322px;
   height: 440px;
@@ -120,6 +116,6 @@ input.chat-input:focus {
   margin: 20px auto 0 auto;
   font-size: 23px;
 }
- 
 
- /*# sourceMappingURL= gameChat.css.map */
+
+/*# sourceMappingURL= gameChat.css.map */
