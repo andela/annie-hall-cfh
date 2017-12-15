@@ -1,13 +1,15 @@
 /**
  * Module dependencies.
  */
-var jwt = require('jsonwebtoken');
-var mongoose = require('mongoose'),
-  User = mongoose.model('User');
-var avatars = require('./avatars').all();
-var nodemailer = require('nodemailer');
+import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import nodemailer from 'nodemailer';
 
-var secret = process.env.JWT_SECRET;
+const User = mongoose.model('User');
+
+const avatars = require('./avatars').all();
+
+const secret = process.env.JWT_SECRET;
 
 /**
  * Auth callback
@@ -106,11 +108,11 @@ exports.searchUser = function (req, res) {
   });
 };
 
-/** 
+/**
  * Check avatar - Confirm if the user who logged in via passport
  * already has an avatar. If they don't have one, redirect them
  * to our Choose an Avatar page.
- */ 
+ */
 exports.checkAvatar = function(req, res) {
   if (req.user && req.user._id) {
     User.findOne({
@@ -139,7 +141,7 @@ exports.create = function(req, res) {
       email: req.body.email
     }).exec(function(err, existingUser) {
       if (!existingUser) {
-        var user = new User(req.body);
+        const user = new User(req.body);
         // Switch the user's avatar index to an actual avatar url
         user.avatar = avatars[user.avatar];
         user.provider = 'local';
@@ -151,12 +153,12 @@ exports.create = function(req, res) {
           }
           req.logIn(user, function(err) {
             if (err) return next(err);
-            var currUser = {
+            const currUser = {
               id: newUser._id,
               name: newUser.name,
               email: newUser.email
             };
-            var token = jwt.sign({
+            const token = jwt.sign({
               currUser
             }, secret, { expiresIn: '1h' });
             return res.status(201).json({
@@ -269,18 +271,18 @@ exports.user = function(req, res, next, id) {
     })
     .exec(function(err, user) {
       if (err) return next(err);
-      if (!user) return next(new Error('Failed to load User ' + id));
+      if (!user) return next(new Error(`Failed to load User ${id}`));
       req.profile = user;
       next();
     });
 };
 
 /**
- * @returns {void} description
  * get donation
  * @export
  * @param {any} req
  * @param {any} res
+ * @returns {void} description
  */
 export function getDonation(req, res) {
   if (req.decoded) {

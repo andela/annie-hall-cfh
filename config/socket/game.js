@@ -266,7 +266,6 @@ Game.prototype.stateResults = function (self) {
 };
 
 Game.prototype.stateEndGame = function (winner) {
-  console.log('-----------------> we have a winner CHUKS');
   this.state = "game ended";
   this.gameWinner = winner;
   const gamePlayers = this.players.map(player => player.username);
@@ -314,7 +313,6 @@ Game.prototype.shuffleCards = function (cards) {
 
 Game.prototype.dealAnswers = function (maxAnswers) {
   maxAnswers = maxAnswers || 10;
-  // maxAnswers = 5;
   var storeAnswers = function (err, data) {
     this.answers = data;
   };
