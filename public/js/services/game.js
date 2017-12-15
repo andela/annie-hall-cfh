@@ -190,9 +190,7 @@ angular.module('mean.system')
         $http.post(`/api/v1/games/${game.gameID}/start`, data, {
           headers: {
             'x-token': window.localStorage.token
-        } })
-          .then((response) => {
-          });
+        } });
       }
     });
 

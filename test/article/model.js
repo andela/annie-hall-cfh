@@ -12,9 +12,9 @@ var user;
 var article;
 
 //The tests
-describe('<Unit Test>', function() {
-  describe('Model Article:', function() {
-    beforeEach(function(done) {
+describe('<Unit Test>', function () {
+  describe('Model Article:', function () {
+    beforeEach(function (done) {
       user = new User({
         name: 'Full name',
         email: 'test@test.com',
@@ -22,7 +22,7 @@ describe('<Unit Test>', function() {
         password: 'password'
       });
 
-      user.save(function(err) {
+      user.save(function (err) {
         article = new Article({
           title: 'Article Title',
           content: 'Article Content',
@@ -33,25 +33,25 @@ describe('<Unit Test>', function() {
       });
     });
 
-    describe('Method Save', function() {
-      it('should be able to save whithout problems', function(done) {
-         article.save(function(err) {
+    describe('Method Save', function () {
+      it('should be able to save whithout problems', function (done) {
+        article.save(function (err) {
           should.not.exist(err);
           done();
         });
       });
 
-      it('should be able to show an error when try to save witout title', function(done) {
+      it('should be able to show an error when try to save witout title', (done) => {
         article.title = '';
 
-         article.save(function(err) {
+        article.save((err) => {
           should.exist(err);
           done();
         });
       });
     });
 
-    afterEach(function(done) {
+    afterEach((done) => {
       done();
     });
   });
