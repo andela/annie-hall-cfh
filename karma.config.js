@@ -20,15 +20,14 @@ module.exports = (config) => {
 
     // list of files to exclude
     exclude: [
-      'gruntfile.js'
+      'gulpfile.babel.js'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors:
     // https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
+    preprocessors: {},
 
 
     // test results reporter to use
