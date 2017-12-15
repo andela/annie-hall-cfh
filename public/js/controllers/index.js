@@ -16,7 +16,7 @@ angular.module('mean.system')
     };
 
     $scope.signUp = function() {
-      var userData = {
+      let userData = {
         name: $scope.name,
         email: $scope.email,
         password: $scope.password
@@ -39,7 +39,7 @@ angular.module('mean.system')
         $scope.email &&
         $scope.password
       ) {
-        var userData = {
+        let userData = {
           email: $scope.email,
           password: $scope.password
         };
