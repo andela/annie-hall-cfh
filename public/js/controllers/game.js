@@ -175,6 +175,7 @@ angular.module('mean.system')
         $('#checkModal').modal('show');
       }
       if (game.players.length >= game.playerMinLimit) {
+        playTone('beep')
         $('#startModal').modal({
           keyboard: false,
           backdrop: 'static'
@@ -184,6 +185,7 @@ angular.module('mean.system')
     };
 
     $scope.abandonGame = function () {
+      playTone('over');
       game.leaveGame();
       $location.path('/');
     };

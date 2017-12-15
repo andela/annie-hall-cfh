@@ -19,7 +19,7 @@
         </li>
         <li class="nav-item" >
           <button 
-          class="nav-link red mr-3 text-dark" 
+          class="nav-link mr-3 text-dark" 
           style="border-radius: 10px;" 
           id="tour-game-button" 
           onclick="window.location.href='/gametour'"
@@ -27,7 +27,10 @@
           
         </li>
         <li class="nav-item" ng-click="abandonGame()">
-          <button class="nav-link red mr-3 text-dark" style="border-radius: 10px;" id="abandon-game-button">Abandon Game</button>
+          <div id="abandon-game-button">
+          <button class="nav-link red mr-3 bg-dark" style="border-radius: 10px; color: white 
+          !important" id="">Abandon Game</button>
+        </div>
         </li>
       </ul>
     </div>

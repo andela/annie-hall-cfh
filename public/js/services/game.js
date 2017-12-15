@@ -1,7 +1,6 @@
 angular.module('mean.system')
   .factory('game', ['socket', '$timeout', '$http', function (socket, $timeout, $http) {
-
-    var game = {
+    let game = {
       id: null, // This player's socket ID, so we know who this player is
       gameID: null,
       players: [],
@@ -23,18 +22,18 @@ angular.module('mean.system')
       joinOverride: false
     };
 
-    var notificationQueue = [];
-    var timeout = false;
-    var self = this;
-    var joinOverrideTimeout = 0;
+    let notificationQueue = [];
+    let timeout = false;
+    let self = this;
+    let joinOverrideTimeout = 0;
 
-    var addToNotificationQueue = function(msg) {
+    let addToNotificationQueue = function (msg) {
       notificationQueue.push(msg);
       if (!timeout) { // Start a cycle if there isn't one
         setNotification();
       }
     };
-    var setNotification = function() {
+    var setNotification = function () {
       if (notificationQueue.length === 0) { // If notificationQueue is empty, stop
         clearInterval(timeout);
         timeout = false;
@@ -45,8 +44,8 @@ angular.module('mean.system')
       }
     };
 
-    var timeSetViaUpdate = false;
-    var decrementTime = function() {
+    let timeSetViaUpdate = false;
+    var decrementTime = function () {
       if (game.time > 0 && !timeSetViaUpdate) {
         game.time--;
       } else {
@@ -55,18 +54,18 @@ angular.module('mean.system')
       $timeout(decrementTime, 950);
     };
 
-    socket.on('id', function(data) {
+    socket.on('id', (data) => {
       game.id = data.id;
     });
 
-    socket.on('prepareGame', function(data) {
+    socket.on('prepareGame', (data) => {
       game.playerMinLimit = data.playerMinLimit;
       game.playerMaxLimit = data.playerMaxLimit;
       game.pointLimit = data.pointLimit;
       game.timeLimits = data.timeLimits;
     });
 
-    socket.on('gameUpdate', function(data) {
+    socket.on('gameUpdate', (data) => {
 
     // Update gameID field only if it changed.
     // That way, we don't trigger the $scope.$watch too often
@@ -180,7 +179,7 @@ angular.module('mean.system')
       }
     });
 
-    socket.on('notification', function(data) {
+    socket.on('notification', (data) => {
       addToNotificationQueue(data.notification);
     });
 
@@ -190,17 +189,18 @@ angular.module('mean.system')
         $http.post(`/api/v1/games/${game.gameID}/start`, data, {
           headers: {
             'x-token': window.localStorage.token
-        } })
+          } 
+})
           .then((response) => {
           });
       }
     });
 
-    game.joinGame = function(mode,room,createPrivate) {
+    game.joinGame = function (mode, room, createPrivate) {
       mode = mode || 'joinGame';
       room = room || '';
       createPrivate = createPrivate || false;
-      var userID = !!window.user ? user._id : 'unauthenticated';
+      let userID = window.user ? user._id : 'unauthenticated';
       socket.emit(mode, {
         userID,
         room,
@@ -212,18 +212,18 @@ angular.module('mean.system')
       socket.emit('startGame');
     };
 
-    game.leaveGame = function() {
+    game.leaveGame = function () {
       game.players = [];
       game.time = 0;
       socket.emit('leaveGame');
     };
 
-    game.pickCards = function(cards) {
-      socket.emit('pickCards',{cards: cards});
+    game.pickCards = function (cards) {
+      socket.emit('pickCards', { cards });
     };
 
-    game.pickWinning = function(card) {
-      socket.emit('pickWinning',{card: card.id});
+    game.pickWinning = function (card) {
+      socket.emit('pickWinning', { card: card.id });
     };
 
     game.drawCard = () => {
@@ -234,3 +234,9 @@ angular.module('mean.system')
 
     return game;
   }]);
+
+const playTone = (tone, volume) => {
+  const sound = new Audio(`../../sounds/${tone}.mp3`);
+  sound.volume = volume || 0.3;
+  sound.play();
+};

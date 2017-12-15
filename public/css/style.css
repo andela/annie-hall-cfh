@@ -396,7 +396,26 @@
   padding-top: 20px;
   margin-bottom: -13px;
 }
+.red{
+  overflow: ;
+}
+introjs-fixedTooltip, .introjs-helperLayer {
+  background-color: transparent !important;
+  border: 2px solid white;
+  /* zoom: 0.8; */
+}
 
+.introjs-bullets a.active {
+  background: #C05A3D !important;
+}
+
+.introjs-tooltiptext {
+  color: #350018 !important;
+}
+
+.introjs-tooltipbuttons {
+  text-align: center !important;
+}
  #sign-up-btn-landing {
    display: inline-block;
    border-radius: 8px;
