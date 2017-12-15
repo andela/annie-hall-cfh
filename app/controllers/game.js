@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // var Game = require('../models/game');
-var Game = mongoose.model('Game');
+const Game = mongoose.model('Game');
 
 /**
  * Saves game log when game session ends
@@ -9,7 +9,7 @@ var Game = mongoose.model('Game');
  * @param {object} req
  * @param {object} res
  */
-exports.createGameData = (req, res) => {
+export const createGameData = (req, res) => {
   // save game if user is authenticated
   if (req.decoded && req.params.id) {
     const game = new Game(req.body);

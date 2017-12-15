@@ -1,23 +1,27 @@
-var async = require('async'),
-  express = require('express'),
-  passport = require('passport'),
-  index = require('../app/controllers/index'),
-  questions = require('../app/controllers/questions'),
-  answers = require('../app/controllers/answers'),
-  avatars = require('../app/controllers/avatars'),
-  users = require('../app/controllers/users'),
-  auth = require('../config/middlewares/authorization').secureLogin,
-  saveGame = require('../app/controllers/game').createGameData,
-  leaderboard = require('../app/controllers/game').getLeaderboard,
-  gameLog = require('../app/controllers/game').getGameLog;
+import express from 'express';
+import passport from 'passport';
 
-var router = express.Router();
+import index from '../app/controllers/index';
+import questions from '../app/controllers/questions';
+import answers from '../app/controllers/answers';
+import avatars from '../app/controllers/avatars';
+import users from '../app/controllers/users';
+import authorization from '../config/middlewares/authorization';
+import { createGameData } from '../app/controllers/game';
+
+const auth = authorization.secureLogin;
+const saveGame = createGameData;
+
+const router = express.Router();
 
 // Search Route
-router.get('/api/search/users/:userParam', users.searchUser);
+router.get('/api/search/users/:userParam', auth, users.searchUser);
 router.post('/api/users/invite', users.inviteUser);
 
 // User Routes
+router.post('/api/invites/email', auth, users.inviteUnregistered);
+router.get('/api/users/friends', auth, users.getFriends);
+router.put('/api/users/add-friend', auth, users.addFriend);
 router.get('/signin', users.signin);
 router.get('/signup', users.signup);
 router.get('/chooseavatars', users.checkAvatar);
@@ -25,8 +29,11 @@ router.get('/signout', users.signout);
 
 // Setting up the users api
 router.post('/users', users.create);
-router.post('/users/avatars', users.avatars);
+router.post('/users/avatars', users.getAvatars);
 router.post('/api/signin', users.userSignIn);
+
+// Donation Routes
+router.post('/donations', users.addDonation);
 
 router.post('/users/session', passport.authenticate('local', {
   failureRedirect: '/signin',
@@ -39,6 +46,7 @@ router.get('/users/:userId', users.show);
 // Setting the facebook oauth routes
 router.get('/auth/facebook', passport.authenticate('facebook', {
   scope: ['email'],
+  successRedirect: '/auth/facebook/callback',
   failureRedirect: '/signin'
 }), users.signin);
 
@@ -57,7 +65,8 @@ router.get('/auth/github/callback', passport.authenticate('github', {
 
 // Setting the twitter oauth routes
 router.get('/auth/twitter', passport.authenticate('twitter', {
-  failureRedirect: '/signin'
+  failureRedirect: '/signin',
+  successRedirect: '/auth/twitter/callback'
 }), users.signin);
 
 router.get('/auth/twitter/callback', passport.authenticate('twitter', {
@@ -99,12 +108,9 @@ router.get('/avatars', avatars.allJSON);
 router.get('/play', index.play);
 router.get('/', index.render);
 
+
 // Game Routes
 router.post('/api/v1/games/:id/start', auth, saveGame);
-router.get('/api/games/history/:token', auth, gameLog);
-router.get('/api/games/leaderboard', leaderboard);
-
-// Intro route
-router.post('/setregion', index.setRegion);
 
 module.exports = router;
+// export default router;

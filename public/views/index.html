@@ -1,143 +1,135 @@
 <div landing>
-  <nav class="navbar navbar-expand-sm navbar-light navbar-inverse bg-light fixed-top">
-    <a class="navbar-brand type" href="#" style="cursor:pointer">
-      <span id="cards">Cards</span> For Humanity</a>
-    <button 
-      class="navbar-toggler" 
-      type="button" 
-      data-toggle="collapse" 
-      data-target="#navbarSupportedContent" 
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false" 
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent" ng-controller="IndexController">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item" ng-show="showOptions">
-          <a href="#!/signup" class="nav-link nov mr-3 text-dark" style="border-radius: 10px;">Sign Up</a>
+    <nav class="navbar navbar-expand-sm navbar-light navbar-inverse bg-light fixed-top">
+        <a class="navbar-brand type" href="#" style="cursor:pointer">
+            <span id="cards">Cards</span> For Humanity</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" ng-controller="IndexController">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" ng-show="showOptions">
+                    <a href="#!/signup" class="nav-link nov mr-3 text-dark" style="border-radius: 10px;">Sign Up</a>
+                </li>
+                <li class="nav-item" ng-show="showOptions">
+                    <a href="#!/signin" class="nav-link  mr-3 text-dark" style="border-radius: 10px;">Sign In</a>
+                </li>
+                <span ng-hide="showOptions">
+        <li>
+          <a class="nav-link  mr-3 text-dark" style="border-radius: 10px;" ng-click="logOut()">Sign Out</a>
         </li>
-        <li class="nav-item" ng-show="showOptions">
-          <a href="#!/signin" class="nav-link  mr-3 text-dark" style="border-radius: 10px;">Sign In</a>
-        </li>
-        <span ng-hide="showOptions">
-          <li>
-            <a class="nav-link  mr-3 text-dark" style="border-radius: 10px;" ng-click="logOut()">Sign Out</a>
-          </li>
-        </span>
-        <li class="nav-item">
-          <a href="#!" class="nav-link mr-3 text-dark" style="border-radius: 10px;">Donate</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <div id="home-section">
-    <div id="overlay">
-      <div class="container-fluid">
-        <div class="row position">
-          <div class="col-md-12">
-            <h1 id="name" class="text-white type">Cards For Humanity</h1>
-            <h3 id="story" class="text-white type">...a game for good people</h3>
-            <button onclick="window.location.href='/play'" class="button1 pl-3 pr-3 text-white mr-5">Play as a Guest</button>
-            <button onclick="window.location.href='#!/signup'" class="button1 pl-5 pr-5 text-white ml-auto">Sign Up</button>
-          </div>
+      </span>
+                <li class="nav-item">
+                    <a href="#!" class="nav-link mr-3 text-dark" style="border-radius: 10px;">Donate</a>
+                </li>
+            </ul>
         </div>
-      </div>
+    </nav>
+    <div id="home-section">
+        <div id="overlay">
+            <div class="container-fluid">
+                <div class="row position">
+                    <div class="col-md-12">
+                        <h1 id="name" class="text-white type">Cards For Humanity</h1>
+                        <h3 id="story" class="text-white type">...a game for good people</h3>
+                        <button onclick="window.location.href='/play'" class="button1 pl-3 pr-3 text-white mr-5" ng-show="showOptions">Play as a Guest</button>
+                        <button onclick="window.location.href='/signup' " class="button1 pl-5 pr-5 text-white ml-auto" ng-show="showOptions">Sign Up</button>
+                        <button onclick="window.location.href='/play'" class="button1 pl-3 pr-3 text-white mr-5" ng-hide="showOptions">Play as a Guest</button>
+                        <button onclick="window.location.href='/play/?custom' " class="button1 pl-5 pr-5 text-white ml-auto" ng-hide="showOptions">Play with friends</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <section id="explore-head-section" class="bg-light text-muted ">
-    <div class="container-fluid">
-      <h3 class="head pt-3 type">How To Play...</h3>
-      <div class="pt-5">
-        <div class="row">
-          <div class="col-lg-3 col-sm-12 ">
-            <img src="/img/cards/11.png" class="img-responsive img-size animated jackInTheBox">
-          </div>
-          <div class="col-lg-3 col-sm-12 ">
-            <img src="/img/cards/22.png" class="img-responsive img-size animated jackInTheBox">
-          </div>
-          <div class="col-lg-3 col-sm-12">
-            <img src="/img/cards/33.png" class="img-responsive img-size animated jackInTheBox">
-          </div>
-          <div class="col-lg-3 col-sm-12 ">
-            <img src="/img/cards/44.png" class="img-responsive img-size animated jackInTheBox">
-          </div>
-          <button class="btn btn-outline-secondary play mt-5 mb-5">PLAY</button>
-        </div>
-  </section>
+    <section id="explore-head-section" class="bg-light text-muted ">
+        <div class="container-fluid">
+            <h3 class="head pt-3 type">How To Play...</h3>
+            <div class="pt-5">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-12 ">
+                        <img src="/img/cards/11.png" class="img-responsive img-size animated jackInTheBox">
+                    </div>
+                    <div class="col-lg-3 col-sm-12 ">
+                        <img src="/img/cards/22.png" class="img-responsive img-size animated jackInTheBox">
+                    </div>
+                    <div class="col-lg-3 col-sm-12">
+                        <img src="/img/cards/33.png" class="img-responsive img-size animated jackInTheBox">
+                    </div>
+                    <div class="col-lg-3 col-sm-12 ">
+                        <img src="/img/cards/44.png" class="img-responsive img-size animated jackInTheBox">
+                    </div>
+                    <button class="btn btn-outline-secondary play mt-5 mb-5">PLAY</button>
+                </div>
+    </section>
 
-  <!-- Donation Info Start -->
-  <section class="back">
-    <h3 class="head pt-3 text-white type">DONATE</h3>
-    <div class="container mt-5">
-      <div class="row">
-        <div class="col-md-6 col-sm-12">
-          <p>When you donate, you would be giving strength to a child battling with a life threatening medical condition in
-            the world.</p>
-          <br>
-          <p>Sounds great right?, donate today to grant the wish of a child. </p>
-          <br>
-          <p>All donations go to the Make-a-Wish foundation</p>
-          <button class="donate btn btn-outline bg-dark text-white">DONATE TODAY</button>
+    <!-- Donation Info Start -->
+    <section class="back">
+        <h3 class="head pt-3 text-white type">DONATE</h3>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <p>When you donate, you would be giving strength to a child battling with a life threatening medical condition in the world.</p>
+                    <br>
+                    <p>Sounds great right?, donate today to grant the wish of a child. </p>
+                    <br>
+                    <p>All donations go to the Make-a-Wish foundation</p>
+                    <button class="donate btn btn-outline bg-dark text-white">DONATE TODAY</button>
+                </div>
+                <div class="col-md-6 col-sm-12 mb-5">
+                    <iframe width="700" height="315" src="https://www.youtube.com/embed/Zan22LB1Rnk" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 col-sm-12 mb-5">
-          <iframe width="700" height="315" src="https://www.youtube.com/embed/Zan22LB1Rnk" frameborder="0" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
 
-  <!-- About Us Start -->
-  <section>
-    <h3 class="head mt-5 pb-5 type">MEET THE TEAM</h3>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-6 col-sm-4 col-md-1"></div>
-        <div class=" col-xs-6 col-sm-4 col-md-2 ">
-          <img src="/img/team/osaze.jpg" alt="image-1" class="team">
-          <h4 class="team-name pb-5">Osaze Edo-Osagie</h4>
+    <!-- About Us Start -->
+    <section>
+        <h3 class="head mt-5 pb-5 type">MEET THE TEAM</h3>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-1"></div>
+                <div class=" col-xs-6 col-sm-4 col-md-2 ">
+                    <img src="/img/team/osaze.jpg" alt="image-1" class="team">
+                    <h4 class="team-name pb-5">Osaze Edo-Osagie</h4>
+                </div>
+                <div class=" col-xs-6 col-sm-4 col-md-2 ">
+                    <img src="/img/team/emma.jpg" alt="image-1" class="team">
+                    <h4 class="team-name pb-5">Okonji Emmanuel</h4>
+                </div>
+                <div class=" col-xs-6 col-sm-4 col-md-2">
+                    <img src="/img/team/fred.jpg" alt="image-1" class="team">
+                    <h4 class="team-name pb-5">Fred Adewole</h4>
+                </div>
+                <div class=" col-xs-6 col-sm-4 col-md-2">
+                    <img src="/img/team/chuks.jpg" alt="image-1" class="team">
+                    <h4 class="team-name pb-5">Durugo Chukwukadibia</h4>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-2">
+                    <img src="/img/team/chike.jpg" alt="image-1" class="team">
+                    <h4 class="team-name pb-5">Chinwoke Hyginus</h4>
+                </div>
+            </div>
         </div>
-        <div class=" col-xs-6 col-sm-4 col-md-2 ">
-          <img src="/img/team/emma.jpg" alt="image-1" class="team">
-          <h4 class="team-name pb-5">Okonji Emmanuel</h4>
-        </div>
-        <div class=" col-xs-6 col-sm-4 col-md-2">
-          <img src="/img/team/fred.jpg" alt="image-1" class="team">
-          <h4 class="team-name pb-5">Fred Adewole</h4>
-        </div>
-        <div class=" col-xs-6 col-sm-4 col-md-2">
-          <img src="/img/team/chuks.jpg" alt="image-1" class="team">
-          <h4 class="team-name pb-5">Durugo Chukwukadibia</h4>
-        </div>
-        <div class="col-xs-6 col-sm-4 col-md-2">
-          <img src="/img/team/chike.jpg" alt="image-1" class="team">
-          <h4 class="team-name pb-5">Chinwoke Hyginus</h4>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer Start -->
-  <footer id="main-footer" class="navbar-static-bottom ">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 ">
-          <div class="py-2 text-white">
-            <h1 class="h3">Cards For Humanity</h1>
-            <p class="info">Cards for humanity is an online game to encourage donations to Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Magni nam saepe totam neque ipsum est ut labore corrupti iusto ad numquam dolor rerum quas, dolorum,
-              tempore molestias. Voluptas, adipisci est.</p>
-          </div>
+    <!-- Footer Start -->
+    <footer id="main-footer" class="navbar-static-bottom ">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 ">
+                    <div class="py-2 text-white">
+                        <h1 class="h3">Cards For Humanity</h1>
+                        <p class="info">Cards for humanity is an online game to encourage donations to Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni nam saepe totam neque ipsum est ut labore corrupti iusto ad numquam dolor rerum quas, dolorum, tempore
+                            molestias. Voluptas, adipisci est.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="py-2 text-white">
+                        <p>Copyright &copy; 2017</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 text-center">
-          <div class="py-2 text-white">
-            <p>Copyright &copy; 2017</p>
-          </div>
-        </div>
-      </div>
+    </footer>
     </div>
-  </footer>
-  </div>
