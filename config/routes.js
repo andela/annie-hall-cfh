@@ -108,6 +108,9 @@ router.get('/avatars', avatars.allJSON);
 router.get('/play', index.play);
 router.get('/', index.render);
 
+// dashboard
+// router.get('/dashboard', index.dashboard);
+
 
 // Game Routes
 router.post('/api/v1/games/:id/start', auth, saveGame);

@@ -13,11 +13,14 @@
                 <li class="nav-item" ng-show="showOptions">
                     <a href="#!/signin" class="nav-link  mr-3 text-dark" style="border-radius: 10px;">Sign In</a>
                 </li>
-                <span ng-hide="showOptions">
-        <li>
-          <a class="nav-link  mr-3 text-dark" style="border-radius: 10px;" ng-click="logOut()">Sign Out</a>
-        </li>
-      </span>
+                <!-- <span ng-hide="showOptions"> -->
+                <li>
+                    <a class="nav-link  mr-3 text-dark" style="border-radius: 10px;" href='#!/dashboard' ng-hide="showOptions">Dashboard</a>
+                </li>
+                <li>
+                    <a class="nav-link  mr-3 text-dark" style="border-radius: 10px;" ng-click="logOut()" ng-hide="showOptions">Sign Out</a>
+                </li>
+                <!-- </span> -->
                 <li class="nav-item">
                     <a href="#!" class="nav-link mr-3 text-dark" style="border-radius: 10px;">Donate</a>
                 </li>
