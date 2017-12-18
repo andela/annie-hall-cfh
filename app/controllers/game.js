@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-// var Game = require('../models/game');
-var Game = mongoose.model('Game');
+
+const Game = mongoose.model('Game');
 
 /**
  * Saves game log when game session ends

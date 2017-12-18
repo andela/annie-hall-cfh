@@ -56,8 +56,7 @@ angular.module('mean.system')
           if (game.curQuestion.numAnswers === 1) {
             $scope.sendPickedCards();
             $scope.hasPickedCards = true;
-          } else if (game.curQuestion.numAnswers === 2 &&
-                        $scope.pickedCards.length === 2) {
+          } else if (game.curQuestion.numAnswers === 2 && $scope.pickedCards.length === 2) {
             // delay and send
             $scope.hasPickedCards = true;
             $timeout($scope.sendPickedCards, 300);

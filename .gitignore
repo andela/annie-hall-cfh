@@ -16,3 +16,4 @@ migrations/
 yarn-error.log
 dist/
 
+npm-debug.log

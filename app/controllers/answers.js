@@ -13,7 +13,7 @@ let mongoose = require('mongoose'),
 exports.answer = function (req, res, next, id) {
   Answer.load(id, (err, answer) => {
     if (err) return next(err);
-    if (!answer) return next(new Error(`Failed to load answer ${  id}`));
+    if (!answer) return next(new Error(`Failed to load answer ${id}`));
     req.answer = answer;
     next();
   });
