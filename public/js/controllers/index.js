@@ -58,7 +58,7 @@ angular.module('mean.system')
     };
 
     $scope.signUp = function() {
-      var userData = {
+      let userData = {
         name: $scope.name,
         email: $scope.email,
         password: $scope.password
@@ -87,7 +87,7 @@ angular.module('mean.system')
           $scope.alert = err.data.message;
         });
     };
-    
+
     $scope.logOut = () => {
       window.localStorage.removeItem('token');
       $http.get('/signout')
@@ -99,7 +99,7 @@ angular.module('mean.system')
           }
         });
     };
-    
+
 
     $scope.avatars = [];
     AvatarService.getAvatars()
