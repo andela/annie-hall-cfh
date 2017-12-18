@@ -15,5 +15,4 @@ migrations/
 .coveralls.yml
 yarn-error.log
 dist/
-
 npm-debug.log

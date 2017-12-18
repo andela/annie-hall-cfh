@@ -26,10 +26,10 @@ module.exports = function (passport) {
 
   // Use local strategy
   passport.use(new LocalStrategy(
-{
-    usernameField: 'email',
-    passwordField: 'password'
-  },
+    {
+      usernameField: 'email',
+      passwordField: 'password'
+    },
     ((email, password, done) => {
       User.findOne({
         email
@@ -56,11 +56,11 @@ module.exports = function (passport) {
 
   // Use twitter strategy
   passport.use(new TwitterStrategy(
-{
-    consumerKey: process.env.TWITTER_CONSUMER_KEY || config.twitter.clientID,
-    consumerSecret: process.env.TWITTER_CONSUMER_SECRET || config.twitter.clientSecret,
-    callbackURL: config.twitter.callbackURL
-  },
+    {
+      consumerKey: process.env.TWITTER_CONSUMER_KEY || config.twitter.clientID,
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET || config.twitter.clientSecret,
+      callbackURL: config.twitter.callbackURL
+    },
     ((token, tokenSecret, profile, done) => {
       User.findOne({
         'twitter.id_str': profile.id
@@ -88,11 +88,11 @@ module.exports = function (passport) {
 
   // Use facebook strategy
   passport.use(new FacebookStrategy(
-{
-    clientID: process.env.FB_CLIENT_ID || config.facebook.clientID,
-    clientSecret: process.env.FB_CLIENT_SECRET || config.facebook.clientSecret,
-    callbackURL: config.facebook.callbackURL
-  },
+    {
+      clientID: process.env.FB_CLIENT_ID || config.facebook.clientID,
+      clientSecret: process.env.FB_CLIENT_SECRET || config.facebook.clientSecret,
+      callbackURL: config.facebook.callbackURL
+    },
     ((accessToken, refreshToken, profile, done) => {
       User.findOne({
         'facebook.id': profile.id
@@ -124,11 +124,11 @@ module.exports = function (passport) {
 
   // Use github strategy
   passport.use(new GitHubStrategy(
-{
-    clientID: process.env.GITHUB_CLIENT_ID || config.github.clientID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET || config.github.clientSecret,
-    callbackURL: config.github.callbackURL
-  },
+    {
+      clientID: process.env.GITHUB_CLIENT_ID || config.github.clientID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || config.github.clientSecret,
+      callbackURL: config.github.callbackURL
+    },
     ((accessToken, refreshToken, profile, done) => {
       User.findOne({
         'github.id': profile.id
@@ -157,11 +157,11 @@ module.exports = function (passport) {
 
   // Use google strategy
   passport.use(new GoogleStrategy(
-{
-    clientID: process.env.GOOGLE_CLIENT_ID || config.google.clientID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET || config.google.clientSecret,
-    callbackURL: config.google.callbackURL
-  },
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID || config.google.clientID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || config.google.clientSecret,
+      callbackURL: config.google.callbackURL
+    },
     ((accessToken, refreshToken, profile, done) => {
       User.findOne({
         'google.id': profile.id

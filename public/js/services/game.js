@@ -27,13 +27,13 @@ angular.module('mean.system')
     const self = this;
     let joinOverrideTimeout = 0;
 
-    const addToNotificationQueue = function (msg) {
+    const addToNotificationQueue = (msg) => {
       notificationQueue.push(msg);
       if (!timeout) { // Start a cycle if there isn't one
         setNotification();
       }
     };
-    var setNotification = function () {
+    var setNotification = () => {
       if (notificationQueue.length === 0) { // If notificationQueue is empty, stop
         clearInterval(timeout);
         timeout = false;
@@ -45,7 +45,7 @@ angular.module('mean.system')
     };
 
     let timeSetViaUpdate = false;
-    var decrementTime = function () {
+    const decrementTime = () => {
       if (game.time > 0 && !timeSetViaUpdate) {
         game.time--;
       } else {
@@ -86,8 +86,10 @@ angular.module('mean.system')
       const newState = (data.state !== game.state);
 
       // Handle updating game.time
-      if (data.round !== game.round && data.state !== 'awaiting players' &&
-                data.state !== 'game ended' && data.state !== 'game dissolved') {
+      if (
+        data.round !== game.round && data.state !== 'awaiting players' &&
+        data.state !== 'game ended' && data.state !== 'game dissolved'
+      ) {
         game.time = game.timeLimits.stateChoosing - 1;
         timeSetViaUpdate = true;
       } else if (newState && data.state === 'waiting for czar to decide') {
@@ -118,7 +120,7 @@ angular.module('mean.system')
               game.table.push(data.table[j], 1);
             }
           }
-          var setNotification = function () {
+          const setNotification = () => {
             if (notificationQueue.length === 0) { // If notificationQueue is empty, stop
               clearInterval(timeout);
               timeout = false;
@@ -168,8 +170,10 @@ angular.module('mean.system')
         } else {
           addToNotificationQueue('The czar is contemplating...');
         }
-      } else if (data.state === 'winner has been chosen' &&
-                game.curQuestion.text.indexOf('<u></u>') > -1) {
+      } else if (
+        data.state === 'winner has been chosen' &&
+        game.curQuestion.text.indexOf('<u></u>') > -1
+      ) {
         game.curQuestion = data.curQuestion;
       } else if (data.state === 'awaiting players') {
         joinOverrideTimeout = $timeout(() => {
