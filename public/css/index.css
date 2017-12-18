@@ -10,6 +10,9 @@ body {
   margin-left: 10em;
   width: 80%;
   height: 60em;
+    font-family: 'Barlow', sans-serif;
+    font-family: 'Work Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
 .type {
   font-family: 'Open Sans', sans-serif;
