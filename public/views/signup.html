@@ -45,6 +45,36 @@
   </nav>
   <!-- Fixed Logo & Menu Bar End -->
 
+<!-- Landing Start -->
+<div class="wpb-teaser parallax-background" id="homer">
+  <div class="background-opacity"></div> 
+  <div class="modified-container">
+    <div class="row" id="main-text"> 
+    <!-- Teaser Text Start -->
+    <div id="landing-logo">
+      <h2 id="slogan">Sign Up with:</h2>
+      <div id="login-buttons">
+        <a href="/auth/facebook"><img class="login-item" src="/img/icons/facebook.png"></a>
+        <a href="/auth/github"><img class="login-item" src="/img/icons/github.png"></a>
+        <a href="/auth/twitter"><img class="login-item" src="/img/icons/twitter.png"></a>
+        <a href="/auth/google"><img class="login-item" src="/img/icons/google.png"></a>
+      </div>
+      <p id="create">Or fill in your details below and select an avatar:</p>
+
+      <div class="sign-body">
+        <div ng-controller="IndexController" class="more-sign">
+          <span id="alertMessage">{{alert}}</span>
+          <form class="signup form-horizontal" ng-submit="signUp()" method="post">
+            <div class="control-group">
+              <label for="name" class="control-label"></label>
+              <div class="controls">
+                <input class="input-info" id="name" type="text" ng-model="name" name="name" placeholder="Full name" required novalidate />
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="email" class="control-label"></label>
+              <div class="controls">
+                <input class="input-info" id="email"  ng-model="email" type="email" name="email" placeholder="Email" required novalidate />
   <div>
     <div class="container-fluid">
       <div

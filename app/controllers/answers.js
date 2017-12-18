@@ -1,7 +1,7 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
   async = require('async'),
   Answer = mongoose.model('Answer'),
   _ = require('underscore');
@@ -10,10 +10,10 @@ var mongoose = require('mongoose'),
 /**
  * Find answer by id
  */
-exports.answer = function(req, res, next, id) {
-  Answer.load(id, function(err, answer) {
+exports.answer = function (req, res, next, id) {
+  Answer.load(id, (err, answer) => {
     if (err) return next(err);
-    if (!answer) return next(new Error('Failed to load answer ' + id));
+    if (!answer) return next(new Error(`Failed to load answer ${  id}`));
     req.answer = answer;
     next();
   });
@@ -22,15 +22,15 @@ exports.answer = function(req, res, next, id) {
 /**
  * Show an answer
  */
-exports.show = function(req, res) {
-  res.jsonp(req.answer);
+exports.show = function (req, res) {
+  res.json(req.answer);
 };
 
 /**
  * List of Answers
  */
-exports.all = function(req, res) {
-  Answer.find({official:true}).select('-_id').exec(function(err, answers) {
+exports.all = function (req, res) {
+  Answer.find({ official: true }).select('-_id').exec((err, answers) => {
     if (err) {
       res.render('error', {
         status: 500
@@ -44,8 +44,8 @@ exports.all = function(req, res) {
 /**
  * List of Answers (for Game class)
  */
-exports.allAnswersForGame = function(cb) {
-  Answer.find({official:true}).select('-_id').exec(function(err, answers) {
+exports.allAnswersForGame = function (cb) {
+  Answer.find({ official: true }).select('-_id').exec((err, answers) => {
     if (err) {
       console.log(err);
     } else {
