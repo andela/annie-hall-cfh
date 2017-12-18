@@ -1,20 +1,20 @@
 /**
  * Module dependencies.
  */
-var should = require('should'),
+let should = require('should'),
   app = require('../../server'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
   Article = mongoose.model('Article');
 
-//Globals
-var user;
-var article;
+// Globals
+let user;
+let article;
 
-//The tests
-describe('<Unit Test>', function() {
-  describe('Model Article:', function() {
-    beforeEach(function(done) {
+// The tests
+describe('<Unit Test>', () => {
+  describe('Model Article:', () => {
+    beforeEach((done) => {
       user = new User({
         name: 'Full name',
         email: 'test@test.com',
@@ -22,36 +22,34 @@ describe('<Unit Test>', function() {
         password: 'password'
       });
 
-      user.save(function(err) {
+      user.save((err) => {
         article = new Article({
           title: 'Article Title',
           content: 'Article Content',
-          user: user
+          user
         });
-
         done();
       });
     });
 
-    describe('Method Save', function() {
-      it('should be able to save whithout problems', function(done) {
-        article.save(function(err) {
+    describe('Method Save', () => {
+      it('should be able to save whithout problems', (done) => {
+        article.save((err) => {
           should.not.exist(err);
           done();
         });
       });
 
-      it('should be able to show an error when try to save witout title', function(done) {
+      it('should be able to show an error when try to save witout title', (done) => {
         article.title = '';
-
-        article.save(function(err) {
+        article.save((err) => {
           should.exist(err);
           done();
         });
       });
     });
 
-    afterEach(function(done) {
+    afterEach((done) => {
       done();
     });
   });

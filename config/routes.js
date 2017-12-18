@@ -1,23 +1,32 @@
-var async = require('async'),
-  express = require('express'),
-  passport = require('passport'),
-  index = require('../app/controllers/index'),
-  questions = require('../app/controllers/questions'),
-  answers = require('../app/controllers/answers'),
-  avatars = require('../app/controllers/avatars'),
-  users = require('../app/controllers/users');
+import express from 'express';
+import passport from 'passport';
 
-var router = express.Router();
+import index from '../app/controllers/index';
+import questions from '../app/controllers/questions';
+import answers from '../app/controllers/answers';
+import avatars from '../app/controllers/avatars';
+import users from '../app/controllers/users';
+import authorization from '../config/middlewares/authorization';
+import game from '../app/controllers/game';
 
-//User Routes
+const auth = authorization.secureLogin;
+const saveGame = game.createGameData;
+
+const router = express.Router();
+
+// Search Route
+router.get('/api/search/users/:userParam', users.searchUser);
+router.post('/api/users/invite', users.inviteUser);
+
+// User Routes
 router.get('/signin', users.signin);
 router.get('/signup', users.signup);
 router.get('/chooseavatars', users.checkAvatar);
 router.get('/signout', users.signout);
 
-//Setting up the users api
+// Setting up the users api
 router.post('/users', users.create);
-router.post('/users/avatars', users.avatars);
+router.post('/users/avatars', users.getAvatars);
 router.post('/api/signin', users.userSignIn);
 
 // Donation Routes
@@ -31,9 +40,10 @@ router.post('/users/session', passport.authenticate('local', {
 router.get('/users/me', users.me);
 router.get('/users/:userId', users.show);
 
-//Setting the facebook oauth routes
+// Setting the facebook oauth routes
 router.get('/auth/facebook', passport.authenticate('facebook', {
   scope: ['email'],
+  successRedirect: '/auth/facebook/callback',
   failureRedirect: '/signin'
 }), users.signin);
 
@@ -41,7 +51,7 @@ router.get('/auth/facebook/callback', passport.authenticate('facebook', {
   failureRedirect: '/signin'
 }), users.authCallback);
 
-//Setting the github oauth routes
+// Setting the github oauth routes
 router.get('/auth/github', passport.authenticate('github', {
   failureRedirect: '/signin'
 }), users.signin);
@@ -50,16 +60,17 @@ router.get('/auth/github/callback', passport.authenticate('github', {
   failureRedirect: '/signin'
 }), users.authCallback);
 
-//Setting the twitter oauth routes
+// Setting the twitter oauth routes
 router.get('/auth/twitter', passport.authenticate('twitter', {
-  failureRedirect: '/signin'
+  failureRedirect: '/signin',
+  successRedirect: '/auth/twitter/callback'
 }), users.signin);
 
 router.get('/auth/twitter/callback', passport.authenticate('twitter', {
   failureRedirect: '/signin'
 }), users.authCallback);
 
-//Setting the google oauth routes
+// Setting the google oauth routes
 router.get('/auth/google', passport.authenticate('google', {
   failureRedirect: '/signin',
   scope: [
@@ -72,7 +83,7 @@ router.get('/auth/google/callback', passport.authenticate('google', {
   failureRedirect: '/signin'
 }), users.authCallback);
 
-//Finish with setting up the userId param
+// Finish with setting up the userId param
 router.param('userId', users.user);
 
 // Answer Routes
@@ -94,4 +105,9 @@ router.get('/avatars', avatars.allJSON);
 router.get('/play', index.play);
 router.get('/', index.render);
 
+
+// Game Routes
+router.post('/api/v1/games/:id/start', auth, saveGame);
+
 module.exports = router;
+// export default router;
