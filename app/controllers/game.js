@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// var Game = require('../models/game');
 var Game = mongoose.model('Game');
 
 /**
@@ -13,6 +12,7 @@ exports.createGameData = (req, res) => {
   // save game if user is authenticated
   if (req.decoded && req.params.id) {
     const game = new Game(req.body);
+
     game.userID = req.decoded.currUser.id;
     game.gameID = req.params.id;
     game.save((error) => {
@@ -129,3 +129,4 @@ export const getGameLog = (req, res) => {
     return res.status(401).send({ message: 'Unauthenticated user' });
   }
 };
+

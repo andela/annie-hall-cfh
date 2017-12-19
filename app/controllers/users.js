@@ -7,53 +7,12 @@ var mongoose = require('mongoose'),
 var avatars = require('./avatars').all();
 var nodemailer = require('nodemailer');
 
-var secret = process.env.JWT_SECRET;
 
-/**
- * Auth callback
- */
-exports.authCallback = function(req, res, next) {
-  res.redirect('/chooseavatars');
-};
+import avatar from './avatars';
 
-/**
- * Show login form
- */
-exports.signin = function(req, res) {
-  if (!req.user) {
-    res.redirect('/#!/signin?error=invalid');
-  } else {
-    res.redirect('/#!/app');
-  }
-};
-
-/**
- * Show sign up form
- */
-exports.signup = function(req, res) {
-  if (!req.user) {
-    res.redirect('/#!/signup');
-  } else {
-    res.redirect('/#!/app');
-  }
-};
-
-/**
- * Logout
- */
-exports.signout = function(req, res) {
-  req.logout();
-  return res.json({
-    message: 'Logged Out'
-  });
-};
-
-/**
- * Session
- */
-exports.session = function(req, res) {
-  res.redirect('/');
-};
+const User = mongoose.model('User');
+const avatars = avatar.all();
+const secret = process.env.JWT_SECRET;
 
 exports.inviteUser = function (req, res) {
   const userEmail = req.body.email;
@@ -126,9 +85,46 @@ exports.checkAvatar = function(req, res) {
   } else {
     // If user doesn't even exist, redirect to /
     res.redirect('/');
-  }
-
-};
+  },
+  inviteUser: (req, res) => {
+    const userEmail = req.body.email;
+    const { link } = req.body;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      secure: false,
+      port: 25,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+    const mailBody = {
+      from: '"Cards for Humanity" <cardsForHumanity@cfh.com>',
+      to: userEmail,
+      subject: 'Game Invite!',
+      text: `You've been invited to join a gaming session on Cards for Humanity. Join by clicking this link ${link}`,
+      html: `<div style = "width: 70%; height: 6margin: 0 auto; padding: 3%;" >
+                    <div style = "background-color: black; color: #FFF; padding: 1%; text-align: center;" >
+                      <h4 class = "modal-title"> Card For Humanity - Annie-Hall </h4> 
+                    </div> 
+                    <center>
+                      <p> You've been invited to join a gaming session on Cards for Humanity. </p> 
+                      <p>
+                        Click this link to join game:
+                        <a href = ${link}> <button style = "background: #F6A623; color: #FFF; padding: 2%; border:0; border-radius: 5px;"> Join Game </button></a >
+                        </p> 
+                    </center> 
+                    <div style = "font-size: 14px; margin-top: 6px; color: #fff; text-align: center; background-color: black; padding: 0.5%;" >
+                      <p> 
+                        Cardsfor Humanity - Annie-Hall & copy;2017 <br /> <a style = "color: #F6A623;"
+                        href = "http://www.andela.com"> Andela </a>
+                      </p>
+                    <div>
+                  </div>`
+    };
 
 /**
  * Create user
@@ -167,47 +163,87 @@ exports.create = function(req, res) {
           });
         });
       } else {
-        return res.status(401).json({
-          message: 'User already exist'
+        res.status(200).json({
+          message: 'Message sent successfully'
         });
       }
     });
-  } else {
-    return res.status(400).json({
-      message: 'Field must not be empty'
+  },
+  searchUser: (req, res) => {
+    const query = req.params.userParam;
+    User.find({
+      $or: [
+        { email: { $regex: `.*${query}.*` } }, { name: { $regex: `.*${query}.*` } }
+      ]
+    }, 'email name').exec((err, user) => {
+      if (err) {
+        return res.status(500).json({ Message: 'Internal server error' });
+      }
+      return res.status(200).json({ Message: 'Success', User: user });
     });
-  }
-};
-
-/*
- * [signin a user]
- * @method jwtSignIn
- * @param  {[type]} req [the user infomation sent from the frontend]
- * @param  {[type]} res [the result of the registration]
- * @return {[type]} Object
- */
-exports.userSignIn = (req, res) => {
-  if (!req.body.email || !req.body.password) {
-    return res.status(400).json({ message: 'Enter all required field' });
-  }
-  User.findOne({
-    email: req.body.email
-  }).exec((error, existingUser) => {
-    if (error) {
-      return res.status(500).json({
-        message: 'Something went wrong'
-      });
+  },
+  checkAvatar: (req, res) => {
+    if (req.user && req.user._id) {
+      User.findOne({
+        _id: req.user._id
+      })
+        .exec((err, user) => {
+          if (user.avatar !== undefined) {
+            res.redirect('/#!/');
+          } else {
+            res.redirect('/#!/choose-avatar');
+          }
+        });
+    } else {
+      // If user doesn't even exist, redirect to /
+      res.redirect('/');
     }
-    if (!existingUser) {
-      return res.status(404).json({
-        message: 'User not found'
+  },
+  create: (req, res) => {
+    if (req.body.name && req.body.password && req.body.email) {
+      User.findOne({
+        email: req.body.email
+      }).exec((err, existingUser) => {
+        if (!existingUser) {
+          const user = new User(req.body);
+          // Switch the user's avatar index to an actual avatar url
+          user.avatar = avatars[user.avatar];
+          user.provider = 'local';
+          user.save((err, newUser) => {
+            if (err) {
+              res.status(500).json({
+                message: 'Internal Server error'
+              });
+            }
+            req.logIn(user, (err) => {
+              if (err) return next(err);
+              const createdUser = {
+                id: newUser._id,
+                name: newUser.name,
+                email: newUser.email
+              };
+              const token = jwt.sign({
+                createdUser
+              }, secret, { expiresIn: '1h' });
+              return res.status(201).json({
+                token,
+                message: 'Successfully signed up',
+                newUser
+              });
+            });
+          });
+        } else {
+          return res.status(401).json({
+            message: 'User already exist'
+          });
+        }
       });
-    }
-    if (!existingUser.authenticate(req.body.password)) {
+    } else {
       return res.status(400).json({
-        message: 'Invalid Login details'
+        message: 'Field must not be empty'
       });
     }
+
     req.logIn(existingUser, () => {
       const currUser = {
         id: existingUser._id,
@@ -230,11 +266,33 @@ exports.avatars = function(req, res) {
   if (req.user && req.user._id && req.body.avatar !== undefined &&
     /\d/.test(req.body.avatar) && avatars[req.body.avatar]) {
     User.findOne({
-      _id: req.user._id
-    })
-      .exec(function(err, user) {
-        user.avatar = avatars[req.body.avatar];
-        user.save();
+      email: req.body.email
+    }).exec((error, existingUser) => {
+      if (error) {
+        return res.status(500).json({
+          message: 'Something went wrong'
+        });
+      }
+      if (!existingUser) {
+        return res.status(404).json({
+          message: 'User not found'
+        });
+      }
+      if (!existingUser.authenticate(req.body.password)) {
+        return res.status(400).json({
+          message: 'Invalid Login details'
+        });
+      }
+      req.logIn(existingUser, () => {
+        const newUser = {
+          id: existingUser._id,
+          name: existingUser.name,
+          email: existingUser.email
+        };
+        const token = jwt.sign({
+          newUser
+        }, secret, { expiresIn: '1h' });
+        return res.status(200).json({ message: 'Login Successful', token });
       });
   }
   return res.redirect('/#!/app');
@@ -246,33 +304,56 @@ exports.avatars = function(req, res) {
 exports.show = function(req, res) {
   var user = req.profile;
 
-  res.render('users/show', {
-    title: user.name,
-    user: user
-  });
-};
 
-/**
- * Send User
- */
-exports.me = function(req, res) {
-  res.jsonp(req.user || null);
-};
+  addDonation: (req, res) => {
+    if (req.body && req.user && req.user._id) {
+      // Verify that the object contains crowdrise data
+      if (req.body.amount && req.body.crowdrise_donation_id && req.body.donor_name) {
+        User.findOne({
+          _id: req.user._id
+        })
+          .exec((err, user) => {
+            // Confirm that this object hasn't already been entered
+            let duplicate = false;
+            for (let i = 0; i < user.donations.length; i++) {
+              if (user.donations[i].crowdrise_donation_id === req.body.crowdrise_donation_id) {
+                duplicate = true;
+              }
+            }
+            if (!duplicate) {
+              // TODO Remove this console.log
+              console.log('Validated donation');
+              user.donations.push(req.body);
+              user.premium = 1;
+              user.save();
+            }
+          });
+      }
+    }
+    res.send();
+  },
+  show: (req, res) => {
+    const user = req.profile;
 
-/**
- * Find user by id
- */
-exports.user = function(req, res, next, id) {
-  User
-    .findOne({
+    res.render('users/show', {
+      title: user.name,
+      user
+    });
+  },
+  me: (req, res) => {
+    res.json(req.user || null);
+  },
+  user: (req, res, next, id) => {
+    User.findOne({
       _id: id
     })
-    .exec(function(err, user) {
-      if (err) return next(err);
-      if (!user) return next(new Error('Failed to load User ' + id));
-      req.profile = user;
-      next();
-    });
+      .exec((err, foundUser) => {
+        if (err) return next(err);
+        if (!foundUser) return next(new Error(`Failed to load User ${id}`));
+        req.profile = foundUser;
+        next();
+      });
+  }
 };
 
 /**
@@ -300,3 +381,4 @@ export function getDonation(req, res) {
     return res.status(401).send({ message: 'Unauthenticated user' });
   }
 }
+

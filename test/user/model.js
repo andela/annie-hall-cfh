@@ -1,27 +1,15 @@
 /**
  * Module dependencies.
  */
-var should = require('should'),
-  app = require('../../server'),
-  mongoose = require('mongoose'),
-  User = mongoose.model('User');
 
-//Globals
-var user;
+import mongoose from 'mongoose';
+import chaiHttp from 'chai-http';
+import chai from 'chai';
 
-//The tests
-describe('<Unit Test>', function() {
-  describe('Model User:', function() {
-    before(function(done) {
-      user = new User({
-        name: 'Full name',
-        email: 'test@test.com',
-        username: 'user',
-        password: 'password'
-      });
+import app from '../../server';
 
-      done();
-    });
+chai.use(chaiHttp);
+const { expect } = chai;
 
     describe('Method Save', function() {
       it('should be able to save whithout problems', function(done) {
@@ -43,5 +31,6 @@ describe('<Unit Test>', function() {
     after(function(done) {
       done();
     });
+
   });
 });
