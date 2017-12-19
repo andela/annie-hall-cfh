@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// var Game = require('../models/game');
 const Game = mongoose.model('Game');
 
 /**
