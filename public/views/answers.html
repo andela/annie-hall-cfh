@@ -1,25 +1,18 @@
 <div ng-cloak id="cards-container" ng-hide="game.state === 'game ended' || game.state ==='game dissolved'">
-  <div id="social-bar-container">
-    <player></player>
-  </div>
-  <div id="cards" class='hand'>
-
-    <span ng-show="winnerPicked()"></span>
-    <div
-      ng-style="{'cursor':'pointer'}"
-      class="card smallest" 
-      id='answers'
-      ng-click="pickCard(card)" 
-      ng-hide="showTable || isCzar() || game.state==='waiting for czar to draw a card'" 
-      ng-repeat="card in game.players[game.playerIndex].hand" 
-      ng-animate="{enter:'animated fadeInUp', leave: 'animated fadeInOut'}"
-    >
-      <span ng-bind-html-unsafe="card.text"></span>
-      <span id='selection-number' ng-show="showFirst(card)"> 1 </span>
-      <span id='selection-number' ng-show="showSecond(card)"> 2 </span>
+    <div id="social-bar-container">
+        <player></player>
     </div>
+    <div id="cards" class='hand'>
 
-    <span ng-repeat="answer in game.table">
+        <span ng-show="winnerPicked()"></span>
+
+        <div ng-style="{'cursor':'pointer'}" class="card smallest" id='answers' ng-click="pickCard(card)" ng-hide="showTable || isCzar() || game.state==='waiting for czar to draw a card'" ng-repeat="card in game.players[game.playerIndex].hand" ng-animate="{enter:'animated fadeInUp', leave: 'animated fadeInOut'}">
+            <span ng-bind-html-unsafe="card.text"></span>
+            <span id='selection-number' ng-show="showFirst(card)"> 1 </span>
+            <span id='selection-number' ng-show="showSecond(card)"> 2 </span>
+        </div>
+
+        <span ng-repeat="answer in game.table">
       <div
         class="card smallest"
         ng-style="pointerCursorStyle()"
@@ -28,286 +21,256 @@
         ng-show="(showTable || isCzar()) && game.state!=='waiting for czar to draw a card'"
         ng-repeat="card in answer.card"
         ng-animate="{enter:'animated bounceInLeft'}"
-        style="background-color:{{winningColor($parent.$index)}}"
-      >
+        style="background-color:{{winningColor($parent.$index)}}">
         <span ng-bind-html-unsafe="card.text"></span>
         <span id='selection-number' ng-show="firstAnswer($index)"> 1 </span>
         <span id='selection-number' ng-show="secondAnswer($index)"> 2 </span>
-      </div>
+    </div>
     </span>
-  </div>
+
+</div>
 </div>
 
-<div class="modal fade" id="end-invites" tabindex="-1" 
-  role="dialog" aria-labelledby="end-invites" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <h4>You can only invite a maximum of Eleven(11) players.</h4>
-      </div>
+<div class="modal fade" id="end-invites" tabindex="-1" role="dialog" aria-labelledby="end-invites" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>You can only invite a maximum of Eleven(11) players.</h4>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
-<div class="modal fade" id="searchInput" tabindex="-1" 
-  role="dialog" aria-labelledby="searchInput" 
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="input-group">
-          <input type="text" class="form-control" 
-            ng-change="searchUser(searchQuery)" ng-model='searchQuery' 
-            placeholder="Search by username or email" />
-            <span class="input-group-btn">
-              <button class="btn btn-warning" 
-              ng-click='searchUser(searchQuery)' 
-              type="button"><i class="fa fa-search" 
-              aria-hidden="true"></i></button>
-            </span>
-           </div>
-              <div ng-if="searchResults.length">
-                <div ng-repeat="user in searchResults" id="search-result">
-                  <div class="row" id="search-result-info">
-                    <div class="col-xs-3">
-                      <h5>{{user.name}}</h5>
-                    </div>
-                    <div class="col-xs-3">
-                      <button class="btn btn-warning" ng-click="sendInvites(user.email, $index)">invite</button>
-                    </div>
-                  </div>
-                 </div>
-                <hr />
-              </div>
-              <div ng-if="searchResults.length < 1">
-                <div id="search-results">
-                  <h5>No match(es) found</h5>
+<div class="modal fade" id="sentResult" tabindex="-1" role="dialog" aria-labelledby="end-invites" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div>
+                    <h4 id="send-mail-message">Invite sent to {{mail}}</h4>
                 </div>
-              </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="searchInput" tabindex="-1" role="dialog" aria-labelledby="searchInput" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#friends" role="tab" aria-controls="home" ng-click="showFriends()" aria-selected="true">Invite Friends</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#sendEmail" role="tab" aria-controls="profile" ng-click="showFriends()" aria-selected="false">Invite unregistered</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="messages-tab" data-toggle="tab" href="#searchAll" role="tab" aria-controls="messages" ng-click="showFriends()" aria-selected="false">Search</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="friends" role="tabpanel" aria-labelledby="home-tab">
+                        <!-- {{allFriends}} -->
+                        <div class- "container" ng-if="allFriends.length < 1">
+                            <h6 class="no-friends"> You have no friends, loner!</h6>
+                        </div>
+                        <div ng-if="allFriends.length">
+                            <div class="no-friends" ng-repeat="friend in allFriends" style="display:flex; width:100%; margin-bottom: 5px;">
+                                <!-- <div class="row">
+                                <div class="col-xs-9">
+                                    {{friend.email}}
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn bg-dark" ng-click="sendInvites(friend.email, $index)" ng-disabled="invitedUsers.includes(friend.email)" id="invite-friend-button"><span class="text-white">Invite</span></button>
+                                </div>
+                            </div> -->
+                                <div style="width: 60%;">{{friend.email}}</div>
+                                <div style="width: 40%;"><button class="btn bg-dark" ng-click="sendInvites(friend.email, $index)" ng-disabled="invitedUsers.includes(friend.email)" id="invite-friend-button"><span class="text-white">Invite</span></button></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="searchAll" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="searchUser(searchQuery)" ng-model='searchQuery' placeholder="Search by username or email" />
+                            <span class="input-group-btn">
+              <button class="btn btn-invite bg-dark"  ng-click='searchUser(searchQuery)' 
+                type="button"><i class="fa fa-search text-white" aria-hidden="true"></i></button>
+            </span>
+                        </div>
+                        <div ng-if="searchResults.length">
+                            <div class="counter text-center">
+                                <span ng-show="sending"><i class="fa fa-spinner fa-spin" style="font-size:24px"></i></span> <br>
+                                <h4 class=""> Invite sent to <span class="show-counter">{{counter}}/11</span> people</h4>
+                            </div>
+                            <div>
+                                <div ng-repeat="user in searchResults" id="search-result" style="display:flex; width:100%">
+                                    <div style="width: 40%;">{{user.name}}</div>
+                                    <div style="width: 30%;"><button class="btn btn-invite bg-dark" id="invite-friend" ng-click="sendInvites(user.email, $index)" ng-disabled="invitedUsers.includes(user.email)"><span class="text-white">Invite</span></button></div>
+                                    <div style="width: 30%;"><button class="btn btn-invite bg-dark" ng-disabled="friendsIdlist.includes(user._id)" id="add-friend" ng-click="addFriend(user._id, user.email, $index)"><span class="text-white">Add as friend</span></button></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="searchResults.length < 1">
+                            <div id="search-results">
+                                <h5>No match(es) found</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="sendEmail" role="tabpanel" aria-labelledby="messages-tab">
+                        <form>
+                            <div class="input-group">
+                                <input type="email" class="form-control" ng-model='mail' placeholder="Type Email" required/>
+                                <span class="input-group-btn">
+                <button class="btn bg-dark" 
+                id="send-unregistered-email" 
+                ng-disabled="sending"
+                ng-click='sendMail(mail)' 
+                type="button"><i class="fa fa-paper-plane-o text-white" aria-hidden="true"></i></button>
+            </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- MODAL -->
-<div>
-  <div id="czarModal" class="modal fade bd-example-modal-lg" 
-    tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" 
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <center>
-          <h4 id="Text">You are the Czar, Please draw a black card</h4>
-            <div ng-click="drawCard()" ng-style="{'cursor':'pointer'}" style='margin: auto;'>
-              <center>
-                <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card1' />
-                <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card2' />
-                <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card3' />
-                <img src='../img/WHO2.png' style='width: 100px;' class='animated flipInX' id='card4' />
-              </center>
-            </div>
-        </center>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL -->
-<div
-  class="modal fade"
-  id="searchInput"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="searchInput"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            ng-model='searchQuery'
-            placeholder="Search by username or email" />
-          <span class="input-group-btn">
-            <button class="btn btn-warning" ng-click='searchUser(searchQuery)' type="button">
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
-          </span>
-        </div>
-        <!-- <div id="search-results">
-                    {{searchResults}}
-                </div> -->
-        <div ng-repeat="user in searchResults" id="search-result">
-          <div class="row" id="search-result-info">
-            <div class="col-xs-3">
-              <h5>{{user.name}}</h5>
-            </div>
-            <div class="col-xs-3">
-              <button class="btn btn-warning" ng-click="sendInvites(user.email)">invite</button>
-            </div>
-            <!-- <div class="col-xs-3">
-                            <button class="btn btn-danger" ng-click="increment()">Hide Modal</button> -->
-          </div>
-        </div>
-        <hr />
-      </div>
-    </div>
-  </div>
-</div>
 
 <div>
-  <div
-    id="czarModal"
-    class="modal fade bd-example-modal-lg"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <center>
-          <h4 id="Text">You are the Czar, Please draw a black card</h4>
-          <div ng-click="drawCard()" ng-style="{'cursor':'pointer'}" style='margin: auto;'>
-            <center>
-              <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card1' />
-              <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card2' />
-              <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card3' />
-              <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card4' />
-            </center>
-          </div>
-        </center>
-      </div>
+    <div id="czarModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <center>
+                    <h4 id="Text">You are the Czar, Please draw a black card</h4>
+                    <div ng-click="drawCard()" ng-style="{'cursor':'pointer'}" style='margin: auto;'>
+                        <center>
+                            <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card1' />
+                            <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card2' />
+                            <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card3' />
+                            <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card4' />
+                        </center>
+                    </div>
+                </center>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div id="info-container" ng-show="game.state === 'awaiting players'">
-  <div id="inner-info">
-    <div id="lobby-how-to-play">How To Play
+    <div id="inner-info">
+        <div id="lobby-how-to-play">How To Play</div>
+        <ol id="oh-el">
+            <li>Each player begins with, and will always have, 10 white answer cards.</li>
+            <li>For each round, one player is randomly chosen as the Card Czar.</li>
+            <li>Everyone else answers the black question card by clicking on the answer card they want to use.</li>
+            <li>The Card Czar then picks a favorite answer, and whoever played that answer wins the round.</li>
+            <li>*Want to adorn your avatar with a glorious crown? Donate to charity after the game!</li>
+        </ol>
     </div>
-    <ol id="oh-el">
-      <li>Each player begins with, and will always have, 10 white answer cards.</li>
-      <li>For each round, one player is randomly chosen as the Card Czar.</li>
-      <li>Everyone else answers the black question card by clicking on the answer card they want to use.</li>
-      <li>The Card Czar then picks a favorite answer, and whoever played that answer wins the round.</li>
-      <li>*Want to adorn your avatar with a glorious crown? Donate to charity after the game!</li>
-    </ol>
-  </div>
 </div>
 
 <div id="checkModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color: #252525; color: white">
-        <h4 class="modal-title">Information</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-12">
-            <p>A Minimum of three(3) players are required to start the game.</p>
-          </div>
-          <div class="col-md-3 col-md-offset-4">
-          </div>
-          <div class="col-md-4">
-            <button
-              type="button"
-              class="btn btn-block"
-              data-dismiss="modal"
-              style="background-color: #252525; color: white"
-            >
-              Close
-            </button>
-          </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #252525; color: white">
+                <h4 class="modal-title">Information</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>A Minimum of three(3) players are required to start the game.</p>
+                    </div>
+                    <div class="col-md-3 col-md-offset-4">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-block" data-dismiss="modal" style="background-color: #252525; color: white">
+          Close
+        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <div id="startModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Game Confirmation</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-12">
-            <p>Are you sure you want to start the game?</p>
-          </div>
-          <div class="col-md-3 col-md-offset-3">
-            <button
-              ng-click="startGame()"
-              data-dismiss="modal"
-              type="button"
-              class="btn btn-block btn-cfh-green btn-w"
-            >
-              Yes, Start!
-            </button>
-          </div>
-          <div class="col-md-3">
-            <button type="button" class="btn btn-block btn-danger btn-w" data-dismiss="modal">
-              No, Return!
-            </button>
-          </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Game Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>Are you sure you want to start the game?</p>
+                    </div>
+                    <div class="col-md-3 col-md-offset-3">
+                        <button ng-click="startGame()" data-dismiss="modal" type="button" class="btn btn-block btn-cfh-green btn-w">
+          Yes, Start!
+        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-block btn-danger btn-w" data-dismiss="modal">
+          No, Return!
+        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <div id="game-end-container" ng-show="game.state === 'game ended' || game.state ==='game dissolved'">
-  <div id="inner-info-exit">
-    <div class="game-end-answer-text" ng-show="game.state ==='game dissolved' && game.gameWinner === -1">
-      <h2>What would you like to do now?</h2>
-      You might consider donating to charity to atone for the horrifying answers you've submitted.
-      Donating will also place a lovely crown on your avatar's head.
-    </div>
-    <div class="game-end-answer-text" ng-show="game.state === 'game ended' || game.gameWinner !== -1">
-      <h2>What would you like to do now?</h2>
-        Help yourself to another game or help a child in need? Donating will also place a lovely crown on your avatar's head.
-    </div>
-    <div id='inner-text-container'>
-      <a href='/#!/app'>
-        <div id="join-new-game" ng-click="game.joinGame('joinNewGame')">
-          Join a New Game
+    <div id="inner-info-exit">
+        <div class="game-end-answer-text" ng-show="game.state ==='game dissolved' && game.gameWinner === -1">
+            <h2>What would you like to do now?</h2>
+            You might consider donating to charity to atone for the horrifying answers you've submitted. Donating will also place a lovely crown on your avatar's head.
         </div>
-      </a>
-      <a href='/'>
-        <div id="exit-match">
-          Return to Lobby
+        <div class="game-end-answer-text" ng-show="game.state === 'game ended' || game.gameWinner !== -1">
+            <h2>What would you like to do now?</h2>
+            Help yourself to another game or help a child in need? Donating will also place a lovely crown on your avatar's head.
         </div>
-      </a>
+        <div id='inner-text-container'>
+            <a href='/#!/app'>
+                <div id="join-new-game" ng-click="game.joinGame('joinNewGame')">
+                    Join a New Game
+                </div>
+            </a>
+            <a href='/'>
+                <div id="exit-match">
+                    Return to Lobby
+                </div>
+            </a>
+        </div>
     </div>
-  </div>
 
-  <div id="charity-widget-container">
-    <!-- This is real -->
-    <a
-    href="http://www.crowdrise.com"
-    id="crowdriseStaticLink-fundraiser-121142"
-    title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a>
-    <script type="text/javascript" src="https://www.crowdrise.com/widgets/donate/fundraiser/121142/?callback=userDonationCb"></script>
-    <!-- This is for testing -->
-    <!-- <a href="http://www.crowdrise.com" id="crowdriseStaticLink-project-36715" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a> -->
-    <!-- <script type="text/javascript" src="https://apisandbox.crowdrise.com/widgets/donate/project/36715/?callback=userDonationCb"></script> -->
-  </div>
+    <div id="charity-widget-container">
+        <!-- This is real -->
+        <a href="http://www.crowdrise.com" id="crowdriseStaticLink-fundraiser-121142" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a>
+        <script type="text/javascript" src="https://www.crowdrise.com/widgets/donate/fundraiser/121142/?callback=userDonationCb"></script>
+        <!-- This is for testing -->
+        <!-- <a href="http://www.crowdrise.com" id="crowdriseStaticLink-project-36715" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a> -->
+        <!-- <script type="text/javascript" src="https://apisandbox.crowdrise.com/widgets/donate/project/36715/?callback=userDonationCb"></script> -->
+    </div>
 </div>
-<div id="czar-blank-container" 
-  ng-show="isCzar() && game.table.length===0 && game.state !== 'game dissolved' && game.state !== 'awaiting players'">
-  <div id="czar-blank-inner">
-    You are the Card Czar.
-    <br>
-    <span id="smaller-text">Players are choosing their answers. Prepare to select a winner.</span>
-  </div>
-  <div id='charity-fact-container'>
-    <div id='charity-fact-tagline'>Did you know?</div>
-      <div id='charity-fact'>
-        {{ makeAWishFact }}
-      </div>
-      <div id='charity-logo-container'>
-        <img src='/img/make-a-wish-logo.png' />
-      </div>
+<div id="czar-blank-container" ng-show="isCzar() && game.table.length===0 && game.state !== 'game dissolved' && game.state !== 'awaiting players'">
+    <div id="czar-blank-inner">
+        You are the Card Czar.
+        <br>
+        <span id="smaller-text">Players are choosing their answers. Prepare to select a winner.</span>
+    </div>
+    <div id='charity-fact-container'>
+        <div id='charity-fact-tagline'>Did you know?</div>
+
+        <div id='charity-fact'>
+            {{ makeAWishFact }}
+        </div>
+
+        <div id='charity-logo-container'>
+            <img src='/img/make-a-wish-logo.png' />
+        </div>
+
     </div>
 </div>

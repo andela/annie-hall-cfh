@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 /**
-* Game Schema
-*/
-const GameSchema = new Schema({
+ * Game Schema
+ */
+let GameSchema = new Schema({
   userID: [],
   gameID: String,
   gamePlayers: [],
