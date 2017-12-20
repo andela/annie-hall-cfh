@@ -10,6 +10,9 @@ let app = require('../../server'),
 // Globals
 let user;
 
+chai.use(chaiHttp);
+const { expect } = chai;
+
 // The tests
 describe('<Unit Test>', () => {
   describe('Model User:', () => {
@@ -20,9 +23,6 @@ describe('<Unit Test>', () => {
         username: 'user',
         password: 'password'
       });
-
-      done();
-    });
 
     describe('Method Save', () => {
       it('should be able to save whithout problems', (done) => {

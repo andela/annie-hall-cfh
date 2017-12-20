@@ -8,18 +8,18 @@ const options = {
   'force new connection': true
 };
 
-const cfhPlayer1 = { 'name': 'Tom' };
-const cfhPlayer2 = { 'name': 'Sally' };
-const cfhPlayer3 = { 'name': 'Dana' };
+const cfhPlayer1 = { name: 'Tom' };
+const cfhPlayer2 = { name: 'Sally' };
+const cfhPlayer3 = { name: 'Dana' };
 
 describe('Game Server', () => {
   it('Should accept requests to joinGame', (done) => {
     const client1 = io.connect(socketURL, options);
-    const disconnect = () => {
+    const disconnect = function () {
       client1.disconnect();
       done();
     };
-    client1.on('connect', (data) => {
+    client1.on('connect', () => {
       client1.emit('joinGame', { userID: 'unauthenticated', room: '', createPrivate: false });
       setTimeout(disconnect, 200);
     });
@@ -27,13 +27,13 @@ describe('Game Server', () => {
 
   it('Should send a game update upon receiving request to joinGame', (done) => {
     const client1 = io.connect(socketURL, options);
-    const disconnect = () => {
+    const disconnect = function () {
       client1.disconnect();
       done();
     };
-    client1.on('connect',  (data) => {
+    client1.on('connect', () => {
       client1.emit('joinGame', { userID: 'unauthenticated', room: '', createPrivate: false });
-      client1.on('gameUpdate',  (data) => {
+      client1.on('gameUpdate', (data) => {
         data.gameID.should.match(/\d+/);
       });
       setTimeout(disconnect, 200);
@@ -179,23 +179,23 @@ describe('Game Server', () => {
       client1.emit('joinGame', { userID: 'unauthenticated', room: '', createPrivate: true });
       let connectOthers = true;
       client1.on('gameUpdate', (data) => {
-        const gameID = data.gameID;
+        const { gameID } = data;
         if (connectOthers) {
           client2 = io.connect(socketURL, options);
           connectOthers = false;
-          client2.on('connect', (data) => {
+          client2.on('connect', () => {
             client2.emit('joinGame', { userID: 'unauthenticated', room: gameID, createPrivate: false });
             client3 = io.connect(socketURL, options);
-            client3.on('connect', (data) => {
+            client3.on('connect', () => {
               client3.emit('joinGame', { userID: 'unauthenticated', room: gameID, createPrivate: false });
               client4 = io.connect(socketURL, options);
-              client4.on('connect', (data) => {
+              client4.on('connect', () => {
                 client4.emit('joinGame', { userID: 'unauthenticated', room: gameID, createPrivate: false });
                 client5 = io.connect(socketURL, options);
-                client5.on('connect', (data) => {
+                client5.on('connect', () => {
                   client5.emit('joinGame', { userID: 'unauthenticated', room: gameID, createPrivate: false });
                   client6 = io.connect(socketURL, options);
-                  client6.on('connect', (data) => {
+                  client6.on('connect', () => {
                     client6.emit('joinGame', { userID: 'unauthenticated', room: gameID, createPrivate: false });
                     setTimeout(expectStartGame, 100);
                   });
