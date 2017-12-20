@@ -23,7 +23,6 @@ angular.module('mean.system')
       joinOverride: false
     };
 
-
     const notificationQueue = [];
     let timeout = false;
     const self = this;
@@ -235,7 +234,6 @@ angular.module('mean.system')
     game.pickWinning = function (card) {
       socket.emit('pickWinning', { card: card.id });
     };
-
 
     game.drawCard = () => {
       socket.emit('drawCard');

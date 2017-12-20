@@ -67,7 +67,6 @@ angular.module('mean.system')
       }
     };
 
-
     $scope.pointerCursorStyle = () => {
       if ($scope.isCzar() && $scope.game.state === 'waiting for czar to decide') {
         return { cursor: 'pointer' };
@@ -101,14 +100,12 @@ angular.module('mean.system')
       return false;
     };
 
-
     $scope.secondAnswer = ($index) => {
       if ($index % 2 === 1 && game.curQuestion.numAnswers > 1) {
         return true;
       }
       return false;
     };
-
 
     $scope.showFirst = card => game.curQuestion.numAnswers > 1 && $scope.pickedCards[0] === card.id;
 
@@ -315,6 +312,4 @@ angular.module('mean.system')
         .oncomplete(tourEnded)
         .onexit(tourEnded);
     };
-
-
   }]);

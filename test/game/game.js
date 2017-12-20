@@ -61,7 +61,6 @@ describe('Game Server', () => {
     });
   });
 
-
   it('Should change game state to waiting for czar to draw card when 3 players are in the game', (done) => {
     let client2, client3;
     const client1 = io.connect(socketURL, options);

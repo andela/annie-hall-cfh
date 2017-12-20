@@ -1,9 +1,9 @@
 const async = require('async');
 const _ = require('underscore');
 
+import { LocalStorage } from 'node-localstorage';
 const questions = require(`${__dirname }/../../app/controllers/questions.js`);
 const answers = require(`${__dirname}/../../app/controllers/answers.js`);
-const LocalStorage = require('node-localstorage').LocalStorage;
 
 const localStorage = new LocalStorage('./scratch');
 

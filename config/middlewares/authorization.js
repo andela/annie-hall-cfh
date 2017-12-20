@@ -5,7 +5,6 @@ const Secret = process.env.JWT_SECRET;
 /**
  * Generic require login routing middleware
  */
-
 exports.secureLogin = (req, res, next) => {
   const token = req.body.token || req.headers['x-token'] || req.params.token;
   if (token) {

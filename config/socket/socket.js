@@ -48,13 +48,13 @@ module.exports = function (io) {
       joinGame(socket, data);
     });
 
-    socket.on('startGame', function () {
+    socket.on('startGame', () => {
       if (allGames[socket.gameID]) {
-        var thisGame = allGames[socket.gameID];
+        const thisGame = allGames[socket.gameID];
         console.log('comparing', thisGame.players[0].socket.id, 'with', socket.id);
         if (thisGame.players.length >= thisGame.playerMinLimit) {
           // Remove this game from gamesNeedingPlayers so new players can't join it.
-          gamesNeedingPlayers.forEach(function (game, index) {
+          gamesNeedingPlayers.forEach((game, index) => {
             if (game.gameID === socket.gameID) {
               return gamesNeedingPlayers.splice(index, 1);
             }
@@ -81,11 +81,11 @@ module.exports = function (io) {
       }
     });
 
-    socket.on('leaveGame', function () {
+    socket.on('leaveGame', () => {
       exitGame(socket);
     });
 
-    socket.on('disconnect', function () {
+    socket.on('disconnect', () => {
       exitGame(socket);
     });
   });
