@@ -376,21 +376,29 @@
  }
  
  #create {
-     text-align: center;
-     color: white;
-     font-family: arial;
-     margin-bottom: -13px;
+    text-align: center;
+    color: white;
+    font-family: arial;
+    margin-bottom: -13px;
  }
- 
+
+ #search-result {
+    margin-top: 10px;
+}
+
+#search-results {
+    display: none;
+}
+
  #alertMessage {
-     text-align: center;
-     color: red;
-     font-family: arial;
-     font-size: 12px;
-     padding-top: 20px;
-     margin-bottom: -13px;
- }
- 
+  text-align: center;
+  color: red;
+  font-family: arial;
+  font-size: 12px;
+  padding-top: 20px;
+  margin-bottom: -13px;
+}
+
  #sign-up-btn-landing {
      display: inline-block;
      border-radius: 8px;
@@ -456,7 +464,21 @@
  .login-item {
      max-width: 48%;
  }
- 
+
+ .panel-heading{
+  background-color: #F8F8F8;
+  line-height: 30px;
+  font-size: 18px;
+  color: black;
+  width: 590px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.table-responsive{
+  width: 590px;
+}
+
  .input-info {
      max-width: 100%;
  }

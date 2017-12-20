@@ -237,6 +237,10 @@ angular.module('mean.system')
       socket.emit('drawCard');
     };
 
+    game.drawCard = () => {
+      socket.emit('drawCard');
+    };
+
     decrementTime();
 
     return game;

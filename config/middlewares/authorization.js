@@ -5,7 +5,7 @@ const Secret = process.env.JWT_SECRET;
 /**
  * Generic require login routing middleware
  */
-exports.secureLogin = function (req, res, next) {
+exports.secureLogin = (req, res, next) => {
   const token = req.body.token || req.headers['x-token'] || req.params.token;
   if (token) {
     jwt.verify(token, Secret, (err, decoded) => {
@@ -26,11 +26,10 @@ exports.secureLogin = function (req, res, next) {
  * User authorizations routing middleware
  */
 exports.user = {
-  hasAuthorization(req, res, next) {
+  hasAuthorization: (req, res, next) => {
     if (req.profile.id !== req.user.id) {
       return res.send(401, 'User is not authorized');
     }
     next();
   }
 };
-

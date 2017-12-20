@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
-
 import avatar from './avatars';
 
 const User = mongoose.model('User');
@@ -74,7 +73,7 @@ const users = {
                     <div>
                   </div>`
     };
-
+    
     transporter.sendMail(mailBody, (error) => {
       if (error) {
         res.status(400).json({

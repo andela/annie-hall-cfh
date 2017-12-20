@@ -4,13 +4,14 @@ angular.module('mean.system')
     $scope.winningCardPicked = false;
     $scope.showTable = false;
     $scope.modalShown = false;
+    $scope.counter = 0;
     $scope.game = game;
     $scope.counter = 0;
     $scope.pickedCards = [];
     let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
     $scope.test = 0;
-
+    
     $scope.hideModal = () => {
       $('#searchInput').modal('hide');
     };
@@ -44,7 +45,6 @@ angular.module('mean.system')
         }
       }).then((response) => {
         $scope.counter += 1;
-        console.log('current index is', $index);
         console.log('counter is', $scope.counter);
       });
     };
@@ -150,7 +150,7 @@ angular.module('mean.system')
         $('#czarModal').modal('hide');
       }, 500);
     };
-
+   
     $scope.checkPlayerLimit = () => {
       if (game.players.length < game.playerMinLimit) {
         $('#checkModal').modal('show');
@@ -234,6 +234,7 @@ angular.module('mean.system')
         }
       }
     });
+
 
     if ($location.search().game && !(/^\d+$/).test($location.search().game)) {
       console.log('joining custom game');

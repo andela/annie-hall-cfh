@@ -1,5 +1,5 @@
-const should = require('should');
-const io = require('socket.io-client');
+import should from 'should';
+import io from 'socket.io-client';
 
 const socketURL = 'http://localhost:3001';
 
@@ -43,18 +43,18 @@ describe('Game Server', () => {
   it('Should announce new user to all users', (done) => {
     const client1 = io.connect(socketURL, options);
     let client2;
-    const disconnect = function () {
+    const disconnect = () => {
       client1.disconnect();
       client2.disconnect();
       done();
     };
-    client1.on('connect', () => {
+    client1.on('connect', (data) => {
       client1.emit('joinGame', { userID: 'unauthenticated', room: '', createPrivate: false });
       client2 = io.connect(socketURL, options);
-      client2.on('connect', () => {
+      client2.on('connect', (data) => {
         client2.emit('joinGame', { userID: 'unauthenticated', room: '', createPrivate: false });
         client1.on('notification', (data) => {
-          data.notification.should.match(/ has joined the game\!/);
+          data.notification.should.match(/ has joined the game/);
         });
       });
       setTimeout(disconnect, 200);
@@ -64,13 +64,13 @@ describe('Game Server', () => {
   it('Should change game state to waiting for czar to draw card when 3 players are in the game', (done) => {
     let client2, client3;
     const client1 = io.connect(socketURL, options);
-    const disconnect = function () {
+    const disconnect = () => {
       client1.disconnect();
       client2.disconnect();
       client3.disconnect();
       done();
     };
-    const expectStartGame = function () {
+    const expectStartGame = () => {
       client1.emit('startGame');
       client1.on('gameUpdate', (data) => {
         data.state.should.equal('waiting for czar to draw a card');
@@ -83,13 +83,13 @@ describe('Game Server', () => {
       });
       setTimeout(disconnect, 200);
     };
-    client1.on('connect', (data) => {
+    client1.on('connect', () => {
       client1.emit('joinGame', { userID: 'unauthenticated', room: '', createPrivate: false });
       client2 = io.connect(socketURL, options);
-      client2.on('connect', (data) => {
+      client2.on('connect', () => {
         client2.emit('joinGame', { userID: 'unauthenticated', room: '', createPrivate: false });
         client3 = io.connect(socketURL, options);
-        client3.on('connect', (data) => {
+        client3.on('connect', () => {
           client3.emit('joinGame', { userID: 'unauthenticated', room: '', createPrivate: false });
           setTimeout(expectStartGame, 100);
         });
@@ -144,7 +144,7 @@ describe('Game Server', () => {
   it('Should change game state to waiting for czar to draw card when 6 players are in the game', (done) => {
     let client2, client3, client4, client5, client6;
     const client1 = io.connect(socketURL, options);
-    const disconnect = function () {
+    const disconnect = () => {
       client1.disconnect();
       client2.disconnect();
       client3.disconnect();
@@ -153,7 +153,7 @@ describe('Game Server', () => {
       client6.disconnect();
       done();
     };
-    const expectStartGame = function () {
+    const expectStartGame = () => {
       client1.emit('startGame');
       client1.on('gameUpdate', (data) => {
         data.state.should.equal('waiting for czar to draw a card');

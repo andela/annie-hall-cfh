@@ -21,17 +21,17 @@ gulp.task('babel-compile', () => {
     .pipe(gulp.dest('./dist')); // write them
 });
 
-gulp.task('nodemon', ['babel-compile'], () => {
+gulp.task('nodemon', () => {
   nodemon({
     script: './dist/server.js', // run ES5 code
-    ext: 'js html jade json ',
+    ext: 'js html jade json scss css',
     ignore: ['README.md', 'node_modules/**', '.DS_Store'],
-    watch: ['app', 'config', 'server.js'], // watch ES2015 code
+    watch: ['app', 'config', 'public', 'server.js'], // watch ES2015 code
     env: {
       PORT: 3000,
       NODE_ENV: 'development'
     },
-    tasks: ['babel-compile'] // compile synchronously onChange
+    tasks: ['recompile'] // compile synchronously onChange
   });
 });
 
@@ -64,8 +64,8 @@ gulp.task('lint', () => {
 });
 
 // Transfer other folders and files(excluding js folder) in public to dest/public
-gulp.task('transfer-public', () => {
-  gulp.src(['public/**/*', '!public/js/**'])
+gulp.task('transfer-public-scratch', () => {
+  gulp.src(['public/**/*', 'scratch/*', '!public/js/**'])
     .pipe(gulp.dest('./dist/public'));
 });
 
@@ -119,7 +119,7 @@ gulp.task('transfer-config-json', () => {
 
 gulp.task('transfer-bower', ['angular', 'bootstrap', 'jquery', 'underscore', 'angularUtils', 'angular-bootstrap']);
 
-gulp.task('transfer-to-dist', ['transfer-public', 'transfer-app-jade', 'transfer-config-json']);
+gulp.task('transfer-to-dist', ['transfer-public-scratch', 'transfer-app-jade', 'transfer-config-json']);
 
 gulp.task('test', () => {
   gulp.src('./dist/test/**/*.js')
@@ -133,5 +133,7 @@ gulp.task('test', () => {
 gulp.task('install', ['bower']);
 
 gulp.task('build', ['sass', 'babel-compile', 'transfer-to-dist', 'transfer-bower']);
+
+gulp.task('recompile', ['sass', 'babel-compile', 'transfer-to-dist']);
 
 gulp.task('default', ['nodemon', 'watch']);

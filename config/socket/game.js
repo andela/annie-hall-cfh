@@ -28,7 +28,7 @@ function Game(gameID, io) {
   this.winnerAutopicked = false;
   this.czar = -1; // Index in this.players
   this.playerMinLimit = 3;
-  this.playerMaxLimit = 6;
+  this.playerMaxLimit = 12;
   this.pointLimit = 5;
   this.state = 'awaiting players';
   this.round = 0;
@@ -109,7 +109,6 @@ Game.prototype.assignGuestNames = function () {
 
 Game.prototype.prepareGame = function () {
   this.state = 'game in progress';
-
   this.io.sockets.in(this.gameID).emit('prepareGame', {
     playerMinLimit: this.playerMinLimit,
     playerMaxLimit: this.playerMaxLimit,
@@ -139,11 +138,25 @@ Game.prototype.drawCard = function () {
         // TODO remove this console statement
         console.log(err);
       }
-      self.questions = results[0];
-      self.answers = results[1];
-      this.shuffleCards(this.questions);
-      this.shuffleCards(this.answers);
-      this.stateChoosing(this);
+      if (localStorage.getItem('player_region')) {
+        if (localStorage.getItem('player_region') !== '') {
+          const newQuestion = results[0].filter(result => (result.region === localStorage.getItem('player_region')));
+          self.questions = newQuestion;
+          self.answers = results[1];
+        } else {
+          self.questions = results[0];
+          self.answers = results[1];
+        }
+      } else {
+        self.questions = results[0];
+        self.answers = results[1];
+      }
+ 
+      setTimeout(() => {
+        this.shuffleCards(this.questions);
+        this.shuffleCards(this.answers);
+        this.stateChoosing(this);
+      }, 100);
     }
   );
 };
@@ -211,7 +224,6 @@ Game.prototype.selectFirst = function () {
 
 Game.prototype.stateJudging = function (self) {
   self.state = 'waiting for czar to decide';
-  // console.log(self.gameID,self.state);
 
   if (self.table.length <= 1) {
     // Automatically select a card if only one card was submitted
@@ -248,6 +260,7 @@ Game.prototype.stateResults = function (self) {
 Game.prototype.stateEndGame = function (winner) {
   console.log('-----------------> we have a winner CHUKS');
   this.state = 'game ended';
+
   this.gameWinner = winner;
   const gamePlayers = this.players.map(player => player.username);
   this.sendUpdate();
