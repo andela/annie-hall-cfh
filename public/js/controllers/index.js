@@ -70,7 +70,6 @@ angular.module('mean.system')
           location.reload();
         }, (err) => {
           $scope.alert = err.data.message;
-
         });
     };
 
