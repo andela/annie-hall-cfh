@@ -64,7 +64,7 @@ module.exports = function (io) {
         }
       }
     });
- 
+
     socket.on('drawCard', () => {
       if (allGames[socket.gameID]) {
         const thisGame = allGames[socket.gameID];
@@ -161,6 +161,7 @@ module.exports = function (io) {
         fireGame(player, socket);
       }
     }
+  };
 
   var fireGame = function (player, socket) {
     let game;

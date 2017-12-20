@@ -9,7 +9,7 @@ const Game = mongoose.model('Game');
  * @param {object} res
  * @returns {object} description
  */
-exports.createGameData = (req, res) => {
+export const createGameData = (req, res) => {
   // save game if user is authenticated
   if (req.decoded && req.params.id) {
     const game = new Game(req.body);
