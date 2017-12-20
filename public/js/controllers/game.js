@@ -6,11 +6,123 @@ angular.module('mean.system')
     $scope.modalShown = false;
     $scope.counter = 0;
     $scope.game = game;
+
     $scope.counter = 0;
+    $scope.game = game;
+    $scope.invitedUsers = [];
     $scope.pickedCards = [];
     let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
     $scope.test = 0;
+    
+    $scope.sendMail = (mail) => {
+      $scope.sending = true;
+      const token = localStorage.getItem('token');
+      if (mail.trim().length) {
+        return $http({
+          method: 'POST',
+          url: 'api/invites/email',
+          headers: {
+            'x-token': token
+          },
+          data: { email: mail, link: document.URL }
+        })
+          .then((response) => {
+            $scope.sending = false;
+            if (response.status === 200) {
+              $('#searchInput').modal('hide');
+              $('#sentResult').modal('show');
+            }
+          });
+      }
+    };
+
+    $scope.showFriends = () => {
+      const token = localStorage.getItem('token');
+      $http({
+        method: 'GET',
+        url: 'api/users/friends',
+        headers: {
+          'x-token': token
+        }
+      })
+        .then((response) => {
+          // const friendList = response.friendList.friends;
+          // $scope.allFriends = friendList;
+          console.log('response is', response.data.friendList.friends);
+          $scope.allFriends = response.data.friendList.friends;
+          $scope.friendsIdlist = $scope.allFriends.map(friend => friend.id);
+          console.log($scope.friendsIdlist);
+        });
+    };
+    $scope.addFriend = (userId, email, $index) => {
+      const token = localStorage.getItem('token');
+      console.log('userId is', userId);
+      console.log('index is', $index);
+      console.log('email is', email);
+      $http({
+        method: 'PUT',
+        url: '/api/users/add-friend',
+        data: {
+          friendId: userId,
+          email
+        },
+        headers: {
+          'x-token': token
+        }
+      })
+        .then((response) => {
+          console.log(response);
+        });
+    };
+
+    $scope.hideModal = () => {
+      $('#searchInput').modal('hide');
+    };
+
+    $scope.endInvites = () => {
+      $('#end-invites').modal('show');
+    };
+
+    $scope.searchUser = (searchQuery) => {
+      const token = localStorage.getItem('token');
+      if (searchQuery.trim().length) {
+        $http({
+          method: 'GET',
+          url: `/api/search/users/${searchQuery}`,
+          headers: {
+            'x-token': token
+          }
+        })
+          .then((response) => {
+            const result = response.data.User;
+            $scope.searchResults = result;
+          });
+      }
+    };
+    $scope.sendInvites = (email, $index) => {
+      $scope.sending = true;
+      if ($scope.counter === 11) {
+        $scope.hideModal();
+        $scope.endInvites();
+        return;
+      }
+      $http({
+        method: 'POST',
+        url: '/api/users/invite',
+        data: {
+          email,
+          link: document.URL
+        }
+      }).then((response) => {
+        $scope.counter += 1;
+        console.log('current index is', $index);
+        console.log('counter is', $scope.counter);
+        $scope.invitedUsers.push(email);
+        $scope.sending = false;
+        console.log('Invited users is', $scope.invitedUsers);
+      });
+    };
     
     $scope.hideModal = () => {
       $('#searchInput').modal('hide');
@@ -48,7 +160,6 @@ angular.module('mean.system')
         console.log('counter is', $scope.counter);
       });
     };
-
     $scope.pickCard = (card) => {
       if (!$scope.hasPickedCards) {
         if ($scope.pickedCards.indexOf(card.id) < 0) {

@@ -1,3 +1,4 @@
+
  .clear {
      clear: both;
  }
@@ -14,6 +15,73 @@
      float: left !important;
      top: -65px;
  }
+
+
+#search-result {
+    margin-top: 10px;
+}
+
+#search-results {
+    text-align: center;
+}
+
+#end-invites {
+    text-align: center;
+}
+
+.no-friends {
+    text-align: left;
+    color: black;
+}
+
+.row#row {
+    /* display: flex; */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#friends,
+#searchAll,
+#sendEmail {
+    margin-top: 5px;
+}
+
+a#home-tab,
+a#profile-tab,
+a#messages-tab {
+    color: black;
+}
+
+#send-mail-message {
+    text-align: center;
+    color: black;
+}
+
+.show-counter {
+    font-weight: bolder;
+}
+
+.counter {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 80px;
+}
+
+#searchBox {
+    display: none;
+}
+
+#twitter-facebook {
+    display: block;
+}
+
+#send-link {
+    color: white;
+    text-align: center;
+    display: block;
+    margin-bottom: 10px;
+}
+
  
  #tweet-container-index {
      margin-top: 10px;

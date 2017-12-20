@@ -1,13 +1,14 @@
+
 import mongoose from 'mongoose';
 
 const Game = mongoose.model('Game');
 
 /**
  * Saves game log when game session ends
+ * @returns {object} description
  * @export { function }
  * @param {object} req
  * @param {object} res
- * @returns {object} description
  */
 export const createGameData = (req, res) => {
   // save game if user is authenticated
@@ -43,6 +44,7 @@ const sortWinners = (gameWinners) => {
 
 /**
  * getGameWinners function
+
  * @param {Object} gameResults
  * @returns {Object} array of the individual game winners
  */

@@ -198,11 +198,9 @@ angular.module('mean.system')
           }
         })
           .then((response) => {
-            console.log('-------------->', response);
           });
       }
     });
-
     game.joinGame = function (mode, room, createPrivate) {
       mode = mode || 'joinGame';
       room = room || '';

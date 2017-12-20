@@ -87,8 +87,36 @@ const users = {
       }
     });
   },
+  addFriend: (req, res) => {
+    const { friendId } = req.body;
+    const friendEmail = req.body.email;
+    const userId = req.decoded.newUser.id;
+    const newFriend = {
+      id: friendId,
+      email: friendEmail
+    };
+    User.findOne({ _id: userId })
+      .then((found) => {
+        const friendList = found.friends;
+        const filterList = friendList.filter(friend => friend.id === newFriend.id);
+        if (filterList.length) {
+          return res.status(403).json({ Message: 'Already added user as friend' });
+        }
+        User.findOneAndUpdate({ _id: userId }, { $push: { friends: newFriend } })
+          .then(() => res.status(201).json({ Message: 'Friend Added' }))
+          .catch(error => res.status(500).json({ Message: 'Unable to add friend', error }));
+      })
+      .catch(error => res.status(500).json({ Message: 'Error', error }));
+  },
+  getFriends: (req, res) => {
+    const userId = req.decoded.newUser.id;
+    User.findOne({ _id: userId }, 'friends')
+      .then(foundUser => res.status(200).json({ friendList: foundUser }))
+      .catch(error => res.status(500).json({ Message: 'Internal server error', error }));
+  },
   searchUser: (req, res) => {
     const query = req.params.userParam;
+    // console.log(req.decoded.newUser.id);
     User.find({
       $or: [
         { email: { $regex: `.*${query}.*` } }, { name: { $regex: `.*${query}.*` } }
@@ -117,7 +145,7 @@ const users = {
       res.redirect('/');
     }
   },
-  create: (req, res) => {
+  create: (req, res, next) => {
     if (req.body.name && req.body.password && req.body.email) {
       User.findOne({
         email: req.body.email
@@ -142,7 +170,7 @@ const users = {
               };
               const token = jwt.sign({
                 createdUser
-              }, secret, { expiresIn: '1h' });
+              }, secret, { expiresIn: '24h' });
               return res.status(201).json({
                 token,
                 message: 'Successfully signed up',
@@ -192,7 +220,7 @@ const users = {
         };
         const token = jwt.sign({
           newUser
-        }, secret, { expiresIn: '1h' });
+        }, secret, { expiresIn: '24h' });
         return res.status(200).json({ message: 'Login Successful', token });
       });
     });
@@ -260,6 +288,58 @@ const users = {
         req.profile = foundUser;
         next();
       });
-  }
+  },
+  inviteUnregistered: (req, res) => {
+    const { email, link } = req.body;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      secure: false,
+      port: 25,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+    const mailBody = {
+      from: '"Cards for Humanity" <cardsForHumanity@cfh.com>',
+      to: email,
+      subject: 'Game Invite!',
+      text: `You've been invited to join a gaming session on Cards for Humanity. Join by clicking this link ${link}`,
+      html: `<div style = "width: 70%; height: 6margin: 0 auto; padding: 3%;" >
+                    <div style = "background-color: black; color: #FFF; padding: 1%; text-align: center;" >
+                      <h4 class = "modal-title"> Card For Humanity - Annie-Hall </h4> 
+                    </div> 
+                    <center>
+                      <p> You've been invited to join a gaming session on Cards for Humanity. </p> 
+                      <p>
+                        Click this link to join game:
+                        <a href = ${link}> <button style = "background: #F6A623; color: #FFF; padding: 2%; border:0; border-radius: 5px;"> Join Game </button></a >
+                        </p> 
+                    </center> 
+                    <div style = "font-size: 14px; margin-top: 6px; color: #fff; text-align: center; background-color: black; padding: 0.5%;" >
+                      <p> 
+                        Cardsfor Humanity - Annie-Hall & copy;2017 <br /> <a style = "color: #F6A623;"
+                        href = "http://www.andela.com"> Andela </a>
+                      </p>
+                    <div>
+                  </div>`
+    };
+
+    transporter.sendMail(mailBody, (error) => {
+      if (error) {
+        res.status(400).json({
+          Message: 'An error occured while trying to send your mail',
+          error
+        });
+      } else {
+        res.status(200).json({
+          Message: 'Message sent successfully'
+        });
+      }
+    });
+  },
 };
 export default users;

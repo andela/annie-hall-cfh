@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 /**
 * Game Schema
 */
-const GameSchema = new Schema({
+var GameSchema = new Schema({
   userID: [],
   gameID: String,
   gamePlayers: [],

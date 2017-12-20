@@ -1,0 +1,43 @@
+<div class="container" ng-controller="chat">
+  <div class="chat-wrapper">
+    <div class="row">
+      <div class="card" id="chat-card">
+        <div class="card-header" id="header-bar">
+          <span>
+            <span id="unread-messages" style="color:{{chatNotificationColor}}">{{unreadMessages}}</span>
+          <i class="fa fa-comment" aria-hidden="true"></i>
+          </span>
+          <span>CFH</span>
+          <i class="fa fa-times-circle" ng-click="clearUnreadMessages()"></i>
+        </div>
+        <div class="card-body msg-main-container">
+          <h5 ng-show='chatMessagesLoading'>Loading Chats....</h5>
+          <div class="row msg-container" ng-repeat="item in messageStore" ng-hide='isMessageStoreEmpty'>
+            <div class="col-2 col-md-2 p-0">
+              <img ng-src={{item.avatar}} class="img-responsive" width="35" height="35">
+            </div>
+            <div class="col-10 col-md-10 p-0">
+              <p>
+                <strong>{{item.username}}</strong>
+                <small class="text-mute m-1l">{{item.timeSent}}</small>
+                <br/>
+                <small class="text-mute">{{item.message}}</small>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer" id="chat-footer">
+          <div>
+            <input type="text" class="form-control chat-input" id="emojionearea" ng-keypress="enterMessage($event)" ng-change="clearUnreadMessages()" ng-model="message" placeholder="enter message here..." />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Icon container -->
+  <div id="chat-icon-container" ng-click="clearUnreadMessages()">
+    <span id="unread-messages" style="color:{{chatNotificationColor}}">{{unreadMessages}}</span>
+    <i class="fa fa-comment" aria-hidden="true"></i>
+  </div>
+</div>

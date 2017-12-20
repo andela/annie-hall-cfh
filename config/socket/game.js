@@ -151,7 +151,6 @@ Game.prototype.drawCard = function () {
         self.questions = results[0];
         self.answers = results[1];
       }
- 
       setTimeout(() => {
         this.shuffleCards(this.questions);
         this.shuffleCards(this.answers);
@@ -390,7 +389,6 @@ Game.prototype.getPlayer = function (thisPlayer) {
 
 Game.prototype.removePlayer = function (thisPlayer) {
   const playerIndex = this._findPlayerIndexBySocket(thisPlayer);
-
   if (playerIndex !== -1) {
     // Just used to send the remaining players a notification
     const playerName = this.players[playerIndex].username;
@@ -429,7 +427,6 @@ Game.prototype.removePlayer = function (thisPlayer) {
       }
       this.sendNotification(`${playerName} has left the game.`);
     }
-
     this.sendUpdate();
   }
 };

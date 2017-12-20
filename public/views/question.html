@@ -18,6 +18,9 @@
       <div id='start-game-button'>
         Start Game<br>with {{game.players.length}} players
       </div>
+      <div id="start-game-container" ng-click="checkPlayerLimit()" ng-show="(game.playerIndex === 0 || game.joinOverride)">
+        <button class="btn start-game">Start Game</br>with {{game.players.length}} players</button>
+      </div>
     </div>
   </div>
 
