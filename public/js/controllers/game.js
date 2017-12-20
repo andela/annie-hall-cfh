@@ -6,12 +6,15 @@ angular.module('mean.system')
     $scope.modalShown = false;
     $scope.counter = 0;
     $scope.game = game;
+
+    $scope.counter = 0;
+    $scope.game = game;
     $scope.invitedUsers = [];
     $scope.pickedCards = [];
     let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
     $scope.test = 0;
-
+    
     $scope.sendMail = (mail) => {
       $scope.sending = true;
       const token = localStorage.getItem('token');
@@ -154,7 +157,6 @@ angular.module('mean.system')
         }
       }).then((response) => {
         $scope.counter += 1;
-        console.log('current index is', $index);
         console.log('counter is', $scope.counter);
       });
     };
@@ -259,7 +261,7 @@ angular.module('mean.system')
         $('#czarModal').modal('hide');
       }, 500);
     };
-
+   
     $scope.checkPlayerLimit = () => {
       if (game.players.length < game.playerMinLimit) {
         $('#checkModal').modal('show');

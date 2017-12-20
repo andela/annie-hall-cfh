@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+
+import mongoose from 'mongoose';
+
 const Game = mongoose.model('Game');
 
 /**
@@ -42,8 +44,9 @@ const sortWinners = (gameWinners) => {
 
 /**
  * getGameWinners function
- * @returns {Object} array of the individual game winners
+
  * @param {Object} gameResults
+ * @returns {Object} array of the individual game winners
  */
 const getGameWinners = (gameResults) => {
   const gameWinners = [];
