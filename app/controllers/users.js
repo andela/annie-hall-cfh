@@ -1,13 +1,9 @@
 /**
  * Module dependencies.
  */
-var jwt = require('jsonwebtoken');
-var mongoose = require('mongoose'),
-  User = mongoose.model('User');
-var avatars = require('./avatars').all();
-var nodemailer = require('nodemailer');
-
-
+import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import mongoose from 'mongoose';
 import avatar from './avatars';
 
 const User = mongoose.model('User');
@@ -161,6 +157,12 @@ exports.create = function(req, res) {
               currUser
             });
           });
+    
+    transporter.sendMail(mailBody, (error) => {
+      if (error) {
+        res.status(400).json({
+          message: 'An error occured while trying to send your mail',
+          error
         });
       } else {
         res.status(200).json({

@@ -11,7 +11,7 @@ angular.module('mean.system')
     let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
     $scope.test = 0;
-
+    
     $scope.hideModal = () => {
       $('#searchInput').modal('hide');
     };
@@ -45,7 +45,6 @@ angular.module('mean.system')
         }
       }).then((response) => {
         $scope.counter += 1;
-        console.log('current index is', $index);
         console.log('counter is', $scope.counter);
       });
     };
@@ -154,7 +153,7 @@ angular.module('mean.system')
         $('#czarModal').modal('hide');
       }, 500);
     };
-
+   
     $scope.checkPlayerLimit = () => {
       if (game.players.length < game.playerMinLimit) {
         $('#checkModal').modal('show');

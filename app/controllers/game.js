@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-var Game = mongoose.model('Game');
+import mongoose from 'mongoose';
+
+const Game = mongoose.model('Game');
 
 /**
  * Saves game log when game session ends
@@ -8,11 +9,10 @@ var Game = mongoose.model('Game');
  * @param {object} req
  * @param {object} res
  */
-exports.createGameData = (req, res) => {
+export const createGameData = (req, res) => {
   // save game if user is authenticated
   if (req.decoded && req.params.id) {
     const game = new Game(req.body);
-
     game.userID = req.decoded.currUser.id;
     game.gameID = req.params.id;
     game.save((error) => {
@@ -43,8 +43,8 @@ const sortWinners = (gameWinners) => {
 
 /**
  * getGameWinners function
- * @returns {Object} array of the individual game winners
  * @param {Object} gameResults
+ * @returns {Object} array of the individual game winners
  */
 const getGameWinners = (gameResults) => {
   const gameWinners = [];
@@ -129,4 +129,3 @@ export const getGameLog = (req, res) => {
     return res.status(401).send({ message: 'Unauthenticated user' });
   }
 };
-

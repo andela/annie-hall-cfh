@@ -6,14 +6,9 @@ import answers from '../app/controllers/answers';
 import avatars from '../app/controllers/avatars';
 import users from '../app/controllers/users';
 import authorization from '../config/middlewares/authorization';
-import game from '../app/controllers/game';
-import leaderboard from '../app/controllers/game';
-import gameLog from '../app/controllers/game';
+import { createGameData, getGameLog, getLeaderboard } from '../app/controllers/game';
 
 const auth = authorization.secureLogin;
-const saveGame = game.createGameData;
-const leaderboard = leaderboard.getLeaderboard;
-const gameLog = gameLog.getGameLog;
 
 const router = express.Router();
 
@@ -114,9 +109,13 @@ router.get('/api/games/leaderboard', leaderboard);
 // Intro route
 router.post('/setregion', index.setRegion);
 
-
 // Game Routes
-router.post('/api/v1/games/:id/start', auth, saveGame);
+router.post('/api/v1/games/:id/start', auth, createGameData);
+router.get('/api/games/history/:token', auth, getGameLog);
+router.get('/api/games/leaderboard', getLeaderboard);
+
+// Intro route
+router.post('/setregion', index.setRegion);
 
 module.exports = router;
 // export default router;

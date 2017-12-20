@@ -21,7 +21,6 @@ describe('<Unit Test>', () => {
         username: 'user',
         password: 'password'
       });
-
       user.save((err) => {
         article = new Article({
           title: 'Article Title',

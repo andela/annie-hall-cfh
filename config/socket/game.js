@@ -113,7 +113,6 @@ Game.prototype.assignGuestNames = function () {
 
 Game.prototype.prepareGame = function () {
   this.state = 'game in progress';
-
   this.io.sockets.in(this.gameID).emit('prepareGame', {
     playerMinLimit: this.playerMinLimit,
     playerMaxLimit: this.playerMaxLimit,
@@ -156,14 +155,11 @@ Game.prototype.drawCard = function () {
         self.questions = results[0];
         self.answers = results[1];
       }
-      // self.questions = results[0];
-      // self.answers = results[1];
       setTimeout(() => {
         this.shuffleCards(this.questions);
         this.shuffleCards(this.answers);
         this.stateChoosing(this);
       }, 100);
-
     }
   );
 };
@@ -231,7 +227,6 @@ Game.prototype.selectFirst = function () {
 
 Game.prototype.stateJudging = function (self) {
   self.state = 'waiting for czar to decide';
-  // console.log(self.gameID,self.state);
 
   if (self.table.length <= 1) {
     // Automatically select a card if only one card was submitted
@@ -268,6 +263,7 @@ Game.prototype.stateResults = function (self) {
 Game.prototype.stateEndGame = function (winner) {
   console.log('-----------------> we have a winner CHUKS');
   this.state = 'game ended';
+
   this.gameWinner = winner;
   const gamePlayers = this.players.map(player => player.username);
   this.sendUpdate();
