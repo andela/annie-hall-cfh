@@ -258,7 +258,6 @@ const users = {
             }
             if (!duplicate) {
               // TODO Remove this console.log
-              console.log('Validated donation');
               user.donations.push(req.body);
               user.premium = 1;
               user.save();
