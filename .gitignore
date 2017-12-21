@@ -1,6 +1,5 @@
 node_modules
 public/lib
-public/intro.js/minified/intro.min.js
 .sass-cache/
 .DS_store
 c4h_keys.txt
