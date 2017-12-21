@@ -1,8 +1,13 @@
+import { LocalStorage } from 'node-localstorage';
+
 const async = require('async');
 const _ = require('underscore');
 
 const questions = require(`${__dirname }/../../app/controllers/questions.js`);
 const answers = require(`${__dirname}/../../app/controllers/answers.js`);
+
+const localStorage = new LocalStorage('./scratch');
+
 const guestNames = [
   'Disco Potato',
   'Silver Blister',
@@ -151,7 +156,6 @@ Game.prototype.drawCard = function () {
         self.questions = results[0];
         self.answers = results[1];
       }
- 
       setTimeout(() => {
         this.shuffleCards(this.questions);
         this.shuffleCards(this.answers);
@@ -446,6 +450,7 @@ Game.prototype.pickWinning = function (thisCard, thisPlayer, autopicked) {
     });
     if (cardIndex !== -1) {
       this.winningCard = cardIndex;
+
       const winnerIndex = this._findPlayerIndexBySocket(this.table[cardIndex].player);
       this.sendNotification(`${this.players[winnerIndex].username} has won the round!`);
       this.winningCardPlayer = winnerIndex;
@@ -463,7 +468,6 @@ Game.prototype.pickWinning = function (thisCard, thisPlayer, autopicked) {
 };
 
 Game.prototype.killGame = function () {
-  console.log('Killing game', this.gameID);
   clearTimeout(this.resultsTimeout);
   clearTimeout(this.choosingTimeout);
   clearTimeout(this.judgingTimeout);

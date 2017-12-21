@@ -1,6 +1,5 @@
 import express from 'express';
 import passport from 'passport';
-
 import index from '../app/controllers/index';
 import questions from '../app/controllers/questions';
 import answers from '../app/controllers/answers';
@@ -100,6 +99,10 @@ router.get('/avatars', avatars.allJSON);
 // Home route
 router.get('/play', index.play);
 router.get('/', index.render);
+router.get('/gametour', index.gameTour);
+
+// Intro route
+router.post('/setregion', index.setRegion);
 
 // Game Routes
 router.post('/api/v1/games/:id/start', auth, createGameData);

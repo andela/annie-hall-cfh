@@ -41,6 +41,7 @@ describe('<Unit Test>', () => {
 
       it('should be able to show an error when try to save witout title', (done) => {
         article.title = '';
+
         article.save((err) => {
           should.exist(err);
           done();

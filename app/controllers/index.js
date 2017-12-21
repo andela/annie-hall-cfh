@@ -16,6 +16,20 @@ exports.play = function(req, res) {
   }
 };
 
+/**
+ * Redirect users to the tour of the app
+ * @param {Stream} req - readable stream from client
+ * @param {Stream} res - writeable stream
+ */
+
+exports.gameTour = (req, res) => {
+  if (Object.keys(req.query)[0] === 'custom') {
+    res.redirect('/#!/gametour?custom');
+  } else {
+    res.redirect('/#!/gametour');
+  }
+};
+
 exports.render = function(req, res) {
   res.render('index', {
     user: req.user ? JSON.stringify(req.user) : "null"

@@ -197,6 +197,7 @@ module.exports = function (io) {
   };
 
   var createGameWithFriends = function (player, socket) {
+
     let isUniqueRoom = false;
     let uniqueRoom = '';
     // Generate a random 6-character game ID
