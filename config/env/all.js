@@ -1,7 +1,8 @@
 import path from 'path';
 
-const rootPath = path.normalize(__dirname + '/../..'),
-  keys = rootPath + '/keys.txt';
+const rootPath = path.normalize(`${__dirname }/../..`),
+  keys = `${rootPath }/keys.txt`;
+
 
 module.exports = {
   root: rootPath,
