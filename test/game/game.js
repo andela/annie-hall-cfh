@@ -72,6 +72,7 @@ describe('Game Server', () => {
     };
     const expectStartGame = () => {
       client1.emit('startGame');
+
       client1.on('gameUpdate', (data) => {
         data.state.should.equal('waiting for czar to draw a card');
       });
@@ -155,6 +156,7 @@ describe('Game Server', () => {
     };
     const expectStartGame = () => {
       client1.emit('startGame');
+
       client1.on('gameUpdate', (data) => {
         data.state.should.equal('waiting for czar to draw a card');
       });

@@ -398,6 +398,26 @@
   padding-top: 20px;
   margin-bottom: -13px;
 }
+.red{
+  overflow: ;
+}
+introjs-fixedTooltip, .introjs-helperLayer {
+  background-color: transparent !important;
+  border: 2px solid white;
+  /* zoom: 0.8; */
+}
+
+.introjs-bullets a.active {
+  background: #C05A3D !important;
+}
+
+.introjs-tooltiptext {
+  color: #350018 !important;
+}
+
+.introjs-tooltipbuttons {
+  text-align: center !important;
+}
 
  #sign-up-btn-landing {
      display: inline-block;
@@ -971,154 +991,165 @@
  }
  
  .container-margin {
-     padding-top: 60px;
-     padding-bottom: 60px;
+   padding-top:60px;
+   padding-bottom: 60px;
  }
- 
- .arrow {
-     position: fixed;
-     bottom: 0;
-     left: 50%;
-     margin-left: -20px;
-     width: 40px;
-     height: 40px;
-     background-size: contain;
-     animation-iteration-count: 3;
-     -webkit-animation-iteration-count: 3;
-     -moz-animation-iteration-count: 3;
-     -o-animation-iteration-count: 3;
-     animation-delay: 5s;
-     -webkit-animation-delay: 5s;
-     -moz-animation-delay: 5s;
-     -o-animation-delay: 5s;
- }
- 
- .landing-card {
-     position: relative;
-     display: inline-block;
-     box-sizing: border-box;
-     width: 17.5%;
-     height: 215px;
-     padding: 1%;
-     margin: 1%;
-     background-color: #fff;
-     border-radius: 8px;
-     color: #252525;
-     font-family: Arial;
-     font-size: 1.1em;
-     font-weight: bold;
-     vertical-align: top;
- }
- /*Override Bootstrap Row Class*/
- 
- .row {
-     margin-left: 0;
-     margin-right: 9px;
- }
- 
- #donations {
-     margin-top: 160px;
- }
- /*MORE MEDIA QUERIESS WHOOOOOAAAA*/
- 
- @media (min-width: 1430px) {
-     .row {
-         margin: 0 0 -9px 0;
-     }
-     .wpb-logo-container {
-         margin-right: 0;
-     }
- }
- 
- @media(max-width: 680px) {
-     .wpb-menu-container {
-         display: none;
-     }
-     .mod-contain {
-         text-align: center;
-     }
- }
- 
- @media (min-width: 480px) and (max-width: 865px) {
-     .wpb-menu-container .wpb-main-menu {
-         text-align: right;
-         height: 100px;
-         margin-top: -77px;
-         font-size: .85em;
-     }
-     .wpb-menu-container .wpb-main-menu li a {
-         display: block;
-         height: 100%;
-         line-height: 100px;
-         font-weight: bold;
-         color: white;
-         padding: 0px 3px;
-         -webkit-transition: color 0.5s ease;
-         -moz-transition: color 0.5s ease;
-         -ms-transition: color 0.5s ease;
-         -o-transition: color 0.5s ease;
-         transition: color 0.5s ease;
-         text-transform: uppercase;
-         position: relative;
-         z-index: 1000;
-     }
-     .wpb-logo-container {
-         color: #fff;
-         font-weight: bold;
-         margin-right: 0;
-         font-size: 11px;
-         max-width: 99%;
-     }
-     .wpb-teaser .container {
-         position: relative;
-         z-index: 1000;
-         padding-top: 70px;
-     }
-     .landing-card {
-         font-size: 0.8em;
-     }
- }
- 
- @media (min-width: 865px) and (max-width: 1024px) {
-     .wpb-menu-container .wpb-main-menu {
-         text-align: right;
-         height: 100px;
-         margin-top: -77px;
-         font-size: .9em;
-         margin-right: 35px;
-     }
-     .wpb-menu-container .wpb-main-menu li a {
-         display: block;
-         height: 100%;
-         line-height: 100px;
-         font-weight: bold;
-         color: white;
-         padding: 0px 6px;
-         -webkit-transition: color 0.5s ease;
-         -moz-transition: color 0.5s ease;
-         -ms-transition: color 0.5s ease;
-         -o-transition: color 0.5s ease;
-         transition: color 0.5s ease;
-         text-transform: uppercase;
-         position: relative;
-         z-index: 1000;
-     }
-     .wpb-logo-container {
-         color: #fff;
-         font-weight: bold;
-         margin-right: 10px;
-         font-size: 11px;
-     }
-     .wpb-teaser .container {
-         position: relative;
-         z-index: 1000;
-         padding-top: 70px;
-     }
-     #ang-logo {
-         width: 37% !important;
-     }
- }
- 
+
+.arrow {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  margin-left:-20px;
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  animation-iteration-count: 3;
+  -webkit-animation-iteration-count: 3;
+  -moz-animation-iteration-count: 3;
+  -o-animation-iteration-count: 3;
+  animation-delay: 5s;
+  -webkit-animation-delay: 5s;
+  -moz-animation-delay: 5s;
+  -o-animation-delay: 5s;
+}
+
+
+.landing-card {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 17.5%;
+  height: 215px;
+  padding: 1%;
+  margin: 1%;
+  background-color: #fff;
+  border-radius: 8px;
+  color: #252525;
+  font-family: Arial;
+  font-size: 1.1em;
+  font-weight: bold;
+  vertical-align: top;
+}
+
+
+/*Override Bootstrap Row Class*/
+.row {
+   margin-left: 0;
+   margin-right: 9px;
+}
+
+#donations {
+   margin-top: 100px;
+}
+
+/*MORE MEDIA QUERIESS WHOOOOOAAAA*/
+
+@media (min-width: 1430px) {
+   .row {
+      margin: 0 0 -9px 0;
+   }
+
+   .wpb-logo-container {
+      margin-right: 0;
+   }
+}
+
+@media(max-width: 680px) {
+   .wpb-menu-container {
+      display: none;
+   }
+
+   .mod-contain {
+      text-align: center;
+   }
+}
+
+@media (min-width : 480px) and (max-width : 865px)  {
+   .wpb-menu-container .wpb-main-menu {
+      text-align: right;
+      height: 100px;
+      margin-top: -77px;
+      font-size: .85em;
+   }
+
+   .wpb-menu-container .wpb-main-menu li a {
+      display: block;
+      height: 100%;
+      line-height: 100px;
+      font-weight: bold;
+      color: white;
+      padding: 0px 3px;
+      -webkit-transition: color 0.5s ease;
+      -moz-transition: color 0.5s ease;
+      -ms-transition: color 0.5s ease;
+      -o-transition: color 0.5s ease;
+      transition: color 0.5s ease;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1000;
+   }
+   .wpb-logo-container {
+      color: #fff;
+      font-weight: bold;
+      margin-right: 0;
+      font-size: 11px;
+      max-width: 99%;
+   }
+
+   .wpb-teaser .container {
+      position: relative;
+      z-index: 1000;
+      padding-top: 70px;
+   }
+
+   .landing-card {
+      font-size: 0.8em;
+   }
+}
+
+@media (min-width : 865px) and (max-width : 1024px)  {
+   .wpb-menu-container .wpb-main-menu {
+      text-align: right;
+      height: 100px;
+      margin-top: -77px;
+      font-size: .9em;
+      margin-right: 35px;
+   }
+
+   .wpb-menu-container .wpb-main-menu li a {
+      display: block;
+      height: 100%;
+      line-height: 100px;
+      font-weight: bold;
+      color: white;
+      padding: 0px 6px;
+      -webkit-transition: color 0.5s ease;
+      -moz-transition: color 0.5s ease;
+      -ms-transition: color 0.5s ease;
+      -o-transition: color 0.5s ease;
+      transition: color 0.5s ease;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1000;
+   }
+   .wpb-logo-container {
+      color: #fff;
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: 11px;
+   }
+
+   .wpb-teaser .container {
+      position: relative;
+      z-index: 1000;
+      padding-top: 70px;
+   }
+
+   #ang-logo {
+      width: 37% !important;
+   }
+}
+
  @media (max-width: 480px) {
      #sign-up-btn {
          font-size: 1.5rem;

@@ -156,6 +156,8 @@ angular.module('mean.system')
         $('#checkModal').modal('show');
       }
       if (game.players.length >= game.playerMinLimit) {
+        playTone('beep')
+
         $('#startModal').modal({
           keyboard: false,
           backdrop: 'static'
@@ -164,7 +166,9 @@ angular.module('mean.system')
       }
     };
 
-    $scope.abandonGame = () => {
+    $scope.abandonGame = function () {
+      playTone('over');
+
       game.leaveGame();
       $location.path('/');
     };
@@ -244,4 +248,68 @@ angular.module('mean.system')
     } else {
       game.joinGame();
     }
+
+    // * ************************************************ *//
+    // * *************GAME TOUR STARTS HERE************** *//
+    // * ************************************************ *//
+
+    $scope.player = {
+      avatar: '../../img/chosen/E01.png',
+      username: 'Emmanuel',
+      points: 2
+    }
+    $scope.gameTour = introJs();
+    $scope.gameTour.setOptions({
+      exitOnOverlayClick: false,
+      steps: [{
+        intro: '<h3>Welcome Gamer</h3> <br/> I would like to take you on a quick tour of how this game is played.'
+      },
+      {
+        element: '#player-container',
+        intro: 'This is the player card. It shows the username, avatar, and score of players that have joined the current game session.'
+      },
+      {
+        element: '#question-container-outer ',
+        intro: 'This pane, also called the <b>question box</b> shows the number of players that have joined the game and also provides buttons with which you can start the game or invite your friends.',
+      },
+      {
+        element: '#start-gamess',
+        intro: 'Click this button to start a new game.'
+      },
+      {
+        element: '#timer-container',
+        intro: 'A game session lasts for 20 seconds. This pane shows the number of seconds left for a game session to end.'
+      },
+      {
+        element: '#info-container',
+        intro: 'This panel shows the instructions of the game. When the game starts, the answers to the question in the <strong>question box</strong> above will be shown here.',
+      },
+      {
+        element: '#chat-icon-container',
+        intro: 'Feel like chatting with players in this game session? Here is the place to chat. Just click on this button and voila! the chat begins.',
+        position: 'top'
+      },
+      {
+        element: '#abandon-game-button',
+        intro: 'If you ever decide to the quit or leave the game, you can click this button.'
+      },
+      {
+        element: '#tour-game-button',
+        intro: 'If you feel like taking this tour again, you can always click here.'
+      },
+
+      {
+        intro: 'YES! We are done with the tour. Go and ahead and start or join a game.'
+      },
+      ]
+    });
+
+    const tourEnded = () => {
+      window.location.href = '/play';
+    };
+    $scope.takeTour = () => {
+      $scope.gameTour.start()
+        .oncomplete(tourEnded)
+        .onexit(tourEnded);
+    };
   }]);

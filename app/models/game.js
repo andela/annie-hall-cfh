@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 /**
 * Game Schema
 */
+
 const GameSchema = new Schema({
   userID: [],
   gameID: String,
