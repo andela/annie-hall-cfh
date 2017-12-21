@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
-// var Game = require('../models/game');
-var Game = mongoose.model('Game');
+import mongoose from 'mongoose';
+
+const Game = mongoose.model('Game');
 
 /**
  * Saves game log when game session ends
- * @returns {object} description
  * @export { function }
  * @param {object} req
  * @param {object} res
+ * @returns {object} description
  */
-exports.createGameData = (req, res) => {
+export const createGameData = (req, res) => {
   // save game if user is authenticated
   if (req.decoded && req.params.id) {
     const game = new Game(req.body);
@@ -43,8 +43,8 @@ const sortWinners = (gameWinners) => {
 
 /**
  * getGameWinners function
- * @returns {Object} array of the individual game winners
  * @param {Object} gameResults
+ * @returns {Object} array of the individual game winners
  */
 const getGameWinners = (gameResults) => {
   const gameWinners = [];

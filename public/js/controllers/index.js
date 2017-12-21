@@ -58,7 +58,7 @@ angular.module('mean.system')
     };
 
     $scope.signUp = function() {
-      var userData = {
+      let userData = {
         name: $scope.name,
         email: $scope.email,
         password: $scope.password
@@ -86,8 +86,27 @@ angular.module('mean.system')
         }, (err) => {
           $scope.alert = err.data.message;
         });
+      if (
+        $scope.email &&
+        $scope.password
+      ) {
+        let userData = {
+          email: $scope.email,
+          password: $scope.password
+        };
+        $http.post('/api/signin', userData)
+          .then((response) => {
+            window.localStorage.setItem('token', response.data.token);
+            $location.path('/#!/');
+            location.reload();
+          }, (err) => {
+            $location.search(`error=${err.data.error}`);
+          });
+      } else {
+        $location.search('error=invalid');
+      }
     };
-    
+
     $scope.logOut = () => {
       window.localStorage.removeItem('token');
       $http.get('/signout')
@@ -99,7 +118,7 @@ angular.module('mean.system')
           }
         });
     };
-    
+
 
     $scope.avatars = [];
     AvatarService.getAvatars()

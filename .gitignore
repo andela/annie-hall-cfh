@@ -4,6 +4,7 @@ public/lib
 .DS_store
 c4h_keys.txt
 .env
+.vscode/
 bower_components
 migrations/
 package-lock.json
@@ -14,4 +15,4 @@ migrations/
 .coveralls.yml
 yarn-error.log
 dist/
-
+npm-debug.log

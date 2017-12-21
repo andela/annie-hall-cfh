@@ -75,7 +75,7 @@ module.exports = (io) => {
 
     socket.on('startGame', () => {
       if (allGames[socket.gameID]) {
-        let thisGame = allGames[socket.gameID];
+        const thisGame = allGames[socket.gameID];
         console.log('comparing', thisGame.players[0].socket.id, 'with', socket.id);
         if (thisGame.players.length >= thisGame.playerMinLimit) {
           // Remove this game from gamesNeedingPlayers so new players can't join it.
@@ -152,7 +152,7 @@ module.exports = (io) => {
     console.log(socket.id, 'is requesting room', requestedGameId);
     if (requestedGameId.length && allGames[requestedGameId]) {
       console.log('Room', requestedGameId, 'is valid');
-      let game = allGames[requestedGameId];
+      const game = allGames[requestedGameId];
       // Ensure that the same socket doesn't try to join the same game
       // This can happen because we rewrite the browser's URL to reflect
       // the new game ID, causing the view to reload.
@@ -169,7 +169,7 @@ module.exports = (io) => {
         game.assignPlayerColors();
         game.assignGuestNames();
         game.sendUpdate();
-        game.sendNotification(player.username + ' has joined the game!');
+        game.sendNotification(`${player.username} has joined the game!`);
         if (game.players.length >= game.playerMaxLimit) {
           gamesNeedingPlayers.shift();
           // game.prepareGame();
@@ -186,14 +186,13 @@ module.exports = (io) => {
         fireGame(player, socket);
       }
     }
-
   };
 
   const fireGame = (player, socket) => {
     let game;
     if (gamesNeedingPlayers.length <= 0) {
       gameID += 1;
-      let gameIDStr = gameID.toString();
+      const gameIDStr = gameID.toString();
       game = new Game(gameIDStr, io);
       allPlayers[socket.id] = true;
       game.players.push(player);
@@ -215,7 +214,7 @@ module.exports = (io) => {
       game.assignPlayerColors();
       game.assignGuestNames();
       game.sendUpdate();
-      game.sendNotification(player.username + ' has joined the game!');
+      game.sendNotification(`${player.username} has joined the game!`);
       if (game.players.length >= game.playerMaxLimit) {
         gamesNeedingPlayers.shift();
       }
@@ -228,7 +227,7 @@ module.exports = (io) => {
     // Generate a random 6-character game ID
     while (!isUniqueRoom) {
       uniqueRoom = '';
-      for (let i = 0; i < 6; i += 1) {
+      for (let i = 0; i < 6; i++) {
         uniqueRoom += chars[Math.floor(Math.random() * chars.length)];
       }
       if (!allGames[uniqueRoom] && !(/^\d+$/).test(uniqueRoom)) {
@@ -236,7 +235,7 @@ module.exports = (io) => {
       }
     }
     console.log(socket.id, 'has created unique game', uniqueRoom);
-    let game = new Game(uniqueRoom, io);
+    const game = new Game(uniqueRoom, io);
     allPlayers[socket.id] = true;
     game.players.push(player);
     allGames[uniqueRoom] = game;
@@ -250,7 +249,7 @@ module.exports = (io) => {
   const exitGame = (socket) => {
     console.log(socket.id, 'has disconnected');
     if (allGames[socket.gameID]) {
-      let game = allGames[socket.gameID];
+      const game = allGames[socket.gameID];
       console.log(socket.id, 'has left game', game.gameID);
       delete allPlayers[socket.id];
       // it removes stored messages when number of players online is less than two
@@ -262,7 +261,7 @@ module.exports = (io) => {
         game.removePlayer(socket.id);
       } else {
         game.stateDissolveGame();
-        for (let j = 0; j < game.players.length; j += 1) {
+        for (let j = 0; j < game.players.length; j++) {
           game.players[j].socket.leave(socket.gameID);
         }
         game.killGame();
