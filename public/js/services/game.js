@@ -1,5 +1,6 @@
 angular.module('mean.system')
   .factory('game', ['socket', '$timeout', '$http', function (socket, $timeout, $http) {
+
     const game = {
       id: null, // This player's socket ID, so we know who this player is
       gameID: null,
@@ -33,6 +34,7 @@ angular.module('mean.system')
         setNotification();
       }
     };
+
     var setNotification = () => {
       if (notificationQueue.length === 0) { // If notificationQueue is empty, stop
         clearInterval(timeout);
@@ -66,6 +68,7 @@ angular.module('mean.system')
     });
 
     socket.on('gameUpdate', (data) => {
+
       // Update gameID field only if it changed.
       // That way, we don't trigger the $scope.$watch too often
       if (game.gameID !== data.gameID) {
@@ -195,10 +198,9 @@ angular.module('mean.system')
         $http.post(`/api/v1/games/${game.gameID}/start`, data, {
           headers: {
             'x-token': window.localStorage.token
-          }
-        })
+          } 
+})
           .then((response) => {
-            console.log('-------------->', response);
           });
       }
     });
@@ -245,3 +247,9 @@ angular.module('mean.system')
 
     return game;
   }]);
+
+const playTone = (tone, volume) => {
+  const sound = new Audio(`../../sounds/${tone}.mp3`);
+  sound.volume = volume || 0.3;
+  sound.play();
+};
