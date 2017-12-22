@@ -110,6 +110,7 @@ gulp.task('emojione-area', () => {
   gulp.src('bower_components/emojionearea/dist/**/*')
     .pipe(gulp.dest('./dist/public/lib/emojionearea'));
 });
+
 // transfer bower packages(dependencies) for intro.js library
 gulp.task('intro.js', () => {
   gulp.src('public/intro.js/**/*')
