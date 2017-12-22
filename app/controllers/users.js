@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
+
 import avatar from './avatars';
 
 const User = mongoose.model('User');

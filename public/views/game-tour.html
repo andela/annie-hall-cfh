@@ -1,0 +1,328 @@
+</script>
+<div id="app-container" ng-controller="GameController">
+  <nav class="navbar navbar-expand-sm navbar-light navbar-inverse bg-light fixed-top ">
+    <a class="navbar-brand" href="/" style="cursor:pointer">
+      <span id="cards">Cards</span> For Humanity</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" style="margin-right: 2em; margin-top: 0.5em">
+          <span id="tweet-container">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://cfh.io" data-text="Cards for Humanity: A Game for Horrible People Desperately Trying to do Good"
+              data-related="CFH_App">Tweet</a>
+            <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+          </span>
+        </li>
+        <li class="nav-item" >
+          <button 
+          class="nav-link mr-3 text-dark" 
+          style="border-radius: 10px;" 
+          id="tour-game-button" 
+          onclick="window.location.href='/gametour'"
+          >TAKE A TOUR</button>
+          
+        </li>
+        <li class="nav-item" ng-click="abandonGame()">
+          <div id="abandon-game-button">
+          <button class="nav-link red mr-3 bg-dark" style="border-radius: 10px; color: white 
+          !important" id="">Abandon Game</button>
+        </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="gameplay-container" ng-init="takeTour()">
+    <div id="upper-gameplay-container" style="margin-top: 5em">
+      <div id="menu-timeremaining-container">
+        <div id="menu-container">
+          <span id="menu-button">Menu</span>
+        </div>
+        <div id="timer-container">
+          <div id="inner-timer-container">
+            <span id="timer-status-round">
+              Time Remaining</span>
+            <div id="time">0</div>
+          </div>
+        </div>
+      </div>
+      <div id="question-container-outer">
+        <div id="question-container-inner">
+          <div class="card longBlack" id="question-boxx">
+            <span></span>
+
+            <div id="startGame" ng-show="game.state === 'awaiting players'">
+              <div id="finding-players">Finding Players</div>
+              <div id="invite-friend"></div>
+              <div id="player-count-container">
+                <div id="player-count">{{game.players.length}} / 12 </div>
+                <div id="the-word-players"> Players </div>
+              </div>
+              <div id="loading-container">
+                <div id="loading-gif">
+                  <img ng-src="../img/loader.gif" />
+                </div>
+              </div>
+              <div id="start-game-container" ng-click="checkPlayerLimit()" ng-show="(game.playerIndex === 0 || game.joinOverride)">
+                <button class="btn start-game" id="start-gamess">Start Game
+                  <br>with {{game.players.length}} players</button>
+              </div>
+            </div>
+
+            <!-- Game Over Stuff -->
+            <div id="game-end-info">
+              <div id="people-left-game-top" ng-show="game.state ==='game dissolved' && game.gameWinner === -1">
+                <div class="game-end-headline">What the!? The game ended because too many people left! </div>
+                Our sincere apologies.
+              </div>
+              <div ng-show="game.state === 'game ended' && game.gameWinner === game.playerIndex">
+                <div class="game-end-headline">Congratulations! You won the game, {{game.players[game.playerIndex].username | upperFirstLetter}}!</div>We
+                hope you feel special. If you'd like to share that special feeling with the world, consider donating to charity.
+                Or just horde it all for youself.
+              </div>
+              <div ng-show="game.state === 'game ended' && game.gameWinner !== game.playerIndex">
+                <div class="game-end-headline">Aw, shucks! {{game.players[game.gameWinner].username | upperFirstLetter }} won the game!</div>
+                That makes you a loser, unfortunately.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div ng-cloak id="cards-container" ng-hide="game.state === 'game ended' || game.state ==='game dissolved'"> -->
+      <div id="social-bar-container" class="player-stage">
+        <div id="player-container"
+        class="player-box"
+        style="background-color:{{colors[player.color]}}">
+        <div id="above-czar-container">
+          <div class="row" id="player1">
+            <div id="avatar_" class="col-md-2">
+              <span ng-show="{{true}}">
+                <img ng-src="img/king.png" id="king">
+              </span>
+              <img ng-src="{{player.avatar}}" class="avatar-img" />
+            </div>
+            <div id="player-container-inner" style="margin-left: 10px; margin-bottom: 0em">
+              <div id="player-name" class="col-md-2">
+                <p style="font-size: 15px">{{player.username | upperFirstLetter}}</p>
+              </div>
+            </div>
+            <div id="player-score" class="col-md-2 text-left">
+              <p style="font-size: 17px">{{player.points}}/5</p>
+            </div>
+            <div ng-show="{{true}}" id="player-star" class="col-md-1 text-left">
+              <img src="../img/11.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    <!-- </div> -->
+    
+    <!-- MODAL -->
+    <div
+      class="modal fade"
+      id="searchInput"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="searchInput"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                ng-model='searchQuery'
+                placeholder="Search by username or email" />
+              <span class="input-group-btn">
+                <button class="btn btn-warning" ng-click='searchUser(searchQuery)' type="button">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+              </span>
+            </div>
+            <!-- <div id="search-results">
+                        {{searchResults}}
+                    </div> -->
+            <div ng-repeat="user in searchResults" id="search-result">
+              <div class="row" id="search-result-info">
+                <div class="col-xs-3">
+                  <h5>{{user.name}}</h5>
+                </div>
+                <div class="col-xs-3">
+                  <button class="btn btn-warning" ng-click="sendInvites(user.email)">invite</button>
+                </div>
+                <!-- <div class="col-xs-3">
+                                <button class="btn btn-danger" ng-click="increment()">Hide Modal</button> -->
+              </div>
+            </div>
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <div
+        id="czarModal"
+        class="modal fade bd-example-modal-lg"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <center>
+              <h4 id="Text">You are the Czar, Please draw a black card</h4>
+              <div ng-click="drawCard()" ng-style="{'cursor':'pointer'}" style='margin: auto;'>
+                <center>
+                  <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card1' />
+                  <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card2' />
+                  <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card3' />
+                  <img src='../img/cfh.png' style='width: 100px;' class='animated flipInX' id='card4' />
+                </center>
+              </div>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="info-container" ng-show="game.state === 'awaiting players'">
+      <div id="inner-info">
+        <div id="lobby-how-to-play">How To Play</div>
+        <ol id="oh-el">
+          <li>Each player begins with, and will always have, 10 white answer cards.</li>
+          <li>For each round, one player is randomly chosen as the Card Czar.</li>
+          <li>Everyone else answers the black question card by clicking on the answer card they want to use.</li>
+          <li>The Card Czar then picks a favorite answer, and whoever played that answer wins the round.</li>
+          <li>*Want to adorn your avatar with a glorious crown? Donate to charity after the game!</li>
+        </ol>
+      </div>
+    </div>
+    
+    <div id="checkModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #252525; color: white">
+            <h4 class="modal-title">Information</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <p>A Minimum of three(3) players are required to start the game.</p>
+              </div>
+              <div class="col-md-3 col-md-offset-4">
+              </div>
+              <div class="col-md-4">
+                <button
+                  type="button"
+                  class="btn btn-block"
+                  data-dismiss="modal"
+                  style="background-color: #252525; color: white">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="startModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Game Confirmation</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <p>Are you sure you want to start the game?</p>
+              </div>
+              <div class="col-md-3 col-md-offset-3">
+                <button
+                  ng-click="startGame()"
+                  data-dismiss="modal"
+                  type="button"
+                  class="btn btn-block btn-cfh-green btn-w">
+                  Yes, Start!
+                </button>
+              </div>
+              <div class="col-md-3">
+                <button type="button" class="btn btn-block btn-danger btn-w" data-dismiss="modal">
+                  No, Return!
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="game-end-container" ng-show="game.state === 'game ended' || game.state ==='game dissolved'">
+      <div id="inner-info-exit">
+        <div class="game-end-answer-text" ng-show="game.state ==='game dissolved' && game.gameWinner === -1">
+          <h2>What would you like to do now?</h2>
+          You might consider donating to charity to atone for the horrifying answers you've submitted.
+          Donating will also place a lovely
+          crown on your avatar's head.
+        </div>
+        <div class="game-end-answer-text" ng-show="game.state === 'game ended' || game.gameWinner !== -1">
+          <h2>What would you like to do now?</h2>
+          Help yourself to another game or help a child in need? Donating will also place a lovely crown on your avatar's head.
+        </div>
+        <div id='inner-text-container'>
+          <a href='/#!/app'>
+            <div id="join-new-game" ng-click="game.joinGame('joinNewGame')">
+              Join a New Game
+            </div>
+          </a>
+          <a href='/'>
+            <div id="exit-match">
+              Return to Lobby
+            </div>
+          </a>
+        </div>
+      </div>
+    
+      <div id="charity-widget-container">
+        <!-- This is real -->
+        <a
+        href="http://www.crowdrise.com"
+        id="crowdriseStaticLink-fundraiser-121142"
+        title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a>
+        <script type="text/javascript" src="https://www.crowdrise.com/widgets/donate/fundraiser/121142/?callback=userDonationCb"></script>
+        <!-- This is for testing -->
+        <!-- <a href="http://www.crowdrise.com" id="crowdriseStaticLink-project-36715" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a> -->
+        <!-- <script type="text/javascript" src="https://apisandbox.crowdrise.com/widgets/donate/project/36715/?callback=userDonationCb"></script> -->
+      </div>
+    </div>
+    <div id="czar-blank-container" ng-show="isCzar() && game.table.length===0 && game.state !== 'game dissolved' && game.state !== 'awaiting players'">
+      <div id="czar-blank-inner">
+        You are the Card Czar.
+        <br>
+        <span id="smaller-text">Players are choosing their answers. Prepare to select a winner.</span>
+      </div>
+      <div id='charity-fact-container'>
+        <div id='charity-fact-tagline'>Did you know?</div>
+    
+        <div id='charity-fact'>
+          {{ makeAWishFact }}
+        </div>
+    
+        <div id='charity-logo-container'>
+          <img src='/img/make-a-wish-logo.png' />
+        </div>
+    
+      </div>
+    </div>
+    
+  </div>
+
+</div>

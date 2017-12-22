@@ -245,14 +245,34 @@
             </a>
         </div>
     </div>
+  <div id="charity-widget-container">
+    <!-- This is real -->
+    <a
+    href="http://www.crowdrise.com"
+    id="crowdriseStaticLink-fundraiser-121142"
+    title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a>
+    <script type="text/javascript" src="https://www.crowdrise.com/widgets/donate/fundraiser/121142/?callback=userDonationCb"></script>
+    <!-- This is for testing -->
+    <!-- <a href="http://www.crowdrise.com" id="crowdriseStaticLink-project-36715" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a> -->
+    <!-- <script type="text/javascript" src="https://apisandbox.crowdrise.com/widgets/donate/project/36715/?callback=userDonationCb"></script> -->
+  </div>
+</div>
+<div id="czar-blank-container" 
+  ng-show="isCzar() && game.table.length===0 && game.state !== 'game dissolved' && game.state !== 'awaiting players'">
+  <div id="czar-blank-inner">
+    You are the Card Czar.
+    <br>
+    <span id="smaller-text">Players are choosing their answers. Prepare to select a winner.</span>
+  </div>
+  <div id='charity-fact-container'>
+    <div id='charity-fact-tagline'>Did you know?</div>
 
-    <div id="charity-widget-container">
-        <!-- This is real -->
-        <a href="http://www.crowdrise.com" id="crowdriseStaticLink-fundraiser-121142" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a>
-        <script type="text/javascript" src="https://www.crowdrise.com/widgets/donate/fundraiser/121142/?callback=userDonationCb"></script>
-        <!-- This is for testing -->
-        <!-- <a href="http://www.crowdrise.com" id="crowdriseStaticLink-project-36715" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a> -->
-        <!-- <script type="text/javascript" src="https://apisandbox.crowdrise.com/widgets/donate/project/36715/?callback=userDonationCb"></script> -->
+      <div id='charity-fact'>
+        {{ makeAWishFact }}
+      </div>
+      <div id='charity-logo-container'>
+        <img src='/img/make-a-wish-logo.png' />
+      </div>
     </div>
 </div>
 <div id="czar-blank-container" ng-show="isCzar() && game.table.length===0 && game.state !== 'game dissolved' && game.state !== 'awaiting players'">
