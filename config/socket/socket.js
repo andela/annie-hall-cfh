@@ -1,24 +1,49 @@
-const Game = require('./game');
-const Player = require('./player');
-require('console-stamp')(console, 'm/dd HH:MM:ss');
-const mongoose = require('mongoose');
+import ConsoleStamp from 'console-stamp';
+import mongoose from 'mongoose';
+import firebase from 'firebase';
+import Game from './game';
+import Player from './player';
+import { all } from '../../app/controllers/avatars';
+import config from '../firebase';
 
+ConsoleStamp(console, 'm/dd HH:MM:ss');
 const User = mongoose.model('User');
 
-const avatars = require(`${__dirname}/../../app/controllers/avatars.js`).all();
 // Valid characters to use to generate random private game IDs
-const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+const chars = process.env.RANDOM_CHARACTERS,
+  avatars = all();
 
-module.exports = function (io) {
-  let game;
-  const allGames = {};
-  const allPlayers = {};
-  const gamesNeedingPlayers = [];
-  let gameID = 0;
+// Initialize firebase
+firebase.initializeApp(config);
+const database = firebase.database();
+
+module.exports = (io) => {
+  const allGames = {},
+    allPlayers = {},
+    gamesNeedingPlayers = [];
+  let gameID = 0,
+    game;
 
   io.sockets.on('connection', (socket) => {
     console.log(`${socket.id} Connected`);
     socket.emit('id', { id: socket.id });
+
+    // loads snapshot of messages stored in for a particular game session
+    setTimeout(() => database.ref(`chatStore/${socket.gameID}/`).once('value', (snapshot) => {
+      const savedMessages = [];
+      if (snapshot.length !== 0) {
+        snapshot.forEach((message) => {
+          savedMessages.push(message.toJSON());
+        });
+        socket.emit('loadChat', savedMessages);
+      }
+    }), 300);
+
+    // Emit message to other players and push message to firbase database
+    socket.on('new message', (message) => {
+      database.ref(`chatStore/${socket.gameID}/`).push(message);
+      socket.broadcast.to(socket.gameID).emit('add message', message);
+    });
 
     socket.on('pickCards', (data) => {
       console.log(socket.id, 'picked', data);
@@ -67,7 +92,7 @@ module.exports = function (io) {
 
     socket.on('drawCard', () => {
       if (allGames[socket.gameID]) {
-        const thisGame = allGames[socket.gameID];
+        let thisGame = allGames[socket.gameID];
         if (thisGame.players.length >= thisGame.playerMinLimit) {
           // Remove this game from gamesNeedingPlayers so new players can't join it.
           gamesNeedingPlayers.forEach((game, index) => {
@@ -90,8 +115,8 @@ module.exports = function (io) {
     });
   });
 
-  var joinGame = function (socket, data) {
-    const player = new Player(socket);
+  const joinGame = (socket, data) => {
+    let player = new Player(socket);
     data = data || {};
     player.userID = data.userID || 'unauthenticated';
     if (data.userID !== 'unauthenticated') {
@@ -121,7 +146,7 @@ module.exports = function (io) {
     }
   };
 
-  var getGame = function (player, socket, requestedGameId, createPrivate) {
+  let getGame = (player, socket, requestedGameId, createPrivate) => {
     requestedGameId = requestedGameId || '';
     createPrivate = createPrivate || false;
     console.log(socket.id, 'is requesting room', requestedGameId);
@@ -134,7 +159,7 @@ module.exports = function (io) {
       // Also checking the number of players, so node doesn't crash when
       // no one is in this custom room.
       if (game.state === 'awaiting players' && (!game.players.length ||
-                game.players[0].socket.id !== socket.id)) {
+          game.players[0].socket.id !== socket.id)) {
         // Put player into the requested game
         console.log('Allowing player to join', requestedGameId);
         allPlayers[socket.id] = true;
@@ -163,7 +188,7 @@ module.exports = function (io) {
     }
   };
 
-  var fireGame = function (player, socket) {
+  const fireGame = (player, socket) => {
     let game;
     if (gamesNeedingPlayers.length <= 0) {
       gameID += 1;
@@ -196,8 +221,7 @@ module.exports = function (io) {
     }
   };
 
-  var createGameWithFriends = function (player, socket) {
-
+  const createGameWithFriends = (player, socket) => {
     let isUniqueRoom = false;
     let uniqueRoom = '';
     // Generate a random 6-character game ID
@@ -222,14 +246,18 @@ module.exports = function (io) {
     game.sendUpdate();
   };
 
-  var exitGame = function (socket) {
+  const exitGame = (socket) => {
     console.log(socket.id, 'has disconnected');
     if (allGames[socket.gameID]) {
       const game = allGames[socket.gameID];
       console.log(socket.id, 'has left game', game.gameID);
       delete allPlayers[socket.id];
+      // it removes stored messages when number of players online is less than two
+      if (game.players.length < 2) {
+        database.ref(`chatStore/${socket.gameID}/`).remove();
+      }
       if (game.state === 'awaiting players' ||
-                game.players.length - 1 >= game.playerMinLimit) {
+        game.players.length - 1 >= game.playerMinLimit) {
         game.removePlayer(socket.id);
       } else {
         game.stateDissolveGame();
@@ -237,6 +265,8 @@ module.exports = function (io) {
           game.players[j].socket.leave(socket.gameID);
         }
         game.killGame();
+        // it removes stored messages if game session is ended
+        database.ref(`chatStore/${socket.gameID}/`).remove();
         delete allGames[socket.gameID];
       }
     }
