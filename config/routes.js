@@ -18,6 +18,9 @@ router.get('/api/search/users/:userParam', users.searchUser);
 router.post('/api/users/invite', users.inviteUser);
 
 // User Routes
+router.post('/api/invites/email', auth, users.inviteUnregistered);
+router.get('/api/users/friends', auth, users.getFriends);
+router.put('/api/users/add-friend', auth, users.addFriend);
 router.get('/signin', users.signin);
 router.get('/signup', users.signup);
 router.get('/chooseavatars', users.checkAvatar);
