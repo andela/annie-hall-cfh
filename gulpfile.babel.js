@@ -64,8 +64,8 @@ gulp.task('lint', () => {
 });
 
 // Transfer other folders and files(excluding js folder) in public to dest/public
-gulp.task('transfer-public-scratch', () => {
-  gulp.src(['public/**/*', 'scratch/*', '!public/js/**'])
+gulp.task('transfer-public', () => {
+  gulp.src(['public/**/*', '!public/js/**'])
     .pipe(gulp.dest('./dist/public'));
 });
 
@@ -105,6 +105,12 @@ gulp.task('angular-bootstrap', () => {
     .pipe(gulp.dest('./dist/public/lib/angular-bootstrap'));
 });
 
+// transfer bower packages(dependencies) for emojioneArea library
+gulp.task('emojione-area', () => {
+  gulp.src('bower_components/emojionearea/dist/**/*')
+    .pipe(gulp.dest('./dist/public/lib/emojionearea'));
+});
+
 // transfer bower packages(dependencies) for intro.js library
 gulp.task('intro.js', () => {
   gulp.src('public/intro.js/**/*')
@@ -123,9 +129,9 @@ gulp.task('transfer-config-json', () => {
     .pipe(gulp.dest('./dist/config/env'));
 });
 
-gulp.task('transfer-bower', ['angular', 'bootstrap', 'jquery', 'underscore', 'angularUtils', 'angular-bootstrap', 'intro.js']);
+gulp.task('transfer-bower', ['angular', 'bootstrap', 'jquery', 'underscore', 'angularUtils', 'angular-bootstrap', 'intro.js', 'emojione-area']);
 
-gulp.task('transfer-to-dist', ['transfer-public-scratch', 'transfer-app-jade', 'transfer-config-json']);
+gulp.task('transfer-to-dist', ['transfer-public', 'transfer-app-jade', 'transfer-config-json']);
 
 gulp.task('test', () => {
   gulp.src('./dist/test/**/*.js')

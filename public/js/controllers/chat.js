@@ -38,15 +38,12 @@ angular.module('mean.system')
       }, 1000);
     };
 
-    // Listens when either the 'enter' key or the chat submit button is pressed and adds player
+    // Listens when the 'enter' key is pressed and adds player
     // message to messageStore array
     $scope.enterMessage = (keyEvent) => {
-      if (keyEvent) {
-        if (keyEvent.which === 13 && $scope.message !== '') {
-          $scope.sendMessage();
-        }
-      } else if ($scope.message !== '') {
+      if (keyEvent.which === 13 && $scope.message !== '') {
         $scope.sendMessage();
+        $scope.unreadMessages = '';
       }
     };
 
@@ -83,5 +80,20 @@ angular.module('mean.system')
       setTimeout(() => {
         $scope.downScrollPane();
       }, 200);
+    });
+
+    $(document).ready(() => {
+      const emoji = $('#emojionearea').emojioneArea({
+        pickerPosition: 'top',
+        events: {
+          keyup: (editor, event) => {
+            if (event.which === 13) {
+              $scope.message = (emoji.data('emojioneArea').getText());
+              emoji.data('emojioneArea').setText('');
+              $scope.enterMessage(event);
+            }
+          }
+        }
+      });
     });
   }]);
