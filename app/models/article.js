@@ -1,14 +1,14 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
+let mongoose = require('mongoose'),
   config = require('../../config/config'),
   Schema = mongoose.Schema;
 
 /**
-* Article Schema
-*/
-var ArticleSchema = new Schema({
+ * Article Schema
+ */
+const ArticleSchema = new Schema({
   id: {
     type: Number
   },
@@ -25,12 +25,12 @@ var ArticleSchema = new Schema({
 });
 
 /**
-* Statics
-*/
+ * Statics
+ */
 ArticleSchema.statics = {
-  load: function(id, cb) {
+  load(id, cb) {
     this.findOne({
-      id: id
+      id
     }).select('-_id').exec(cb);
   }
 };
@@ -39,12 +39,8 @@ ArticleSchema.statics = {
  * validate title and content
  * if empty
  */
-ArticleSchema.path('title').validate(function(title) {
-  return title.length;
-}, 'title cannot be blank');
+ArticleSchema.path('title').validate(title => title.length, 'title cannot be blank');
 
-ArticleSchema.path('content').validate(function(content) {
-  return content.length;
-}, 'content cannot be blank');
+ArticleSchema.path('content').validate(content => content.length, 'content cannot be blank');
 
 mongoose.model('Article', ArticleSchema);

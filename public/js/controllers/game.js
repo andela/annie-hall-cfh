@@ -11,7 +11,57 @@ angular.module('mean.system')
     let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
     $scope.test = 0;
-    
+    $scope.sendMail = (mail) => {
+      $scope.sending = true;
+      const token = localStorage.getItem('token');
+      if (mail.trim().length) {
+        return $http({
+          method: 'POST',
+          url: 'api/invites/email',
+          headers: {
+            'x-token': token
+          },
+          data: { email: mail, link: document.URL }
+        })
+          .then((response) => {
+            $scope.sending = false;
+            if (response.status === 200) {
+              $('#searchInput').modal('hide');
+              $('#sentResult').modal('show');
+            }
+          });
+      }
+    };
+
+    $scope.showFriends = () => {
+      const token = localStorage.getItem('token');
+      $http({
+        method: 'GET',
+        url: 'api/users/friends',
+        headers: {
+          'x-token': token
+        }
+      })
+        .then((response) => {
+          $scope.allFriends = response.data.friendList.friends;
+          $scope.friendsIdlist = $scope.allFriends.map(friend => friend.id);
+        });
+    };
+    $scope.addFriend = (userId, email, $index) => {
+      const token = localStorage.getItem('token');
+      $http({
+        method: 'PUT',
+        url: '/api/users/add-friend',
+        data: {
+          friendId: userId,
+          email
+        },
+        headers: {
+          'x-token': token
+        }
+      })
+        .then((response) => {});
+    };
     $scope.hideModal = () => {
       $('#searchInput').modal('hide');
     };
@@ -45,7 +95,6 @@ angular.module('mean.system')
         }
       }).then((response) => {
         $scope.counter += 1;
-        console.log('counter is', $scope.counter);
       });
     };
 
@@ -150,7 +199,7 @@ angular.module('mean.system')
         $('#czarModal').modal('hide');
       }, 500);
     };
-   
+
     $scope.checkPlayerLimit = () => {
       if (game.players.length < game.playerMinLimit) {
         $('#checkModal').modal('show');
