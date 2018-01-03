@@ -1,16 +1,14 @@
 import express from 'express';
 import passport from 'passport';
-
 import index from '../app/controllers/index';
 import questions from '../app/controllers/questions';
 import answers from '../app/controllers/answers';
 import avatars from '../app/controllers/avatars';
 import users from '../app/controllers/users';
 import authorization from '../config/middlewares/authorization';
-import { createGameData } from '../app/controllers/game';
+import { createGameData, getGameLog, getLeaderboard } from '../app/controllers/game';
 
 const auth = authorization.secureLogin;
-const saveGame = createGameData;
 
 const router = express.Router();
 
@@ -107,13 +105,22 @@ router.get('/avatars', avatars.allJSON);
 // Home route
 router.get('/play', index.play);
 router.get('/', index.render);
+router.get('/gametour', index.gameTour);
+
+// Intro route
+router.post('/setregion', index.setRegion);
 
 // dashboard
 // router.get('/dashboard', index.dashboard);
 
 
 // Game Routes
-router.post('/api/v1/games/:id/start', auth, saveGame);
+router.post('/api/v1/games/:id/start', auth, createGameData);
+router.get('/api/games/history/:token', auth, getGameLog);
+router.get('/api/games/leaderboard', getLeaderboard);
+
+// Intro route
+router.post('/setregion', index.setRegion);
 
 module.exports = router;
 // export default router;

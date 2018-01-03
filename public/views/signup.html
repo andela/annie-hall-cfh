@@ -1,86 +1,108 @@
-<div id="main-bod">
+<div id="main-body">
   <!-- Fixed Logo & Menu Bar Start -->
-  <div id="top-part">
-    <div class="wpb-top-bar">
-      <div class="mod-contain" id="navver">
-        <div class="row">
-          <!-- Logo -->
-          <div class="wpb-logo-container">
-            <div id="landing-logo"> 
-              <span id="first-word">Cards</span>
-              <span id="second-word"> for</span> 
-              <span id="third-word">Humanity</span> 
-            </div> 
-            <div class="col-md-9 wpb-menu-container">
-              <ul class="wpb-main-menu">
-                <li><a href="/">Home</a></li>
-              </ul>
+  <nav class="navbar navbar-expand-sm navbar-light navbar-inverse bg-light fixed-top ">
+    <a class="navbar-brand" href="/" style="cursor:pointer">
+      <span id="cards">Cards</span> For Humanity</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="#" class="nav-link nov mr-3 text-dark" style="border-radius: 10px;">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a href="#!/signin" class="nav-link  mr-3 text-dark" style="border-radius: 10px;">Sign In</a>
+        </li>
+        <li class="nav-item">
+          <a href="http://www.crowdrise.com/cfhio/fundraiser/cards4humanity" class="nav-link mr-3 text-dark" style="border-radius: 10px;">Donate</a>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+  <!-- Fixed Logo & Menu Bar End -->
+
+  <div>
+    <div class="container-fluid">
+      <div class="row" style="padding-top: 8em; padding-bottom: 10em">
+        <div id="sign-up-card" class="card col-md-6 mx-auto" ng-controller="IndexController" class="more-sign">
+          <div class="card-title" style="padding-top: 1em">
+            <h4 class="text-center"> Sign Up </h4>
+            <div class="card-body">
+              <div class="sign-error alert alert-danger alert alert-danger" ng-show="showError() === 'invalid'">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p class="text-red text-center">Please check your username/email/password and try again.</p>
+              </div>
+              <div class="sign-error alert alert-danger alert alert-danger" ng-show="showError() === 'undefined'">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p class="text-red text-center">Please check your username/email/password and try again.</p>
+              </div>
+              <form class="signup text-center " style="padding-top: 1em" ng-submit="signUp()" method="post">
+                <div>
+                  <div class="form-group" style="padding-left: 10em">
+                    <input class="col-md-7 input-text form-control" type="text" ng-model="name" placeholder="Username" required novalidate/>
+                  </div>
+                  <div class="form-group" style="padding-left: 10em">
+                    <input class="col-md-7 input-text form-control" type="email" ng-model="email" placeholder="Email" required novalidate/>
+                  </div>
+                  <div class="form-group" style="padding-left: 10em">
+                    <input class="col-md-7 input-text form-control" type="password" ng-model="password" placeholder="Password" required novalidate/>
+                  </div>
+                </div>
+                <div class="text-centre">
+                  <p> Select your avatar: </p>
+                  <div class="form-check form-check-inline col-md-7 text-left" ng-controller="IndexController" style="padding-left: 3em">
+                    <label class="form-check-label ng-scope" for="{{$index}}" ng-repeat="avatar in avatars" style="padding-bottom: 10px">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="avatar"
+                        value="{{$index}}"
+                        style="padding-bottom: 10px">
+                      <img
+                        ng-src="{{avatar}}"
+                        class="pic">
+                    </label>
+                  </div>
+                </div>
+
+                <div class="text-center" style="padding-top: 1em">
+                  <button type="submit" class="btn btn-dark" style="width:10em; cursor:pointer">Sign Up</button>
+                </div>
+              </form>
+
+              <div class="row" style="padding-top: 3em">
+                <hr class="col-md-4 text-right">
+                <p class="col-md-2 text-center"> OR </p>
+                <hr class="col-md-4 text-left">
+              </div>
+
+              <div class="text-center" style="padding-top: 1em">
+                <p> Sign up with:
+                  <a href="/auth/facebook">
+                    <i class="fa fa-facebook icons fa-2x" aria-hidden="true"></i>
+                  </a>
+                  <a href="/auth/github">
+                    <i class="fa fa-github icons fa-2x" style="padding-left: 5px" aria-hidden="true"> </i>
+                  </a>
+                  <a href="/auth/google">
+                    <i class="fa fa-google icons fa-2x" style="padding-left: 5px" aria-hidden="true"></i>
+                  </a>
+                  <a href="/auth/twitter">
+                    <i class="fa fa-twitter icons fa-2x" style="padding-left: 5px" aria-hidden="true"></i>
+                  </a>
+                </p>
+              </div>
+
+              <p class="text-center" style="font-size:13px; padding-top: 1em;"> Play as guest?
+                <a href="/play"> New Game </a>
+              </p>
             </div>
-          </div>      
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-<!-- Fixed Logo & Menu Bar End -->
-
-<!-- Landing Start -->
-<div class="wpb-teaser parallax-background" id="homer">
-  <div class="background-opacity"></div> 
-  <div class="modified-container">
-    <div class="row" id="main-text"> 
-    <!-- Teaser Text Start -->
-    <div id="landing-logo">
-      <h2 id="slogan">Sign Up with:</h2>
-      <div id="login-buttons">
-        <a href="/auth/facebook"><img class="login-item" src="/img/icons/facebook.png"></a>
-        <a href="/auth/github"><img class="login-item" src="/img/icons/github.png"></a>
-        <a href="/auth/twitter"><img class="login-item" src="/img/icons/twitter.png"></a>
-        <a href="/auth/google"><img class="login-item" src="/img/icons/google.png"></a>
-      </div>
-      <p id="create">Or fill in your details below and select an avatar:</p>
-
-      <div class="sign-body">
-        <div ng-controller="IndexController" class="more-sign">
-          <span id="alertMessage">{{alert}}</span>
-          <form class="signup form-horizontal" ng-submit="signUp()" method="post">
-            <div class="control-group">
-              <label for="name" class="control-label"></label>
-              <div class="controls">
-                <input class="input-info" id="name" type="text" ng-model="name" name="name" placeholder="Full name" required novalidate />
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="email" class="control-label"></label>
-              <div class="controls">
-                <input class="input-info" id="email"  ng-model="email" type="email" name="email" placeholder="Email" required novalidate />
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="password" class="control-label"></label>
-              <div class="controls">
-                <input class="input-info" id="password" ng-model="password" type="password" name="password" placeholder="Password" required novalidate />
-              </div>
-            </div>
-            <div id="contain-avatars">
-              <ul ng-controller="IndexController" class="avatar-list">
-                <li ng-repeat="avatar in avatars" class="avatars ng-scope">
-                  <input name="avatar" type='radio' value="{{$index}}">
-                    <img ng-src="{{avatar}}">
-                  </input>
-                </li>
-              </ul>
-            </div>
-            <div class="form-actions">
-              <button id="sign-up-btn-other" type='submit'>Sign Up</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    </div>
     </div>
   </div>
 </div>
-
-
-

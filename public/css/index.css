@@ -1,5 +1,8 @@
 body {
   width: 100%;
+  font-family: 'Barlow', sans-serif;
+  font-family: 'Work Sans', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 #main-body {
   width: 100%;
@@ -47,6 +50,7 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
+
 #overlay {
   background-color:rgba(0,0, 0, 0.7);
   position: absolute;

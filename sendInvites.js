@@ -1,7 +1,6 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-exports.sendMessage = function (details, recipient) {
-  console.log('inside sendMessage');
+exports.sendMessage = (details, recipient) => {
   const transport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -22,7 +21,7 @@ exports.sendMessage = function (details, recipient) {
     message,
     function(error) {
       if (error) {
-        return 'Error. Couldn\`t send message';
+        return 'Error. Could not send message';
       }
       return `Message sent to ${recipient}`;
     }

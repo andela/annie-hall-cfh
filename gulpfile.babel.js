@@ -111,6 +111,12 @@ gulp.task('emojione-area', () => {
     .pipe(gulp.dest('./dist/public/lib/emojionearea'));
 });
 
+// transfer bower packages(dependencies) for intro.js library
+gulp.task('intro.js', () => {
+  gulp.src('public/intro.js/**/*')
+    .pipe(gulp.dest('./dist/public/lib/intro.js'));
+});
+
 // Transfer jade files from app/views to dist/app/views
 gulp.task('transfer-app-jade', () => {
   gulp.src('app/views/**/*')
@@ -123,7 +129,7 @@ gulp.task('transfer-config-json', () => {
     .pipe(gulp.dest('./dist/config/env'));
 });
 
-gulp.task('transfer-bower', ['angular', 'bootstrap', 'jquery', 'underscore', 'angularUtils', 'angular-bootstrap', 'emojione-area']);
+gulp.task('transfer-bower', ['angular', 'bootstrap', 'jquery', 'underscore', 'angularUtils', 'angular-bootstrap', 'intro.js', 'emojione-area']);
 
 gulp.task('transfer-to-dist', ['transfer-public', 'transfer-app-jade', 'transfer-config-json']);
 

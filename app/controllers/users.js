@@ -117,7 +117,6 @@ const users = {
   },
   searchUser: (req, res) => {
     const query = req.params.userParam;
-    // console.log(req.decoded.newUser.id);
     User.find({
       $or: [
         { email: { $regex: `.*${query}.*` } }, { name: { $regex: `.*${query}.*` } }

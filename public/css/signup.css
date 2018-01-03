@@ -1,0 +1,38 @@
+#main-body {
+  background-color: rgba(0, 0, 0, 0.9);
+  height: auto !important;
+  background-size: cover !important;
+  background-attachment: fixed;
+}
+
+.overlap {
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+#sign-up-card {
+  height: 40em !important;
+}
+
+#sign-in-card {
+  height: 30em !important;
+}
+
+.pic {
+  height: 2em;
+  width: 2em;
+}
+
+.input-text {
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-bottom-color: rgb(65, 65, 65);
+}
+
+.icons {
+  color: black;
+}
