@@ -13,7 +13,7 @@ const auth = authorization.secureLogin;
 const router = express.Router();
 
 // Search Route
-router.get('/api/search/users/:userParam', users.searchUser);
+router.get('/api/search/users/:userParam', auth, users.searchUser);
 router.post('/api/users/invite', users.inviteUser);
 
 // User Routes
@@ -29,6 +29,9 @@ router.get('/signout', users.signout);
 router.post('/users', users.create);
 router.post('/users/avatars', users.getAvatars);
 router.post('/api/signin', users.userSignIn);
+
+// Donation Routes
+router.post('/donations', users.addDonation);
 
 router.post('/users/session', passport.authenticate('local', {
   failureRedirect: '/signin',
@@ -106,6 +109,10 @@ router.get('/gametour', index.gameTour);
 
 // Intro route
 router.post('/setregion', index.setRegion);
+
+// dashboard
+// router.get('/dashboard', index.dashboard);
+
 
 // Game Routes
 router.post('/api/v1/games/:id/start', auth, createGameData);

@@ -3,8 +3,8 @@
         <a class="navbar-brand type" href="#" style="cursor:pointer">
             <span id="cards">Cards</span> For Humanity</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <span class="navbar-toggler-icon"></span>
+  </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent" ng-controller="IndexController">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item" ng-show="showOptions">
@@ -13,11 +13,14 @@
                 <li class="nav-item" ng-show="showOptions">
                     <a href="#!/signin" class="nav-link  mr-3 text-dark" style="border-radius: 10px;">Sign In</a>
                 </li>
-                <span ng-hide="showOptions">
-          <li>
-            <a class="nav-link  mr-3 text-dark" style="border-radius: 10px;" ng-click="logOut()">Sign Out</a>
-          </li>
-        </span>
+                <!-- <span ng-hide="showOptions"> -->
+                <li>
+                    <a class="nav-link  mr-3 text-dark" style="border-radius: 10px;" href='#!/dashboard' ng-hide="showOptions">Dashboard</a>
+                </li>
+                <li>
+                    <a class="nav-link  mr-3 text-dark" style="border-radius: 10px;" ng-click="logOut()" ng-hide="showOptions">Sign Out</a>
+                </li>
+                <!-- </span> -->
                 <li class="nav-item">
                     <a href="#!" class="nav-link mr-3 text-dark" style="border-radius: 10px;">Donate</a>
                 </li>
@@ -31,8 +34,10 @@
                     <div class="col-md-12">
                         <h1 id="name" class="text-white type">Cards For Humanity</h1>
                         <h3 id="story" class="text-white type">...a game for good people</h3>
-                        <button onclick="window.location.href='/play'" class="button1 pl-3 pr-3 text-white mr-5">Play as a Guest</button>
-                        <button onclick="window.location.href='/play?custom'" class="button1 pl-5 pr-5 text-white ml-auto">Play with Friends</button>
+                        <button onclick="window.location.href='/play'" class="button1 pl-3 pr-3 text-white mr-5" ng-show="showOptions">Play as a Guest</button>
+                        <button onclick="window.location.href='/signup' " class="button1 pl-5 pr-5 text-white ml-auto" ng-show="showOptions">Sign Up</button>
+                        <button onclick="window.location.href='/play'" class="button1 pl-3 pr-3 text-white mr-5" ng-hide="showOptions">Play as a Guest</button>
+                        <button onclick="window.location.href='/play/?custom' " class="button1 pl-5 pr-5 text-white ml-auto" ng-hide="showOptions">Play with friends</button>
                     </div>
                 </div>
             </div>

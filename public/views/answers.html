@@ -13,16 +13,16 @@
         </div>
 
         <span ng-repeat="answer in game.table">
-      <div
-        class="card smallest"
-        ng-style="pointerCursorStyle()"
-        id='table'
-        ng-click="pickWinning(answer)"
-        ng-show="(showTable || isCzar()) && game.state!=='waiting for czar to draw a card'"
-        ng-repeat="card in answer.card"
-        ng-animate="{enter:'animated bounceInLeft'}"
-        style="background-color:{{winningColor($parent.$index)}}">
-        <span ng-bind-html-unsafe="card.text"></span>
+    <div
+      class="card smallest"
+      ng-style="pointerCursorStyle()"
+      id='table'
+      ng-click="pickWinning(answer)"
+      ng-show="(showTable || isCzar()) && game.state!=='waiting for czar to draw a card'"
+      ng-repeat="card in answer.card"
+      ng-animate="{enter:'animated bounceInLeft'}"
+      style="background-color:{{winningColor($parent.$index)}}">
+      <span ng-bind-html-unsafe="card.text"></span>
         <span id='selection-number' ng-show="firstAnswer($index)"> 1 </span>
         <span id='selection-number' ng-show="secondAnswer($index)"> 2 </span>
     </div>
@@ -76,13 +76,13 @@
                         <div ng-if="allFriends.length">
                             <div class="no-friends" ng-repeat="friend in allFriends" style="display:flex; width:100%; margin-bottom: 5px;">
                                 <!-- <div class="row">
-                                <div class="col-xs-9">
-                                    {{friend.email}}
-                                </div>
-                                <div class="col-xs-3">
-                                    <button class="btn bg-dark" ng-click="sendInvites(friend.email, $index)" ng-disabled="invitedUsers.includes(friend.email)" id="invite-friend-button"><span class="text-white">Invite</span></button>
-                                </div>
-                            </div> -->
+                                  <div class="col-xs-9">
+                                      {{friend.email}}
+                                  </div>
+                                  <div class="col-xs-3">
+                                      <button class="btn bg-dark" ng-click="sendInvites(friend.email, $index)" ng-disabled="invitedUsers.includes(friend.email)" id="invite-friend-button"><span class="text-white">Invite</span></button>
+                                  </div>
+                              </div> -->
                                 <div style="width: 60%;">{{friend.email}}</div>
                                 <div style="width: 40%;"><button class="btn bg-dark" ng-click="sendInvites(friend.email, $index)" ng-disabled="invitedUsers.includes(friend.email)" id="invite-friend-button"><span class="text-white">Invite</span></button></div>
                             </div>
@@ -92,9 +92,9 @@
                         <div class="input-group">
                             <input type="text" class="form-control" ng-change="searchUser(searchQuery)" ng-model='searchQuery' placeholder="Search by username or email" />
                             <span class="input-group-btn">
-              <button class="btn btn-invite bg-dark"  ng-click='searchUser(searchQuery)' 
-                type="button"><i class="fa fa-search text-white" aria-hidden="true"></i></button>
-            </span>
+                <button class="btn btn-invite bg-dark"  ng-click='searchUser(searchQuery)' 
+                  type="button"><i class="fa fa-search text-white" aria-hidden="true"></i></button>
+              </span>
                         </div>
                         <div ng-if="searchResults.length">
                             <div class="counter text-center">
@@ -102,10 +102,25 @@
                                 <h4 class=""> Invite sent to <span class="show-counter">{{counter}}/11</span> people</h4>
                             </div>
                             <div>
+                                <!-- <div class="row" id="search-result-info">
+                                  <div class="col-xs-6">
+                                      <h5>{{user.name}}</h5>
+                                  </div>
+                                  <div class="col-xs-3">
+                                      <button class="btn btn-invite bg-dark" id="invite-friend" ng-click="sendInvites(user.email, $index)" ng-disabled="invitedUsers.includes(user.email)"><span class="text-white">Invite</span></button>
+                                  </div>
+                                  <div class="col-xs-3">
+                                      <button class="btn btn-invite bg-dark" ng-disabled="friendsIdlist.includes(user._id)" id="add-friend" ng-click="addFriend(user._id, user.email, $index)"><span class="text-white">Add as friend</span></button>
+                                  </div>
+                              </div> -->
                                 <div ng-repeat="user in searchResults" id="search-result" style="display:flex; width:100%">
+                                    <!-- <tbody> -->
+                                    <!-- <tr> -->
                                     <div style="width: 40%;">{{user.name}}</div>
                                     <div style="width: 30%;"><button class="btn btn-invite bg-dark" id="invite-friend" ng-click="sendInvites(user.email, $index)" ng-disabled="invitedUsers.includes(user.email)"><span class="text-white">Invite</span></button></div>
                                     <div style="width: 30%;"><button class="btn btn-invite bg-dark" ng-disabled="friendsIdlist.includes(user._id)" id="add-friend" ng-click="addFriend(user._id, user.email, $index)"><span class="text-white">Add as friend</span></button></div>
+                                    <!-- </tr> -->
+                                    <!-- </tbody> -->
                                 </div>
                             </div>
                         </div>
@@ -120,12 +135,12 @@
                             <div class="input-group">
                                 <input type="email" class="form-control" ng-model='mail' placeholder="Type Email" required/>
                                 <span class="input-group-btn">
-                <button class="btn bg-dark" 
-                id="send-unregistered-email" 
-                ng-disabled="sending"
-                ng-click='sendMail(mail)' 
-                type="button"><i class="fa fa-paper-plane-o text-white" aria-hidden="true"></i></button>
-            </span>
+                  <button class="btn bg-dark" 
+                  id="send-unregistered-email" 
+                  ng-disabled="sending"
+                  ng-click='sendMail(mail)' 
+                  type="button"><i class="fa fa-paper-plane-o text-white" aria-hidden="true"></i></button>
+              </span>
                             </div>
                         </form>
                     </div>
@@ -186,8 +201,8 @@
                     </div>
                     <div class="col-md-4">
                         <button type="button" class="btn btn-block" data-dismiss="modal" style="background-color: #252525; color: white">
-          Close
-        </button>
+            Close
+          </button>
                     </div>
                 </div>
             </div>
@@ -208,13 +223,13 @@
                     </div>
                     <div class="col-md-3 col-md-offset-3">
                         <button ng-click="startGame()" data-dismiss="modal" type="button" class="btn btn-block btn-cfh-green btn-w">
-          Yes, Start!
-        </button>
+            Yes, Start!
+          </button>
                     </div>
                     <div class="col-md-3">
                         <button type="button" class="btn btn-block btn-danger btn-w" data-dismiss="modal">
-          No, Return!
-        </button>
+            No, Return!
+          </button>
                     </div>
                 </div>
             </div>
@@ -245,34 +260,14 @@
             </a>
         </div>
     </div>
-  <div id="charity-widget-container">
-    <!-- This is real -->
-    <a
-    href="http://www.crowdrise.com"
-    id="crowdriseStaticLink-fundraiser-121142"
-    title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a>
-    <script type="text/javascript" src="https://www.crowdrise.com/widgets/donate/fundraiser/121142/?callback=userDonationCb"></script>
-    <!-- This is for testing -->
-    <!-- <a href="http://www.crowdrise.com" id="crowdriseStaticLink-project-36715" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a> -->
-    <!-- <script type="text/javascript" src="https://apisandbox.crowdrise.com/widgets/donate/project/36715/?callback=userDonationCb"></script> -->
-  </div>
-</div>
-<div id="czar-blank-container" 
-  ng-show="isCzar() && game.table.length===0 && game.state !== 'game dissolved' && game.state !== 'awaiting players'">
-  <div id="czar-blank-inner">
-    You are the Card Czar.
-    <br>
-    <span id="smaller-text">Players are choosing their answers. Prepare to select a winner.</span>
-  </div>
-  <div id='charity-fact-container'>
-    <div id='charity-fact-tagline'>Did you know?</div>
 
-      <div id='charity-fact'>
-        {{ makeAWishFact }}
-      </div>
-      <div id='charity-logo-container'>
-        <img src='/img/make-a-wish-logo.png' />
-      </div>
+    <div id="charity-widget-container">
+        <!-- This is real -->
+        <a href="http://www.crowdrise.com" id="crowdriseStaticLink-fundraiser-121142" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a>
+        <script type="text/javascript" src="https://www.crowdrise.com/widgets/donate/fundraiser/121142/?callback=userDonationCb"></script>
+        <!-- This is for testing -->
+        <!-- <a href="http://www.crowdrise.com" id="crowdriseStaticLink-project-36715" title="Fundraising Websites on Crowdrise">Fundraising Websites - Crowdrise</a> -->
+        <!-- <script type="text/javascript" src="https://apisandbox.crowdrise.com/widgets/donate/project/36715/?callback=userDonationCb"></script> -->
     </div>
 </div>
 <div id="czar-blank-container" ng-show="isCzar() && game.table.length===0 && game.state !== 'game dissolved' && game.state !== 'awaiting players'">

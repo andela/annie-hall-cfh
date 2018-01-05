@@ -20,13 +20,18 @@ body {
 .btn-w {
   width: 7em;
 }
+#dash-body{
+  width: 100%;
+  min-height: 100%;
+  background-color: black !important;
+}
+.dash{
+  cursor:pointer !important;
+  padding-bottom: 0 !important;
+}
 .answer-card{
   background-color: white;
   color: black;
-  width: 13em;
-  height: 13em;
-  padding-top: 2em;
-  padding-left: 1em;
 }
 .question-card{
   background-color: black !important;

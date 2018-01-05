@@ -145,7 +145,7 @@ const users = {
       res.redirect('/');
     }
   },
-  create: (req, res) => {
+  create: (req, res, next) => {
     if (req.body.name && req.body.password && req.body.email) {
       User.findOne({
         email: req.body.email
@@ -170,7 +170,7 @@ const users = {
               };
               const token = jwt.sign({
                 createdUser
-              }, secret, { expiresIn: '1h' });
+              }, secret, { expiresIn: '24h' });
               return res.status(201).json({
                 token,
                 message: 'Successfully signed up',
@@ -220,7 +220,7 @@ const users = {
         };
         const token = jwt.sign({
           newUser
-        }, secret, { expiresIn: '1h' });
+        }, secret, { expiresIn: '24h' });
         return res.status(200).json({ message: 'Login Successful', token });
       });
     });

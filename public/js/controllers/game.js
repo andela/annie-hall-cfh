@@ -6,7 +6,7 @@ angular.module('mean.system')
     $scope.modalShown = false;
     $scope.counter = 0;
     $scope.game = game;
-    $scope.counter = 0;
+    $scope.invitedUsers = [];
     $scope.pickedCards = [];
     let makeAWishFacts = MakeAWishFactsService.getMakeAWishFacts();
     $scope.makeAWishFact = makeAWishFacts.pop();
@@ -32,7 +32,28 @@ angular.module('mean.system')
           });
       }
     };
-
+    
+    $scope.sendMail = (mail) => {
+      $scope.sending = true;
+      const token = localStorage.getItem('token');
+      if (mail.trim().length) {
+        return $http({
+          method: 'POST',
+          url: 'api/invites/email',
+          headers: {
+            'x-token': token
+          },
+          data: { email: mail, link: document.URL }
+        })
+          .then((response) => {
+            $scope.sending = false;
+            if (response.status === 200) {
+              $('#searchInput').modal('hide');
+              $('#sentResult').modal('show');
+            }
+          });
+      }
+    };
     $scope.showFriends = () => {
       const token = localStorage.getItem('token');
       $http({
@@ -60,19 +81,28 @@ angular.module('mean.system')
           'x-token': token
         }
       })
-        .then((response) => {});
+        .then((response) => {
+          console.log(response);
+        });
     };
+
     $scope.hideModal = () => {
       $('#searchInput').modal('hide');
     };
+
     $scope.endInvites = () => {
       $('#end-invites').modal('show');
     };
+
     $scope.searchUser = (searchQuery) => {
+      const token = localStorage.getItem('token');
       if (searchQuery.trim().length) {
         $http({
           method: 'GET',
-          url: `/api/search/users/${searchQuery}`
+          url: `/api/search/users/${searchQuery}`,
+          headers: {
+            'x-token': token
+          }
         })
           .then((response) => {
             const result = response.data.User;
@@ -81,6 +111,7 @@ angular.module('mean.system')
       }
     };
     $scope.sendInvites = (email, $index) => {
+      $scope.sending = true;
       if ($scope.counter === 11) {
         $scope.hideModal();
         $scope.endInvites();
@@ -95,6 +126,8 @@ angular.module('mean.system')
         }
       }).then((response) => {
         $scope.counter += 1;
+        $scope.invitedUsers.push(email);
+        $scope.sending = false;
       });
     };
 
@@ -105,7 +138,8 @@ angular.module('mean.system')
           if (game.curQuestion.numAnswers === 1) {
             $scope.sendPickedCards();
             $scope.hasPickedCards = true;
-          } else if (game.curQuestion.numAnswers === 2 && $scope.pickedCards.length === 2) {
+          } else if (game.curQuestion.numAnswers === 2 &&
+                        $scope.pickedCards.length === 2) {
             // delay and send
             $scope.hasPickedCards = true;
             $timeout($scope.sendPickedCards, 300);
@@ -215,9 +249,7 @@ angular.module('mean.system')
       }
     };
 
-    $scope.abandonGame = function () {
-      playTone('over');
-
+    $scope.abandonGame = () => {
       game.leaveGame();
       $location.path('/');
     };
